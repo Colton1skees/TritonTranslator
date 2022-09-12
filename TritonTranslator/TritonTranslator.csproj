@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Arch\X86\" />
+    <Folder Include="Ast\" />
+    <Folder Include="Expression\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Transpiler\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Iced" Version="1.17.0" />
+  </ItemGroup>
+
+</Project>
