@@ -62,10 +62,5 @@ namespace TritonTranslator.Arch
                 SetBits((value * BitSizes.Byte) - 1, 0);
             }
         }
-
-        public override string ToString()
-        {
-            return "memory[todo]";
-        }
     }
 }

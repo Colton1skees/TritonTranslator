@@ -75,6 +75,7 @@ namespace TritonTranslator.Expression
 
         public AbstractNode GetMemoryAst(MemoryAccess access)
         {
+
             var baseReg = access.BaseRegister;
             var index = access.IndexRegister;
             var seg = access.SegmentReg;
@@ -88,36 +89,21 @@ namespace TritonTranslator.Expression
                                                   )
                                                 );
 
-            /* Initialize the AST of the memory access (LEA) -> ((pc + base) + (index * scale) + disp) */
-            var pcPlusBaseAst = access.PcRelative > 0 ? astCtxt.bv(access.PcRelative, bitSize) :
-                                      (architecture.IsRegisterValid(baseReg) ? GetRegisterAst(baseReg) :
-                                        astCtxt.bv(0, bitSize));
+            // TODO: Handle segmentation and LEAs.
+            AbstractNode address = null;
+            if(baseReg.Id != register_e.ID_REG_INVALID)
+                address = new RegisterNode(baseReg);
 
-            var indexMulScaleAst = astCtxt.bvmul(
-                                      (architecture.IsRegisterValid(index) ? GetRegisterAst(index) : astCtxt.bv(0, bitSize)),
-                                      astCtxt.bv(scaleValue, bitSize)
-                                    );
-
-            // Triton has some 'isSubtracted' property which seems to only apply for ARM operands.
-            // For x86, we always default this to false.
-            bool isSubtracted = false;
-
-            var dispAst = astCtxt.bv(dispValue, bitSize);
-            var leaAst = astCtxt.bvadd(
-                                      isSubtracted ? astCtxt.bvsub(pcPlusBaseAst, indexMulScaleAst) : astCtxt.bvadd(pcPlusBaseAst, indexMulScaleAst),
-                                      dispAst
-                                    );
-
-            /* Use segments as base address instead of selector into the GDT. */
-            if (architecture.IsRegisterValid(seg))
+            if(index.Id != register_e.ID_REG_INVALID)
             {
-                leaAst = astCtxt.bvadd(
-                           GetRegisterAst(seg),
-                           astCtxt.sx((seg.BitSize - bitSize), leaAst)
-                         );
+                var offset = scaleValue == 1 ? new RegisterNode(index) : astCtxt.bvmul(astCtxt.bv(scaleValue, bitSize), new RegisterNode(index));
+                address = astCtxt.bvadd(address, offset);
             }
 
-            return new MemoryNode(leaAst, access.BitSize);
+            if(dispValue != 0)
+                address = astCtxt.bvadd(address, astCtxt.bv(dispValue, bitSize));
+
+            return new MemoryNode(address, access.BitSize);
         }
 
         public void InitLeaAst(MemoryAccess access)

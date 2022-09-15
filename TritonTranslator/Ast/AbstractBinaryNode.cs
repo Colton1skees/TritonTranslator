@@ -8,8 +8,7 @@ namespace TritonTranslator.Ast
 {
     public abstract class AbstractBinaryNode : AbstractNode
     {
-        /// <inheritdoc cref="AbstractNode.Type"/>
-        public override abstract AstType Type { get; }
+        protected override int DefaultChildrenCount => 1;
 
         public AbstractNode Expr1
         {
@@ -19,9 +18,7 @@ namespace TritonTranslator.Ast
 
         public AbstractBinaryNode(AbstractNode expr1) 
         {
-            Children = new List<AbstractNode>(1);
             Children.Add(expr1);
-
             Initialize();
         }
 

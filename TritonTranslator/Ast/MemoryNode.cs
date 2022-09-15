@@ -7,17 +7,14 @@ using TritonTranslator.Arch;
 
 namespace TritonTranslator.Ast
 {
-    public class MemoryNode : AbstractNode
+    public class MemoryNode : AbstractBinaryNode
     {
         public override AstType Type => AstType.MEMORY;
 
         public MemoryAccess MemoryAccess { get; }
 
-        public AbstractNode AddressNode { get; }
-
-        public MemoryNode(AbstractNode addressNode, uint size)
+        public MemoryNode(AbstractNode addressNode, uint size) : base(addressNode)
         {
-            AddressNode = addressNode;
             BitvectorSize = size;
             if (addressNode.BitvectorSize != size)
                 throw new InvalidOperationException("Address node & provided size do not match.");
@@ -26,7 +23,7 @@ namespace TritonTranslator.Ast
 
         public override uint ComputeBitvecSize()
         {
-            return AddressNode.BitvectorSize;
+            return Children[0].BitvectorSize;
         }
     }
 }

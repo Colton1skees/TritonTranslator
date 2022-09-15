@@ -225,7 +225,10 @@ namespace TritonTranslator.Ast
 
     public abstract class AbstractNode
     {
-        private static Evaluation evaluation = new Evaluation();
+        /// <summary>
+        /// Micro optimization to reduce list expansions.
+        /// </summary>
+        protected virtual int DefaultChildrenCount { get; }
 
         public abstract AstType Type { get; }
 
@@ -237,6 +240,11 @@ namespace TritonTranslator.Ast
         /// Gets a list of child nodes.
         /// </summary>
         public List<AbstractNode> Children { get; protected set; }
+
+        public AbstractNode()
+        {
+            Children = new List<AbstractNode>(DefaultChildrenCount);
+        }
 
         public virtual uint ComputeBitvecSize()
         {
@@ -255,6 +263,9 @@ namespace TritonTranslator.Ast
 
             // Validate that all of the sizes match up.
             ValidateChildSizes();
+
+            if (Children == null)
+                Children = new List<AbstractNode>(0);
         }
 
         protected virtual void ValidateChildren()
@@ -270,6 +281,37 @@ namespace TritonTranslator.Ast
         public virtual string GetOperator()
         {
             return string.Format("{0}(", GetType().Name.Replace("Node", ""));
+        }
+
+        public override string ToString()
+        {
+            int tabCount = 0;
+            return ToString(ref tabCount);
+        }
+
+        public string ToString(ref int tabCount)
+        {
+            string strTab = "";
+            StringBuilder sb = new StringBuilder();
+            sb.Append(GetOperator());
+
+
+            for (int i = 0; i < Children.Count; i++)
+            {
+                var child = Children[i];
+
+                tabCount++;
+                for (int tab = 0; tab <= tabCount; tab++)
+                    sb.Append(strTab);
+                sb.Append(child.ToString(ref tabCount));
+                tabCount--;
+                if (i != Children.Count - 1)
+                    sb.Append(",");
+            }
+
+            sb.Append(")");
+            var result = sb.ToString();
+            return result;
         }
     }
 }

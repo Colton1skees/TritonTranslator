@@ -94,7 +94,8 @@ namespace TritonTranslator.Arch.X86
                         size = Iced.Intel.MemorySizeExtensions.GetSize(instruction.MemorySize);
                     mem.SetBits((uint)(size * BitSizes.Byte) - 1, 0);
 
-                    var segment = (IcedRegisterToTritonRegister(instruction.MemorySegment));
+                    // TODO: Revisit and properly handle segmentation.
+                    var segment = true ? X86Registers.Invalid :(IcedRegisterToTritonRegister(instruction.MemorySegment));
                     var baseReg = IcedRegisterToTritonRegister(instruction.MemoryBase);
                     var index = IcedRegisterToTritonRegister(instruction.MemoryIndex);
 
@@ -105,6 +106,7 @@ namespace TritonTranslator.Arch.X86
 
                     var disp = new Immediate((ulong)instruction.MemoryDisplacement64, immSize);
                     var scale = new Immediate((ulong)instruction.MemoryIndexScale, immSize);
+
 
                     mem.SegmentReg = segment;
                     mem.BaseRegister = baseReg;

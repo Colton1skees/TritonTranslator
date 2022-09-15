@@ -8,11 +8,10 @@ namespace TritonTranslator.Ast
 {
     public abstract class AbstractTernaryNode : AbstractNode
     {
-        public override AstType Type => throw new NotImplementedException();
+        protected override int DefaultChildrenCount => 3;
 
         public AbstractTernaryNode(AbstractNode expr1, AbstractNode expr2, AbstractNode expr3)
         {
-            Children = new List<AbstractNode>(3);
             Children.Add(expr1);
             Children.Add(expr2);
             Children.Add(expr3);
