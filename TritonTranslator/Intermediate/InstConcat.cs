@@ -21,6 +21,7 @@ namespace TritonTranslator.Intermediate
         {
             Dest = dest;
             Operands.AddRange(operands);
+            Initialize();
         }
 
         public override uint ComputeBitvecSize()

@@ -14,6 +14,26 @@ namespace TritonTranslator.Intermediate
             Dest = destination;
             Op1 = op1;
             Op2 = op2;
+            Initialize();
+        }
+
+        protected override void ValidateOperands()
+        {
+            if (Operands.Count != 2)
+                throw new InvalidOperationException(String.Format("Unary node {0} does not have exactly two children.", Type));
+            if (Operands.Any(x => x == null))
+                throw new InvalidOperationException(String.Format("Unary node {0} cannot have any null children.", Type));
+        }
+
+        protected override void ValidateOperandSizes()
+        {
+            if (Operands[0].Bitsize != Operands[1].Bitsize)
+                throw new InvalidOperationException(String.Format("Unary node {0} children has unequal sizes.", Type));
+        }
+
+        public override uint ComputeBitvecSize()
+        {
+            return Operands[0].Bitsize;
         }
     }
 }

@@ -7,13 +7,13 @@ using TritonTranslator.Intermediate.Operands;
 
 namespace TritonTranslator.Intermediate
 {
-    public class InstLoad : AbstractInstBinary
+    public class InstLoad : AbstractInstUnary
     {
         public override InstructionId Id => InstructionId.Load;
 
-        public InstLoad(IOperand destination, IOperand op1, uint size) : base(destination, op1)
+        public InstLoad(IOperand destination, IOperand op1, ImmediateOperand sizeOp) : base(destination, op1, sizeOp)
         {
-            Bitsize = size;
+            Bitsize = (uint)sizeOp.Immediate.Value;
             Initialize();
         }
     }

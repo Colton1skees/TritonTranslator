@@ -31,8 +31,12 @@ namespace TritonTranslator.Intermediate
         Udiv,
         Urem,
 
+        Zx,
+        Sx,
+
         Cond,
         Concat,
+        Copy,
         Extract,
         Select,
 
@@ -70,14 +74,26 @@ namespace TritonTranslator.Intermediate
 
         public virtual bool HasDestination => true;
 
-        public void Initialize()
+        public AbstractInst()
         {
-
+            Operands = new List<IOperand>();
         }
 
         public virtual uint ComputeBitvecSize()
         {
-            throw new Exception("TODO: Implement.");
+            return Bitsize;
+        }
+
+        public void Initialize()
+        {
+            Bitsize = ComputeBitvecSize();
+
+            ValidateOperands();
+
+            ValidateOperandSizes();
+
+            if (Operands == null)
+                Operands = new List<IOperand>();
         }
 
         protected virtual void ValidateOperands()

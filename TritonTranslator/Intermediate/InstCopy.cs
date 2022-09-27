@@ -7,11 +7,11 @@ using TritonTranslator.Intermediate.Operands;
 
 namespace TritonTranslator.Intermediate
 {
-    public class InstOr : AbstractInstBinary
+    public class InstCopy : AbstractInstBinary
     {
-        public override InstructionId Id => InstructionId.Or;
+        public override InstructionId Id => InstructionId.Copy;
 
-        public InstOr(IOperand destination, IOperand op1) : base(destination, op1)
+        public InstCopy(IOperand destination, IOperand op1) : base(destination, op1)
         {
 
         }
