@@ -20,15 +20,143 @@ namespace TritonTranslator.Conversion
         // Workaround to avoid hash consing with reference nodes. TODO: Refactor.
         private Dictionary<ReferenceNode, InstCopy> translatedReferences = new Dictionary<ReferenceNode, InstCopy>();
 
-        public IOperand FromAst(AbstractNode node)
+        public IEnumerable<AbstractInst> Convert(AbstractNode node)
         {
-           switch(node)
+            // Build and create a reference to the list of instructions.
+            FromAst(node);
+            var result = instructions;
+
+            // Create a new instruction list.
+            instructions = new List<AbstractInst>();
+            translatedReferences.Clear();
+            return result;
+        }
+
+        public IOperand FromAst(AbstractNode ast)
+        {
+            AbstractInst inst = null;
+           switch(ast)
            {
+                case BvaddNode node:
+                    inst = FromBvadd(node);
+                    break;
+                case BvandNode node:
+                    inst = FromBvand(node);
+                    break;
+                case BvashrNode node:
+                    inst = FromBvashr(node);
+                    break;
+                case BvlshrNode node:
+                    inst = FromBvlshr(node);
+                    break;
+                case BvmulNode node:
+                    inst = FromBvmul(node);
+                    break;
+                case BvnegNode node:
+                    inst = FromBvneg(node);
+                    break;
+                case BvNode node:
+                    inst = FromBvNode(node);
+                    break;
+                case BvnotNode node:
+                    inst = FromBvnot(node);
+                    break;
+                case BvorNode node:
+                    inst = FromBvor(node);
+                    break;
+                case BvrolNode node:
+                    inst = FromBvrol(node);
+                    break;
+                case BvrorNode node:
+                    inst = FromBvror(node);
+                    break;
+                case BvsdivNode node:
+                    inst = FromBvsdiv(node);
+                    break;
+                case BvsgeNode node:
+                    inst = FromBvsge(node);
+                    break;
+                case BvsgtNode node:
+                    inst = FromBvsgt(node);
+                    break;
+                case BvshlNode node:
+                    inst = FromBvshl(node);
+                    break;
+                case BvsleNode node:
+                    inst = FromBvsle(node);
+                    break;
+                case BvsltNode node:
+                    inst = FromBvslt(node);
+                    break;
+                case BvsmodNode node:
+                    inst = FromBvsmod(node);
+                    break;
+                case BvsremNode node:
+                    inst = FromBvsrem(node);
+                    break;
+                case BvsubNode node:
+                    inst = FromBvsub(node);
+                    break;
+                case BvudivNode node:
+                    inst = FromBvudiv(node);
+                    break;
+                case BvugeNode node:
+                    inst = FromBvuge(node);
+                    break;
+                case BvugtNode node:
+                    inst = FromBvugt(node);
+                    break;
+                case BvuleNode node:
+                    inst = FromBvule(node);
+                    break;
+                case BvultNode node:
+                    inst = FromBvult(node);
+                    break;
+                case BvuremNode node:
+                    inst = FromBvurem(node);
+                    break;
+                case BvxorNode node:
+                    inst = FromBvxor(node);
+                    break;
+                case ConcatNode node:
+                    inst = FromConcat(node);
+                    break;
+                case EqualNode node:
+                    inst = FromEqual(node);
+                    break;
+                case ExtractNode node:
+                    inst = FromExtract(node);
+                    break;
+                case IntegerNode node:
+                    inst = FromInteger(node);
+                    break;
+                case IteNode node:
+                    inst = FromIte(node);
+                    break;
+                case MemoryNode node:
+                    inst = FromMemory(node);
+                    break;
+                case ReferenceNode node:
+                    inst = FromReference(node);
+                    break;
+                case RegisterNode node:
+                    inst = FromRegister(node);
+                    break;
+                case SxNode node:
+                    inst = FromSx(node);
+                    break;
+                case UndefNode node:
+                    inst = FromUndef(node);
+                    break;
+                case ZxNode node:
+                    inst = FromZx(node);
+                    break;
                 default:
-                    throw new InvalidOperationException(String.Format("Node type {0} is not supported.", node.Type));
+                    throw new InvalidOperationException(String.Format("Node type {0} is not supported.", ast.Type));
            }
 
-            return null;
+            instructions.Add(inst);
+            return inst.Dest;
         }
 
         private InstAdd FromBvadd(BvaddNode node)

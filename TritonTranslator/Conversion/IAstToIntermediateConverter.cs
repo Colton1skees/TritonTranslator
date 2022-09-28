@@ -14,6 +14,6 @@ namespace TritonTranslator.Conversion
     /// </summary>
     public interface IAstToIntermediateConverter
     {
-        public IOperand FromAst(AbstractNode node);
+        public IEnumerable<AbstractInst> Convert(AbstractNode node);
     }
 }

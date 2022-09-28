@@ -20,15 +20,15 @@ namespace TritonTranslator.Intermediate
         protected override void ValidateOperands()
         {
             if (Operands.Count != 2)
-                throw new InvalidOperationException(String.Format("Unary node {0} does not have exactly two children.", Type));
+                throw new InvalidOperationException(String.Format("Unary node {0} does not have exactly two children.", Id));
             if (Operands.Any(x => x == null))
-                throw new InvalidOperationException(String.Format("Unary node {0} cannot have any null children.", Type));
+                throw new InvalidOperationException(String.Format("Unary node {0} cannot have any null children.", Id));
         }
 
         protected override void ValidateOperandSizes()
         {
             if (Operands[0].Bitsize != Operands[1].Bitsize)
-                throw new InvalidOperationException(String.Format("Unary node {0} children has unequal sizes.", Type));
+                throw new InvalidOperationException(String.Format("Unary node {0} children has unequal sizes.", Id));
         }
 
         public override uint ComputeBitvecSize()
