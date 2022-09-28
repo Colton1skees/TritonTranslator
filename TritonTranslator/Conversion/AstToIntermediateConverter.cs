@@ -445,12 +445,13 @@ namespace TritonTranslator.Conversion
             return inst;
         }
 
-        private InstLoad FromMemory(MemoryNode node)
+        private InstCopy FromMemory(MemoryNode node)
         {
+            // ASTs have no concept of destinations, so we can't load or store.
+            // Instead, we move the address computation expression to a temporary. 
             var dest = GetTemporary(node.BitSize);
             var op1 = FromAst(node.Expr1);
-            var sizeOp = new ImmediateOperand(node.BitSize, node.BitSize);
-            var inst = new InstLoad(dest, op1, sizeOp);
+            var inst = new InstCopy(dest, op1);
             return inst;
         }
 
