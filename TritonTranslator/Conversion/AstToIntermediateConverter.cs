@@ -11,7 +11,7 @@ namespace TritonTranslator.Conversion
 {
     public class AstToIntermediateConverter : IAstToIntermediateConverter
     {
-        // The of generated temporaries.
+        // The number of generated temporaries.
         private uint temporaryCount = 0;
 
         // A list of all generated instructions.
