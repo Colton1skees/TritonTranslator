@@ -10,6 +10,24 @@ namespace TritonTranslator.Ast
     {
         protected override int DefaultChildrenCount => 3;
 
+        public AbstractNode Expr1
+        {
+            get => Children[0];
+            set => Children[0] = value;
+        }
+
+        public AbstractNode Expr2
+        {
+            get => Children[1];
+            set => Children[1] = value;
+        }
+
+        public AbstractNode Expr3
+        {
+            get => Children[2];
+            set => Children[2] = value;
+        }
+
         public AbstractTernaryNode(AbstractNode expr1, AbstractNode expr2, AbstractNode expr3)
         {
             Children.Add(expr1);

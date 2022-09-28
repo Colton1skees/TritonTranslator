@@ -12,15 +12,18 @@ namespace TritonTranslator.Intermediate.Operands
     /// </summary>
     public class ImmediateOperand : IOperand
     {
-        public uint Bitsize => Immediate.BitSize;
+        public ulong Value { get; set; }
+
+        public uint Bitsize { get; }
 
         public bool IsWritable => false;
 
         public Immediate Immediate { get; }
 
-        public ImmediateOperand(Immediate immediate)
+        public ImmediateOperand(ulong value, uint bitSize)
         {
-            Immediate = immediate;
+            Value = value;
+            Bitsize = bitSize;
         }
     }
 }

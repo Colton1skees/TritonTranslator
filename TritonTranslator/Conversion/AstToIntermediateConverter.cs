@@ -11,9 +11,14 @@ namespace TritonTranslator.Conversion
 {
     public class AstToIntermediateConverter : IAstToIntermediateConverter
     {
+        // The of generated temporaries.
         private uint temporaryCount = 0;
 
+        // A list of all generated instructions.
         private List<AbstractInst> instructions = new List<AbstractInst>();
+
+        // Workaround to avoid hash consing with reference nodes. TODO: Refactor.
+        private Dictionary<ReferenceNode, InstCopy> translatedReferences = new Dictionary<ReferenceNode, InstCopy>();
 
         public IOperand FromAst(AbstractNode node)
         {
@@ -55,177 +60,322 @@ namespace TritonTranslator.Conversion
 
         private InstLshr FromBvlshr(BvlshrNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstLshr(dest, op1, op2);
+            return inst;
         }
 
         private InstMul FromBvmul(BvmulNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstMul(dest, op1, op2);
+            return inst;
         }
 
         private InstNeg FromBvneg(BvnegNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstNeg(dest, op1);
+            return inst;
         }
 
         private InstCopy FromBvNode(BvNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var immediate = (IntegerNode)node.Expr1;
+            var op1 = new ImmediateOperand(immediate.Value, immediate.BitSize);
+            var inst = new InstCopy(dest, op1);
+            return inst;
         }
 
         private InstNot FromBvnot(BvnotNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstNot(dest, op1);
+            return inst;
         }
 
         private InstOr FromBvor(BvorNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstOr(dest, op1, op2);
+            return inst;
         }
 
         private InstRol FromBvrol(BvrolNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstRol(dest, op1, op2);
+            return inst;
         }
 
         private InstRor FromBvror(BvrorNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstRor(dest, op1, op2);
+            return inst;
         }
 
         private InstSdiv FromBvsdiv(BvsdivNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstSdiv(dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvsge(BvsgeNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Sge, dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvsgt(BvsgtNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Sgt, dest, op1, op2);
+            return inst;
         }
 
         private InstShl FromBvshl(BvshlNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstShl(dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvsle(BvsleNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Sle, dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvslt(BvsltNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Slt, dest, op1, op2);
+            return inst;
         }
 
         private InstSmod FromBvsmod(BvsmodNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstSmod(dest, op1, op2);
+            return inst;
         }
 
         private InstSrem FromBvsrem(BvsremNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstSrem(dest, op1, op2);
+            return inst;
         }
 
         private InstSub FromBvsub(BvsubNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstSub(dest, op1, op2);
+            return inst;
         }
 
         private InstUdiv FromBvudiv(BvudivNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstUdiv(dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvuge(BvugeNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Uge, dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvugt(BvugtNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Ugt, dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvule(BvuleNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Ule, dest, op1, op2);
+            return inst;
         }
 
         private InstCond FromBvult(BvultNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Ult, dest, op1, op2);
+            return inst;
         }
 
         private InstUrem FromBvurem(BvuremNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstUrem(dest, op1, op2);
+            return inst;
         }
 
         private InstXor FromBvxor(BvxorNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstXor(dest, op1, op2);
+            return inst;
         }
 
         private InstConcat FromConcat(ConcatNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var ops = node.Children.Select(x => FromAst(x));
+            var inst = new InstConcat(dest, ops);
+            return inst;
         }
 
         private InstCond FromEqual(EqualNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstCond(CondType.Eq, dest, op1, op2);
+            return inst;
         }
 
         private InstExtract FromExtract(ExtractNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var op3 = FromAst(node.Expr3);
+            var inst = new InstExtract(dest, op1, op2, op3);
+            return inst;
         }
 
         private InstCopy FromInteger(IntegerNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = new ImmediateOperand(node.Value, node.BitSize);
+            var inst = new InstCopy(dest, op1);
+            return inst;
         }
 
         private InstSelect FromIte(IteNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var op3 = FromAst(node.Expr3);
+            var inst = new InstSelect(dest, op1, op2, op3);
+            return inst;
         }
 
         private InstLoad FromMemory(MemoryNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var sizeOp = new ImmediateOperand(node.BitSize, node.BitSize);
+            var inst = new InstLoad(dest, op1, sizeOp);
+            return inst;
         }
 
         private InstCopy FromReference(ReferenceNode node)
         {
-            return null;
+            // Triton uses the reference node instruction to avoid
+            // duplicating ASTs. To avoid unnnecessary hash consing,
+            // we maintain a lookup table of all translated references.
+            // This should not be a problem, since reference nodes
+            // never leave the scope of a single instruction.
+            if (translatedReferences.ContainsKey(node))
+                return translatedReferences[node];
+
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstCopy(dest, op1);
+            return inst;
         }
 
         private InstCopy FromRegister(RegisterNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = new RegisterOperand(node.Register);
+            var inst = new InstCopy(dest, op1);
+            return inst;
         }
 
         private InstSx FromSx(SxNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstSx(dest, op1, op2);
+            return inst;
         }
 
         private InstCopy FromUndef(UndefNode node)
         {
-            return null;
+            // Emulate undefined behavior via reading from
+            // an undefined temporary.
+            var dest = GetTemporary(node.BitSize);
+            var op1 = GetTemporary(node.BitSize);
+            var inst = new InstCopy(dest, dest);
+            return inst;
         }
 
         private InstZx FromZx(ZxNode node)
         {
-            return null;
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var op2 = FromAst(node.Expr2);
+            var inst = new InstZx(dest, op1, op2);
+            return inst;
         }
 
         private TemporaryOperand GetTemporary(uint bitSize)
