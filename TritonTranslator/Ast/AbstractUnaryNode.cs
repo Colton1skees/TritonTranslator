@@ -27,6 +27,10 @@ namespace TritonTranslator.Ast
 
         public AbstractUnaryNode(AbstractNode expr1, AbstractNode expr2)
         {
+            if(expr1 == null)
+            {
+                throw new ArgumentNullException(nameof(expr1));
+            }
             Children.Add(expr1);
             Children.Add(expr2);
             Initialize();

@@ -18,9 +18,16 @@ namespace TritonTranslator.Intermediate.Operands
 
         public Register Register { get; }
 
+        public string Name => String.Format("Reg({0})", Register.Name);
+
         public RegisterOperand(Register register)
         {
             Register = register;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TritonTranslator.Intermediate
 
         public InstLoad(IOperand destination, IOperand op1, ImmediateOperand sizeOp) : base(destination, op1, sizeOp)
         {
-            Bitsize = (uint)sizeOp.Immediate.Value;
+            Bitsize = (uint)sizeOp.Value;
             Initialize();
         }
     }

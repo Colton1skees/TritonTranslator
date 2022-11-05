@@ -12,7 +12,7 @@ namespace TritonTranslator.Intermediate
         public AbstractInstBinary(IOperand destination, IOperand op1)
         {
             Dest = destination;
-            Op1 = op1;
+            Operands.Add(op1);
             Initialize();
         }
 

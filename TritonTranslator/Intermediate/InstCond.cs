@@ -22,7 +22,7 @@ namespace TritonTranslator.Intermediate
 
     public class InstCond : AbstractInstUnary
     {
-        public override InstructionId Id => InstructionId.Concat;
+        public override InstructionId Id => InstructionId.Cond;
 
         public CondType CondType { get; set; }
 

@@ -42,6 +42,8 @@ namespace TritonTranslator.Intermediate
 
         Load,
         Store,
+        Branch,
+        BranchIndirect,
     }
 
     public abstract class AbstractInst
@@ -114,6 +116,8 @@ namespace TritonTranslator.Intermediate
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            if (HasDestination)
+                sb.Append(String.Format("{0}:{1} = ", Dest.ToString(), Dest.Bitsize));
             sb.Append(GetOperator());
             for(int i = 0; i < Operands.Count; i++)
             {

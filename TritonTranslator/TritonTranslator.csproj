@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Iced" Version="1.17.0" />
+    <PackageReference Include="LLVMSharp" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

@@ -12,8 +12,8 @@ namespace TritonTranslator.Intermediate
         public AbstractInstUnary(IOperand destination, IOperand op1, IOperand op2)
         {
             Dest = destination;
-            Op1 = op1;
-            Op2 = op2;
+            Operands.Add(op1);
+            Operands.Add(op2);
             Initialize();
         }
 

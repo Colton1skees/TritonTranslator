@@ -46,6 +46,23 @@ namespace TritonTranslator.Arch.X86
             return X86Registers.RegisterNameMapping[name];
         }
 
+        public Register GetRootParentRegister(register_e regId)
+        {
+            while (true)
+            {
+                var reg = X86Registers.RegisterMapping[regId];
+                if (reg.ParentId == regId)
+                    return reg;
+
+                regId = reg.ParentId;
+            }
+        }
+
+        public Register GetRootParentRegister(Register reg)
+        {
+            return GetRootParentRegister(reg.Id);
+        }
+
         public Register GetParentRegister(register_e id)
         {
             var parentId = X86Registers.RegisterMapping[id].ParentId;
@@ -104,7 +121,9 @@ namespace TritonTranslator.Arch.X86
                         IsRegisterValid(index.Id) ? index.Size :
                         GprSize);
 
-                    var disp = new Immediate((ulong)instruction.MemoryDisplacement64, immSize);
+                    // Note: This is a semi-hacky way of addressing RIP relative memory handling.
+                    var disp = instruction.IsIPRelativeMemoryOperand ? new Immediate((ulong)instruction.IPRelativeMemoryAddress - instruction.IP, immSize)
+                        : new Immediate((ulong)instruction.MemoryDisplacement64, immSize);
                     var scale = new Immediate((ulong)instruction.MemoryIndexScale, immSize);
 
 

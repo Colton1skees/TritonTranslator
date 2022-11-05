@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TritonTranslator.Ast;
+using TritonTranslator.Expression;
 using TritonTranslator.Intermediate;
 using TritonTranslator.Intermediate.Operands;
 
@@ -14,6 +15,17 @@ namespace TritonTranslator.Conversion
     /// </summary>
     public interface IAstToIntermediateConverter
     {
-        public IEnumerable<AbstractInst> Convert(AbstractNode node);
+        /// <summary>
+        /// Gets a three address code representation of an AST.
+        /// </summary>
+        /// <param name="symbolicExpression"></param>
+        /// <returns></returns>
+        public IEnumerable<AbstractInst> ConvertFromSymbolicExpression(SymbolicExpression symbolicExpression);
+
+        /// <summary>
+        /// Gets a three address code representation of an AST.
+        /// </summary>
+        /// <param name="node">The AST node.</param>
+        public IEnumerable<AbstractInst> ConvertFromAst(AbstractNode node);
     }
 }

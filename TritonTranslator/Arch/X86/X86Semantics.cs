@@ -1702,7 +1702,7 @@ namespace TritonTranslator.Arch.X86
                                 OperandWrapper dst,
                                 bool vol = false)
         {
-
+            return;
             var low = vol ? 0 : dst.Low;
             var high = vol ? BitSizes.Byte - 1 : low == 0 ? BitSizes.Byte - 1 : BitSizes.Word - 1;
 
@@ -1738,7 +1738,7 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var low = vol ? 0 : dst.Low;
             var high = vol ? BitSizes.Byte - 1 : low == 0 ? BitSizes.Byte - 1 : BitSizes.Word - 1;
@@ -5439,6 +5439,8 @@ namespace TritonTranslator.Arch.X86
 
         void lea_s(Instruction inst)
         {
+            mov_s(inst);
+            return;
             var dst = inst.Operands[0].Register;
             var srcDisp = inst.Operands[1].MemoryAccess.Displacement;
             var srcBase = inst.Operands[1].MemoryAccess.BaseRegister;
