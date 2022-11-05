@@ -12,9 +12,9 @@ namespace TritonTranslator.Intermediate
         public AbstractInstTernary(IOperand destination, IOperand op1, IOperand op2, IOperand op3)
         {
             Dest = destination;
-            Op1 = op1;
-            Op2 = op2;
-            Op3 = op3;
+            Operands.Add(op1);
+            Operands.Add(op2);
+            Operands.Add(op3);
             Initialize();
         }
 

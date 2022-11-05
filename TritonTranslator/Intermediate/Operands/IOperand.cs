@@ -21,5 +21,10 @@ namespace TritonTranslator.Intermediate.Operands
         /// (e.g. registers and temporaries are writable, whereas immediates are not).
         /// </summary>
         public bool IsWritable { get; }
+
+        /// <summary>
+        /// Gets the operand name.
+        /// </summary>
+        public string Name { get; }
     }
 }

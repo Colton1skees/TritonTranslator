@@ -21,7 +21,7 @@ namespace TritonTranslator.Ast
 
         public override string GetOperator()
         {
-            return string.Format("Int(0x{0}", Value.ToString("X"));
+            return string.Format("Int(0x{0})", Value.ToString("X"));
         }
     }
 }

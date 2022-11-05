@@ -19,7 +19,7 @@ namespace TritonTranslator.Intermediate
 
         public IOperand InputOperand
         {
-            get => (ImmediateOperand)Op2;
+            get => Op2;
             set => Op2 = value;
         }
 
@@ -31,7 +31,7 @@ namespace TritonTranslator.Intermediate
         public override uint ComputeBitvecSize()
         {
             var childSize = InputOperand.Bitsize;
-            var sizeExt = Size.Immediate.Value;
+            var sizeExt = Size.Value;
             return (uint)sizeExt + childSize;
         }
     }

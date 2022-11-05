@@ -23,7 +23,7 @@ namespace TritonTranslator.Intermediate
         {
             var high = (ImmediateOperand)Op1;
             var low = (ImmediateOperand)Op2;
-            return (uint)(high.Immediate.Value - low.Immediate.Value) + 1;
+            return (uint)(high.Value - low.Value) + 1;
         }
     }
 }

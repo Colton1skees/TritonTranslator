@@ -1,5 +1,6 @@
 ﻿using TritonTranslator.Arch;
 using TritonTranslator.Arch.X86;
+using TritonTranslator.Conversion;
 
 // Initialize data to disassemble.
 const ulong exampleCodeRIP = 0x00007FFAC46ACDA4;
@@ -25,19 +26,34 @@ var arch = new X86CpuArchitecture(ArchitectureId.ARCH_X86_64);
 var lifter = new X86Translator(arch);
 
 // Traverse all disassembled instructions.
+bool printAst = false;
 foreach(var instruction in instructions)
 {
-    Console.WriteLine("{0}:", instruction);
+    Console.WriteLine("Instruction {0}:", instruction);
 
     // Lift the instruction to our intermediate representation.
     var liftedInstruction = arch.Disassembly(instruction);
     var symbolicExpression = lifter.TranslateInstruction(liftedInstruction);
 
+    var converter = new AstToIntermediateConverter();
+
     // Dump all lifted expressions.
     foreach (var expr in symbolicExpression)
     {
-        Console.WriteLine("{0} = {1}", expr.Destination == null ? "NIL" : expr.Destination, expr.Source);
-        Console.WriteLine("");
+        // Print the AST form.
+        if (printAst)
+        {
+            Console.WriteLine("AST form:");
+            Console.WriteLine("    {0} = {1}", expr.Destination == null ? "NIL" : expr.Destination, expr.Source);
+            Console.WriteLine("");
+        }
+
+        Console.WriteLine("Flat IR form:");
+        var converts = converter.ConvertFromSymbolicExpression(expr);
+        foreach (var convert in converts)
+        {
+            Console.WriteLine("    " + convert);
+        }
     }
 
     Console.WriteLine("------------------------");

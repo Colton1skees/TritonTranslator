@@ -50,6 +50,10 @@ namespace TritonTranslator.Arch
 
         public Register GetRegister(string name);
 
+        public Register GetRootParentRegister(register_e id);
+
+        public Register GetRootParentRegister(Register reg);
+
         public Register GetParentRegister(register_e id);
 
         public Register GetParentRegister(Register reg);

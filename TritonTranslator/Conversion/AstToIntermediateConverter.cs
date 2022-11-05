@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TritonTranslator.Ast;
+using TritonTranslator.Expression;
 using TritonTranslator.Intermediate;
 using TritonTranslator.Intermediate.Operands;
 
@@ -20,7 +21,40 @@ namespace TritonTranslator.Conversion
         // Workaround to avoid hash consing with reference nodes. TODO: Refactor.
         private Dictionary<ReferenceNode, InstCopy> translatedReferences = new Dictionary<ReferenceNode, InstCopy>();
 
-        public IEnumerable<AbstractInst> Convert(AbstractNode node)
+        public IEnumerable<AbstractInst> ConvertFromSymbolicExpression(SymbolicExpression symbolicExpression)
+        {
+            // Create a pure / side effect free 3AC representation.
+            var instructions = (List<AbstractInst>)ConvertFromAst(symbolicExpression.Source);
+
+            // If the symbolic expression does not have a destination, exit.
+            if (symbolicExpression.Destination == null)
+                return instructions;
+
+            // This relies on the assumption that the destination of the last instruction
+            // will always contain the root AST evaluation. In practice, this should always work.
+            // TODO: Refactor.
+            var expressionDestinationNode = symbolicExpression.Destination;
+            if(expressionDestinationNode is RegisterNode regNode)
+            {
+                // Store the AST result to the register destination.
+                var destInst = new InstCopy(new RegisterOperand(regNode.Register), instructions.Last().Dest);
+                instructions.Add(destInst);
+            }
+
+            else if(expressionDestinationNode is MemoryNode memNode)
+            {
+                // Create an instruction sequence to compute the memory address.
+                var destAddress = FromMemory(memNode);
+
+                // Create an instruction to store the AST result to the destination memory address.
+                var destInst = new InstStore(destAddress.Dest, instructions.Last().Dest);
+                instructions.Add(destInst);
+            }
+
+            return instructions;
+        }
+
+        public IEnumerable<AbstractInst> ConvertFromAst(AbstractNode node)
         {
             // Build and create a reference to the list of instructions.
             FromAst(node);
@@ -32,9 +66,9 @@ namespace TritonTranslator.Conversion
             return result;
         }
 
-        public IOperand FromAst(AbstractNode ast)
+        private IOperand FromAst(AbstractNode ast)
         {
-            AbstractInst inst = null;
+           AbstractInst inst = null;
            switch(ast)
            {
                 case BvaddNode node:
@@ -419,9 +453,18 @@ namespace TritonTranslator.Conversion
 
         private InstExtract FromExtract(ExtractNode node)
         {
+            // Create a temporary to store the result.
             var dest = GetTemporary(node.BitSize);
-            var op1 = FromAst(node.Expr1);
-            var op2 = FromAst(node.Expr2);
+
+            // Get the immediate high.
+            var immediate1 = (IntegerNode)node.Expr1;
+            var op1 = new ImmediateOperand(immediate1.Value, immediate1.BitSize);
+
+            // Get the immediate low.
+            var immediate2 = (IntegerNode)node.Expr2;
+            var op2 = new ImmediateOperand(immediate2.Value, immediate2.BitSize);
+
+            // Construct the extract instruction.
             var op3 = FromAst(node.Expr3);
             var inst = new InstExtract(dest, op1, op2, op3);
             return inst;
@@ -482,7 +525,8 @@ namespace TritonTranslator.Conversion
         private InstSx FromSx(SxNode node)
         {
             var dest = GetTemporary(node.BitSize);
-            var op1 = FromAst(node.Expr1);
+            var immediate = (IntegerNode)node.Expr1;
+            var op1 = new ImmediateOperand(immediate.Value, immediate.BitSize);
             var op2 = FromAst(node.Expr2);
             var inst = new InstSx(dest, op1, op2);
             return inst;
@@ -490,18 +534,19 @@ namespace TritonTranslator.Conversion
 
         private InstCopy FromUndef(UndefNode node)
         {
-            // Emulate undefined behavior via reading from
-            // an undefined temporary.
+            // Substitute undefined behavior with a
+            // hardcoded constant.
             var dest = GetTemporary(node.BitSize);
-            var op1 = GetTemporary(node.BitSize);
-            var inst = new InstCopy(dest, dest);
+            var op1 = new ImmediateOperand(0, node.BitSize);
+            var inst = new InstCopy(dest, op1);
             return inst;
         }
 
         private InstZx FromZx(ZxNode node)
         {
             var dest = GetTemporary(node.BitSize);
-            var op1 = FromAst(node.Expr1);
+            var immediate = (IntegerNode)node.Expr1;
+            var op1 = new ImmediateOperand(immediate.Value, immediate.BitSize);
             var op2 = FromAst(node.Expr2);
             var inst = new InstZx(dest, op1, op2);
             return inst;

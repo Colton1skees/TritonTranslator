@@ -18,12 +18,17 @@ namespace TritonTranslator.Intermediate.Operands
 
         public bool IsWritable => false;
 
-        public Immediate Immediate { get; }
+        public string Name => String.Format("i{0} 0x{1}", Bitsize, Value.ToString("X"));
 
         public ImmediateOperand(ulong value, uint bitSize)
         {
             Value = value;
             Bitsize = bitSize;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }
