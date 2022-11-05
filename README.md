@@ -9,4 +9,3 @@ TritonTranslator is a standalone static IR translation framework, using semantic
  * [x] AST representation of x86 and x86_64
  * [x] Three address code representation of x86 and x86_64
  * [ ] Symbolic Execution Component
- * [ ] SSA Form
