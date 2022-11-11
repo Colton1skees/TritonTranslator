@@ -76,11 +76,11 @@ namespace TritonTranslator.Expression
         public AbstractNode GetMemoryAst(MemoryAccess access)
         {
 
-            var baseReg = access.BaseRegister;
-            var index = access.IndexRegister;
+            var baseReg = access.BaseRegister == null ? X86Registers.Invalid : access.BaseRegister;
+            var index = access.IndexRegister == null ? X86Registers.Invalid : access.IndexRegister;
             var seg = access.SegmentReg;
-            ulong scaleValue = access.Scale.Value;
-            ulong dispValue = access.Displacement.Value;
+            ulong scaleValue = access.Scale == null ? 1 : access.Scale.Value;
+            ulong dispValue = access.Displacement == null ? 0 : access.Displacement.Value;
             uint bitSize = (architecture.IsRegisterValid(baseReg) ? baseReg.BitSize :
                                                   (architecture.IsRegisterValid(index) ? index.BitSize :
                                                     (access.Displacement.BitSize > 0 ? access.Displacement.BitSize :

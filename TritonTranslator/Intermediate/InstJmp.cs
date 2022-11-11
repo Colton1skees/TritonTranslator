@@ -7,9 +7,9 @@ using TritonTranslator.Intermediate.Operands;
 
 namespace TritonTranslator.Intermediate
 {
-    public class InstBranch : AbstractInstBinary
+    public class InstJmp : AbstractInstBinary
     {
-        public override InstructionId Id => InstructionId.Branch;
+        public override InstructionId Id => InstructionId.Jmp;
 
         public ImmediateOperand JumpDestination
         {
@@ -19,7 +19,7 @@ namespace TritonTranslator.Intermediate
 
         public override bool HasDestination => false;
 
-        public InstBranch(IOperand destination, IOperand op1) : base(destination, op1)
+        public InstJmp(IOperand op1) : base(null, op1)
         {
             if (op1 is not ImmediateOperand)
                 throw new InvalidOperationException(String.Format("Instruction {0} expects an immediate branch destination.", Id));

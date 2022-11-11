@@ -46,6 +46,11 @@ namespace TritonTranslator.Arch.X86
             return X86Registers.RegisterNameMapping[name];
         }
 
+        public IEnumerable<Register> GetRegisters()
+        {
+            return X86Registers.RegisterMapping.Select(x => x.Value);
+        }
+
         public Register GetRootParentRegister(register_e regId)
         {
             while (true)
@@ -140,6 +145,11 @@ namespace TritonTranslator.Arch.X86
                 {
                     var reg = IcedRegisterToTritonRegister(instruction.GetOpRegister(i));
                     inst.Operands.Add(reg);
+                }
+
+                else if(opKind.IsBranchOpKind())
+                {
+                    inst.Operands.Add(new OperandWrapper(new Immediate((ulong)instruction.GetBranchTarget(opKind), opKind.GetBranchSize())));
                 }
 
                 else

@@ -221,6 +221,12 @@ namespace TritonTranslator.Ast
         /// Register
         /// </summary>
         REGISTER = 244,
+
+        ZERO = 245,
+        CARRY = 246,
+        OVERFLOW = 247,
+        SIGN = 248,
+        PARITY = 249,
     }
 
     public abstract class AbstractNode

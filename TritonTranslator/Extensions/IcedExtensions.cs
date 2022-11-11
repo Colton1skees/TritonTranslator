@@ -21,11 +21,6 @@ namespace TritonTranslator.Extensions
             OpKind.Immediate8to32,
             OpKind.Immediate8to64,
             OpKind.Immediate8_2nd,
-            OpKind.FarBranch16,
-            OpKind.FarBranch32,
-            OpKind.NearBranch16,
-            OpKind.NearBranch32,
-            OpKind.NearBranch64,
         };
 
         private static HashSet<OpKind> explicitImmediateKinds = new HashSet<OpKind>()
@@ -107,11 +102,6 @@ namespace TritonTranslator.Extensions
                 case OpKind.Immediate8to32:
                 case OpKind.Immediate8to64:
                 case OpKind.Immediate8_2nd:
-                case OpKind.FarBranch16:
-                case OpKind.FarBranch32:
-                case OpKind.NearBranch16:
-                case OpKind.NearBranch32:
-                case OpKind.NearBranch64:
                     return true;
 
                 default:
@@ -119,6 +109,23 @@ namespace TritonTranslator.Extensions
 
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsBranchOpKind(this OpKind kind)
+        {
+            switch (kind)
+            {
+                case OpKind.FarBranch16:
+                case OpKind.FarBranch32:
+                case OpKind.NearBranch16:
+                case OpKind.NearBranch32:
+                case OpKind.NearBranch64:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static bool IsExplicitImmediate(this OpKind kind)
         {
             return explicitImmediateKinds.Contains(kind);
@@ -150,12 +157,6 @@ namespace TritonTranslator.Extensions
         {
             switch(kind)
             {
-                case OpKind.NearBranch16:
-                    return 2;
-                case OpKind.NearBranch32:
-                    return 4;
-                case OpKind.NearBranch64:
-                    return 8;
                 case OpKind.FarBranch16:
                     return 2;
                 case OpKind.FarBranch32:
@@ -183,5 +184,44 @@ namespace TritonTranslator.Extensions
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint GetBranchSize(this OpKind kind)
+        {
+            switch (kind)
+            {
+                case OpKind.FarBranch16:
+                    return 2;
+                case OpKind.FarBranch32:
+                    return 4;
+                case OpKind.NearBranch16:
+                    return 2;
+                case OpKind.NearBranch32:
+                    return 4;
+                case OpKind.NearBranch64:
+                    return 8;
+                default:
+                    throw new InvalidOperationException(String.Format("Operand {0} is not a branch.", kind));
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong GetBranchTarget(this Instruction instruction, OpKind kind)
+        {
+            switch (kind)
+            {
+                case OpKind.FarBranch16:
+                    return instruction.FarBranch16;
+                case OpKind.FarBranch32:
+                    return instruction.FarBranch32;
+                case OpKind.NearBranch16:
+                    return instruction.NearBranch16;
+                case OpKind.NearBranch32:
+                    return instruction.NearBranch32;
+                case OpKind.NearBranch64:
+                    return instruction.NearBranch64;
+                default:
+                    throw new InvalidOperationException(String.Format("Operand {0} is not a branch.", kind));
+            }
+        }
     }
 }

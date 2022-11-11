@@ -31,6 +31,13 @@ namespace TritonTranslator.Intermediate
         Udiv,
         Urem,
 
+        Zero,
+        Carry,
+        Overflow,
+        Sign,
+        Parity,
+
+
         Zx,
         Sx,
 
@@ -42,8 +49,10 @@ namespace TritonTranslator.Intermediate
 
         Load,
         Store,
-        Branch,
-        BranchIndirect,
+        Jmp,
+        Jcc,
+        JmpInd,
+        Ret,
     }
 
     public abstract class AbstractInst
@@ -108,7 +117,7 @@ namespace TritonTranslator.Intermediate
 
         }
 
-        public string GetOperator()
+        public virtual string GetOperator()
         {
             return Id.ToString().ToLower();
         }

@@ -65,7 +65,7 @@ namespace TritonTranslator.Ast
 
         public AbstractNode bvtrue() => new BvNode(1, 1);
 
-        public AbstractNode bvfalse() => new BvNode(1, 0);
+        public AbstractNode bvfalse() => new BvNode(0, 1);
 
         public AbstractNode bvmul(AbstractNode expr1, AbstractNode expr2) => new BvmulNode(expr1, expr2);
 

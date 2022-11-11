@@ -35,5 +35,10 @@ namespace TritonTranslator.Intermediate
         {
             return 1;
         }
+
+        public override string GetOperator()
+        {
+            return CondType.ToString();
+        }
     }
 }

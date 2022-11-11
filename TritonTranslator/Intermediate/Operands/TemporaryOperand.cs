@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TritonTranslator.Intermediate.Operands
 {
-    public class TemporaryOperand : IOperand
+    public class TemporaryOperand : IOperand, IEquatable<TemporaryOperand>
     {
         public uint Bitsize { get; }
 
@@ -25,6 +25,30 @@ namespace TritonTranslator.Intermediate.Operands
         public override string ToString()
         {
             return Name;
+        }
+
+        public override bool Equals(object obj) => Equals(obj as TemporaryOperand);
+
+        public bool Equals(TemporaryOperand op)
+        {
+            if (op is null)
+                return false;
+
+            if (Object.ReferenceEquals(this, op))
+                return true;
+
+            if (GetType() != op.GetType())
+                return false;
+
+            if (op.Bitsize != Bitsize)
+                throw new InvalidOperationException("Temporary bit sizes do not match.");
+
+            return op.Uid == Uid;
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)Uid;
         }
     }
 }

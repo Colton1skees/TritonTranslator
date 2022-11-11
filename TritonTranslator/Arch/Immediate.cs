@@ -28,13 +28,13 @@ namespace TritonTranslator.Arch
 
         public Immediate(ulong value, uint size)
         {
+            if (size == 256)
+                throw new Exception();
             Value = value;
             if (size == 0)
                 throw new Exception("Immediate size must be greater than zero..");
             else if (size > ByteSizes.MaxSupported)
                 throw new Exception(String.Format("Immediate size {0} is greater than max size of {1}", size, ByteSizes.MaxSupported));
-            else if (size % 8 != 0)
-                throw new Exception(String.Format("Immediate size {0} is not divisble by 8.", size));
 
             // Update the bit vector high / low.
             SetBits((size * BitSizes.Byte) - 1, 0);

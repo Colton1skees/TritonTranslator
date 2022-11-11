@@ -44,7 +44,7 @@ namespace TritonTranslator.Conversion
             else if(expressionDestinationNode is MemoryNode memNode)
             {
                 // Create an instruction sequence to compute the memory address.
-                var destAddress = FromMemory(memNode);
+                var destAddress = FromMemoryStore(memNode);
 
                 // Create an instruction to store the AST result to the destination memory address.
                 var destInst = new InstStore(destAddress.Dest, instructions.Last().Dest);
@@ -168,7 +168,7 @@ namespace TritonTranslator.Conversion
                     inst = FromIte(node);
                     break;
                 case MemoryNode node:
-                    inst = FromMemory(node);
+                    inst = FromMemoryLoad(node);
                     break;
                 case ReferenceNode node:
                     inst = FromReference(node);
@@ -184,6 +184,21 @@ namespace TritonTranslator.Conversion
                     break;
                 case ZxNode node:
                     inst = FromZx(node);
+                    break;
+                case ZeroNode node:
+                    inst = FromZero(node);
+                    break;
+                case CarryNode node:
+                    inst = FromCarry(node);
+                    break;
+                case OverflowNode node:
+                    inst = FromOverflow(node);
+                    break;
+                case SignNode node:
+                    inst = FromSign(node);
+                    break;
+                case ParityNode node:
+                    inst = FromParity(node);
                     break;
                 default:
                     throw new InvalidOperationException(String.Format("Node type {0} is not supported.", ast.Type));
@@ -488,7 +503,17 @@ namespace TritonTranslator.Conversion
             return inst;
         }
 
-        private InstCopy FromMemory(MemoryNode node)
+        private InstLoad FromMemoryLoad(MemoryNode node)
+        {
+            // ASTs have no concept of destinations, so we can't load or store.
+            // Instead, we move the address computation expression to a temporary. 
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstLoad(dest, op1, new ImmediateOperand(node.BitSize, node.BitSize));
+            return inst;
+        }
+
+        private InstCopy FromMemoryStore(MemoryNode node)
         {
             // ASTs have no concept of destinations, so we can't load or store.
             // Instead, we move the address computation expression to a temporary. 
@@ -549,6 +574,46 @@ namespace TritonTranslator.Conversion
             var op1 = new ImmediateOperand(immediate.Value, immediate.BitSize);
             var op2 = FromAst(node.Expr2);
             var inst = new InstZx(dest, op1, op2);
+            return inst;
+        }
+
+        private InstZero FromZero(ZeroNode node)
+        {
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstZero(dest, op1);
+            return inst;
+        }
+
+        private InstCarry FromCarry(CarryNode node)
+        {
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstCarry(dest, op1);
+            return inst;
+        }
+
+        private InstOverflow FromOverflow(OverflowNode node)
+        {
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstOverflow(dest, op1);
+            return inst;
+        }
+
+        private InstSign FromSign(SignNode node)
+        {
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstSign(dest, op1);
+            return inst;
+        }
+
+        private InstParity FromParity(ParityNode node)
+        {
+            var dest = GetTemporary(node.BitSize);
+            var op1 = FromAst(node.Expr1);
+            var inst = new InstParity(dest, op1);
             return inst;
         }
 

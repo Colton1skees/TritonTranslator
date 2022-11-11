@@ -7,13 +7,13 @@ using TritonTranslator.Intermediate.Operands;
 
 namespace TritonTranslator.Intermediate
 {
-    public class InstBranchIndirect : AbstractInstBinary
+    public class InstJmpInd : AbstractInstBinary
     {
-        public override InstructionId Id => InstructionId.BranchIndirect;
+        public override InstructionId Id => InstructionId.JmpInd;
 
         public override bool HasDestination => false;
 
-        public InstBranchIndirect(IOperand destination, IOperand op1) : base(destination, op1)
+        public InstJmpInd(IOperand destination, IOperand op1) : base(destination, op1)
         {
 
         }

@@ -18,7 +18,7 @@ namespace TritonTranslator.Expression
             Source = source;
             Destination = destination;
 
-            if(Source.BitSize != Destination.BitSize)
+            if(Destination != null && Source.BitSize != Destination.BitSize)
             {
                 var errMsg = String.Format("Expression source size {0} does not match destination {1}.", source.BitSize, destination.BitSize);
                 throw new InvalidOperationException(errMsg);

@@ -5438,9 +5438,7 @@ namespace TritonTranslator.Arch.X86
 
 
         void lea_s(Instruction inst)
-        {
-            mov_s(inst);
-            return;
+        {;
             var dst = inst.Operands[0].Register;
             var srcDisp = inst.Operands[1].MemoryAccess.Displacement;
             var srcBase = inst.Operands[1].MemoryAccess.BaseRegister;

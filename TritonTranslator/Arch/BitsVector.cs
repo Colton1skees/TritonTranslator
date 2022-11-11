@@ -20,6 +20,8 @@ namespace TritonTranslator.Arch
             get => high;
             set
             {
+                if ((value == 255 || value == 256) && this is not Register)
+                    throw new Exception();
                 high = value;
                 if (high > BitSizes.MaxSupported)
                 {

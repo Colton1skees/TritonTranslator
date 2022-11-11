@@ -19,7 +19,7 @@ namespace TritonTranslator.Intermediate
 
         public IOperand InputOperand
         {
-            get => (ImmediateOperand)Op2;
+            get => Op2;
             set => Op2 = value;
         }
 
