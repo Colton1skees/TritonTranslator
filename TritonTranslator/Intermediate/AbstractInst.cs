@@ -49,6 +49,7 @@ namespace TritonTranslator.Intermediate
 
         Load,
         Store,
+        Phi,
         Jmp,
         Jcc,
         JmpInd,
@@ -84,6 +85,8 @@ namespace TritonTranslator.Intermediate
         public IOperand Dest { get; set; }
 
         public virtual bool HasDestination => true;
+
+        public List<AbstractInst> Uses = new List<AbstractInst>();
 
         public AbstractInst()
         {

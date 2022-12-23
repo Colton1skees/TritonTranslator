@@ -9,7 +9,7 @@ namespace TritonTranslator.Intermediate
 {
     public class InstSx : AbstractInstUnary
     {
-        public override InstructionId Id => InstructionId.Zx;
+        public override InstructionId Id => InstructionId.Sx;
 
         public ImmediateOperand Size
         {

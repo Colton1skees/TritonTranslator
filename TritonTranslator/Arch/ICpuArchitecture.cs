@@ -42,9 +42,13 @@ namespace TritonTranslator.Arch
 
         public uint GprSize { get; }
 
+        public bool IsRegisterValid(Register register);
+
         public bool IsRegisterValid(register_e register);
 
-        public bool IsRegisterValid(Register register);
+        public bool IsFlagRegister(Register register);
+
+        public bool IsFlagRegister(register_e register);
 
         public Register GetRegister(register_e id);
 

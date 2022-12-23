@@ -10,6 +10,18 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.SX;
 
+        public IntegerNode SizeExt
+        {
+            get => (IntegerNode)Children[0];
+            set => Children[0] = value;
+        }
+
+        public AbstractNode Source
+        {
+            get => (IntegerNode)Children[1];
+            set => Children[1] = value;
+        }
+
         public SxNode(uint sizeExt, AbstractNode expr) : base(new IntegerNode(sizeExt, expr.BitvectorSize), expr)
         {
 

@@ -36,6 +36,37 @@ namespace TritonTranslator.Arch.X86
             return IsRegisterValid(register.Id);
         }
 
+        public bool IsFlagRegister(Register register)
+        {
+            return IsFlagRegister(register.Id);
+        }
+
+        public bool IsFlagRegister(register_e register)
+        {
+            switch(register)
+            {
+                case register_e.ID_REG_X86_CF:
+                case register_e.ID_REG_X86_PF:
+                case register_e.ID_REG_X86_AF:
+                case register_e.ID_REG_X86_ZF:
+                case register_e.ID_REG_X86_SF:
+                case register_e.ID_REG_X86_TF:
+                case register_e.ID_REG_X86_IF:
+                case register_e.ID_REG_X86_DF:
+                case register_e.ID_REG_X86_OF:
+                case register_e.ID_REG_X86_NT:
+                case register_e.ID_REG_X86_RF:
+                case register_e.ID_REG_X86_VM:
+                case register_e.ID_REG_X86_AC:
+                case register_e.ID_REG_X86_VIF:
+                case register_e.ID_REG_X86_VIP:
+                case register_e.ID_REG_X86_ID:
+                    return true;
+            }
+
+            return false;
+        }
+
         public Register GetRegister(register_e id)
         {
             return X86Registers.RegisterMapping[id];

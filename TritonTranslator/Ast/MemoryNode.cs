@@ -16,14 +16,20 @@ namespace TritonTranslator.Ast
         public MemoryNode(AbstractNode addressNode, uint size) : base(addressNode)
         {
             BitvectorSize = size;
+            
+            /*
             if (addressNode.BitvectorSize != size)
                 throw new InvalidOperationException("Address node & provided size do not match.");
+            */
+
             Initialize();
         }
 
+        
         public override uint ComputeBitvecSize()
         {
-            return Children[0].BitvectorSize;
+            return BitvectorSize;
         }
+        
     }
 }

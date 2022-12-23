@@ -222,11 +222,21 @@ namespace TritonTranslator.Ast
         /// </summary>
         REGISTER = 244,
 
-        ZERO = 245,
-        CARRY = 246,
-        OVERFLOW = 247,
-        SIGN = 248,
-        PARITY = 249,
+        /// <summary>
+        /// Temporary variable
+        /// </summary>
+        TEMPVAR = 245,
+
+        /// <summary>
+        /// SSA version of a variable node
+        /// </summary>
+        SSAVAR = 246,
+
+        ZERO = 247,
+        CARRY = 248,
+        OVERFLOW = 249,
+        SIGN = 250,
+        PARITY = 251,
     }
 
     public abstract class AbstractNode
@@ -318,6 +328,11 @@ namespace TritonTranslator.Ast
             sb.Append(")");
             var result = sb.ToString();
             return result;
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }

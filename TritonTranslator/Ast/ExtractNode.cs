@@ -10,6 +10,24 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.EXTRACT;
 
+        public IntegerNode High
+        {
+            get => (IntegerNode)Children[0];
+            set => Children[0] = value;
+        }
+
+        public IntegerNode Low
+        {
+            get => (IntegerNode)Children[1];
+            set => Children[1] = value;
+        }
+
+        public AbstractNode Source
+        {
+            get => Children[2];
+            set => Children[2] = value;
+        }
+
         public ExtractNode(uint high, uint low, AbstractNode expr) :
             base(new IntegerNode(high, expr.BitvectorSize), new IntegerNode(low, expr.BitvectorSize), expr)
         {
@@ -24,9 +42,7 @@ namespace TritonTranslator.Ast
 
         public override uint ComputeBitvecSize()
         {
-            var high = (IntegerNode)Children[0];
-            var low = (IntegerNode)Children[1];
-            return (uint)(high.Value - low.Value) + 1;
+            return (uint)(High.Value - Low.Value) + 1;
         }
     }
 }

@@ -25,5 +25,12 @@ namespace TritonTranslator.Intermediate
             var low = (ImmediateOperand)Op2;
             return (uint)(high.Value - low.Value) + 1;
         }
+
+        public override string ToString()
+        {
+            var high = (ImmediateOperand)Op1;
+            var low = (ImmediateOperand)Op2;
+            return String.Format("{0}:{1} = extract {2} to {3}, {4}", Dest.ToString(), Dest.Bitsize.ToString(), low.ToString(), high.ToString(), Op3.ToString());
+        }
     }
 }

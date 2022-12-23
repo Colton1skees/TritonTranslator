@@ -26,7 +26,7 @@ namespace TritonTranslator.Intermediate
             if (Op1.Bitsize != 1)
                 throw new InvalidOperationException("Select node op1 bit size must be 1.");
             if (Op2.Bitsize != Op3.Bitsize)
-                throw new InvalidOperationException("Select node operands must have matching sizes.");
+                throw new InvalidOperationException("Select node operands must have matching sizes.");  
         }
     }
 }

@@ -26,7 +26,7 @@ namespace TritonTranslator.Arch.X86
     /// <summary>
     /// Class for building x86 instruction semantics.
     /// </summary>
-    internal class X86Semantics
+    public class X86Semantics
     {
         private readonly ICpuArchitecture architecture;
 
