@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
@@ -16,10 +16,6 @@
   <ItemGroup>
     <PackageReference Include="Iced" Version="1.17.0" />
     <PackageReference Include="LLVMSharp" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Dna.ControlFlow\Dna.ControlFlow.csproj" />
   </ItemGroup>
 
 </Project>
