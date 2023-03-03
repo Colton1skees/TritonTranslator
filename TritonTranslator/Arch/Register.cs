@@ -268,6 +268,20 @@ namespace TritonTranslator.Arch
         /// </summary>
         public OperandType OperandType { get; set; }
 
+        /// <summary>
+        /// Gets whether one register overlaps with another.
+        /// </summary>
+        public bool OverlapsWith(Register other)
+        {
+            if (ParentId != other.ParentId)
+                return false;
+            if (Low <= other.Low && other.Low <= High)
+                return true;
+            if (other.Low <= Low && Low <= other.High)
+                return true;
+            return false;
+        }
+
         public override string ToString()
         {
             return Name;

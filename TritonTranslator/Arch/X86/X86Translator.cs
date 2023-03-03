@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TritonTranslator.Ast;
@@ -24,6 +26,8 @@ namespace TritonTranslator.Arch.X86
         /// <inheritdoc cref="IArchitectureTranslator.TranslateInstruction(Instruction)"/>
         public IEnumerable<SymbolicExpression> TranslateInstruction(Instruction instruction)
         {
+            if (instruction.Address == 0x1400F2948)
+                Debugger.Break();
             // Clear the symbolic expression list beforehand.
             semantics.ExpressionDatabase.SymbolicExpressions.Clear();
 
@@ -111,82 +115,110 @@ namespace TritonTranslator.Arch.X86
             if (destReg.BitSize == 1)
                 return output;
 
-            if (destReg.BitSize == 32)
+            output.AddRange(UpdateAliasingRegisters(destReg.Register, expression));
+
+            return output;
+        }
+
+        /// <summary>
+        /// Gets a set of expressions which update aliasing registers.
+        /// </summary>
+        private List<SymbolicExpression> UpdateAliasingRegisters(Register source, SymbolicExpression expression)
+        {
+            var output = new List<SymbolicExpression>();
+            var sourceRoot = X86Registers.RegisterNodeMapping[architecture.GetRootParentRegister(source).Id];
+            foreach (var regId in X86Registers.RegisterNodeMapping.Keys)
             {
-                // Zero extend the expression to 64 bits.
-                var rootDestination = X86Registers.RegisterNodeMapping[architecture.GetRootParentRegister(destReg.Register).Id];
-                var extSize = rootDestination.BitSize - destReg.BitSize;
-                var zx = new ZxNode(extSize, expression.Destination);
+                // Skip if this is the destination register, since we've already written to it.
+                if (regId == source.Id)
+                    continue;
 
-                // Store a new expression, which writes to the higher portion of the register.
-                // Transforms:
-                //      eax = add t0:32, t1:32
-                // to:
-                //      eax = add t0:32, t1:32
-                //      rax = Zx(eax) to i64
-                output.Add(new SymbolicExpression(zx, rootDestination));
-            }
+                // Skip if this register does not alias with the destination register. 
+                if (architecture.GetRootParentRegister(regId).Id != sourceRoot.Register.Id)
+                    continue;
 
-            else if (destReg.BitSize == 64)
-            {
-                // Truncate the expression to 32 bits.
-                var childDest = X86Registers.RegisterMapping.Single(x => x.Value.ParentId == destReg.Register.Id && x.Value.BitSize == 32);
-                var trunc = new ExtractNode(childDest.Value.BitSize - 1, 0, expression.Destination);
+                // Throw if two aliasing registes have the same size. This is impossible.
+                var aliasingRegister = architecture.GetRegister(regId);
+                var write = WriteToRegister(source, aliasingRegister);
+                if (write != null)
+                    output.Add(write);
 
-                // Store a new expression, which writes to the lower portion of the register.
-                // Transforms:
-                //      rax = add t0:64, t1:64
-                // to:
-                //      rax = add t0:64, t1:64
-                //      eax = extract 0 to 31, rax
-                output.Add(new SymbolicExpression(trunc, X86Registers.RegisterNodeMapping[childDest.Key]));
-            }
-
-            else
-            {
-                throw new InvalidOperationException(String.Format("Cannot alias register {0}", destReg));
             }
 
             return output;
         }
 
 
-        /// <summary>
-        /// For each reference to the lower portion of a register(e.g. EAX),
-        /// replace it with a truncation operation(e.g. Trunc RAX to i32).
-        /// 
-        /// There are some downsides to this approach(i.e. conflated dataflow),
-        /// but I prefer this over trying to preserve alias information in the
-        /// intermediate representation.
-        /// </summary>
-        private void TruncateRegisterAliases(AbstractNode node)
+
+        // Construct an expression for the value of {originalWrittenRegister} which may be legally stored in {newlyUpdatedRegister}.
+        private SymbolicExpression WriteToRegister(Register originalWrittenRegister, Register newlyUpdatedRegister)
         {
-            for (int i = 0; i < node.Children.Count; i++)
+            // If the registers don't overlap(e.g. AL and AX), then do nothing. 
+            if (!originalWrittenRegister.OverlapsWith(newlyUpdatedRegister))
+                return null;
+            
+            // If the registers do overlap, then we need to compute an expression
+            // to update the register, while taking alias information into account.
+            AbstractNode expr = null;
+
+            if(newlyUpdatedRegister.High > originalWrittenRegister.High)
             {
-                var childNode = node.Children[i];
-                if (childNode is RegisterNode registerNode)
+                if (newlyUpdatedRegister.BitSize == 64 && originalWrittenRegister.BitSize == 32)
                 {
-                    node.Children[i] = GetTruncatedParentRegisterExpression(registerNode);
+                    expr = new ZxNode(32, new RegisterNode(originalWrittenRegister));
                 }
 
                 else
                 {
-                    TruncateRegisterAliases(childNode);
+
+                    // If the new register being updated(e.g. eax) starts at a higher point
+                    // than the original register(e.g. ax), then first we need to extract
+                    // out the bits which aren't updated. This would give us the higher 16 bits of eax for example.
+                    expr = new ExtractNode(newlyUpdatedRegister.High, originalWrittenRegister.High + 1, new RegisterNode(newlyUpdatedRegister));
+
+                    // Then we need to concatenate the contents together, such that you have something along the lines of
+                    // Concat(eax[31..15], ax).
+                    expr = new ConcatNode(expr, new RegisterNode(originalWrittenRegister));
+
+                    if (originalWrittenRegister.Low != 0)
+                        expr = new ConcatNode(expr, new ExtractNode(originalWrittenRegister.Low - 1, 0, new RegisterNode(newlyUpdatedRegister)));
                 }
             }
+
+            // If the new register being updated(e.g. ax) starts at a lower point than
+            // the original register, then we need to truncate.
+            else if(newlyUpdatedRegister.High < originalWrittenRegister.High)
+            {
+                // If the new register being updated(e.g. ax) has a high bit index than the original
+                // register being updated(e.g.) eax, then transform this such that we have extract(ax.Start, ax.End, eax).
+                expr = new ExtractNode(newlyUpdatedRegister.High, newlyUpdatedRegister.Low, new RegisterNode(originalWrittenRegister));
+            }
+
+            else 
+            {
+                if (IsHigh8Bits(newlyUpdatedRegister.Id))
+                {
+                    expr = new ExtractNode(newlyUpdatedRegister.High, newlyUpdatedRegister.Low, new RegisterNode(originalWrittenRegister));
+                }
+
+                else if (IsHigh8Bits(originalWrittenRegister.Id))
+                {
+                    expr = new ExtractNode(originalWrittenRegister.High, originalWrittenRegister.Low, new RegisterNode(originalWrittenRegister));
+
+                    expr = new ConcatNode(expr, new ExtractNode(originalWrittenRegister.Low - 1, 0, new RegisterNode(newlyUpdatedRegister)));
+                }
+
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+
+            return new SymbolicExpression(expr, new RegisterNode(newlyUpdatedRegister)); 
         }
 
-        private AbstractNode GetTruncatedParentRegisterExpression(RegisterNode registerNode)
-        {
-            // Get the root parent of the input register(i.e. ax becomes RAX).
-            var rootParent = X86Registers.RegisterNodeMapping[architecture.GetRootParentRegister(registerNode.Register).Id];
 
-            // If the input register node is already the root parent, then return an unmodified expression.
-            if (rootParent.Register.Id == registerNode.Register.Id)
-                return registerNode;
-
-            // Return an expression that extracts the lower register portion from the input.
-            return new ExtractNode(registerNode.BitSize - 1, 0, rootParent);
-        }
+        private bool IsHigh8Bits(register_e regId)
+            => regId == register_e.ID_REG_X86_AH || regId == register_e.ID_REG_X86_BH || regId == register_e.ID_REG_X86_CH || regId == register_e.ID_REG_X86_DH;
     }
 }

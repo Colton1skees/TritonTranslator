@@ -412,9 +412,8 @@ namespace TritonTranslator.Arch.X86
             /* Create symbolic expression */
             var expr = this.ExpressionDatabase.StoreSymbolicAssignment(inst, node, dst, "Stack alignment");
 
-
             /* Return the new stack value */
-            return node;
+            return op1;
         }
 
 
@@ -432,9 +431,12 @@ namespace TritonTranslator.Arch.X86
             /* Create symbolic expression */
             var expr = this.ExpressionDatabase.StoreSymbolicAssignment(inst, node, dst, "Stack alignment");
 
-
-            /* Return the new stack value */
-            return node;
+            // Note(Colton): In Triton, they return a concrete evaluation of the stack pointer from this function.
+            // However, since we introduce symbolic memory, and the above method call stores an update to the stack pointer,
+            // we want to return an abstract node containing only RegisterNode(RSP).
+            // This is extremely confusing, but without this change on our part, the RSP register will be decremented twice,
+            // causing the translation to be incorrect.
+            return op1;
         }
 
 

@@ -14,6 +14,18 @@ namespace TritonTranslator.Intermediate
 
         public override bool HasDestination => false;
 
+        public ImmediateOperand ThenOp
+        {
+            get => (ImmediateOperand)Op2;
+            set => Op2 = value;
+        }
+
+        public ImmediateOperand ElseOp
+        {
+            get => (ImmediateOperand)Op3;
+            set => Op3 = value;
+        }
+
         public InstJcc(IOperand op1, IOperand op2, IOperand op3) : base(null, op1, op2, op3)
         {
 

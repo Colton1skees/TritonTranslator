@@ -43,11 +43,15 @@ namespace TritonTranslator.Conversion
 
             else if(expressionDestinationNode is MemoryNode memNode)
             {
+                var destValue = instructions.Last().Dest;
+
                 // Create an instruction sequence to compute the memory address.
-                var destAddress = FromMemoryStore(memNode);
+                var memoryInstructions = (List<AbstractInst>)ConvertFromAst(memNode.Expr1);
+                instructions.AddRange(memoryInstructions);
+                var op1 = instructions.Last().Dest;
 
                 // Create an instruction to store the AST result to the destination memory address.
-                var destInst = new InstStore(destAddress.Dest, instructions.Last().Dest);
+                var destInst = new InstStore(instructions.Last().Dest, destValue);
                 instructions.Add(destInst);
             }
 
@@ -508,18 +512,9 @@ namespace TritonTranslator.Conversion
             // ASTs have no concept of destinations, so we can't load or store.
             // Instead, we move the address computation expression to a temporary. 
             var dest = GetTemporary(node.BitSize);
-            var op1 = FromAst(node.Expr1);
-            var inst = new InstLoad(dest, op1, new ImmediateOperand(node.BitSize, node.BitSize));
-            return inst;
-        }
-
-        private InstCopy FromMemoryStore(MemoryNode node)
-        {
-            // ASTs have no concept of destinations, so we can't load or store.
-            // Instead, we move the address computation expression to a temporary. 
-            var dest = GetTemporary(node.BitSize);
-            var op1 = FromAst(node.Expr1);
-            var inst = new InstCopy(dest, op1);
+            var addressOperand = FromAst(node.Expr1);
+            var sizeOperand = new ImmediateOperand(node.BitSize, addressOperand.Bitsize);
+            var inst = new InstLoad(dest, addressOperand, sizeOperand);
             return inst;
         }
 

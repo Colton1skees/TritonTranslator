@@ -106,6 +106,8 @@ namespace TritonTranslator.Intermediate
 
             ValidateOperandSizes();
 
+            ValidateDestination();
+
             if (Operands == null)
                 Operands = new List<IOperand>();
         }
@@ -118,6 +120,15 @@ namespace TritonTranslator.Intermediate
         protected virtual void ValidateOperandSizes()
         {
 
+        }
+
+        protected virtual void ValidateDestination()
+        {
+            if (!HasDestination)
+                return;
+
+            if (Dest.Bitsize != Bitsize)
+                throw new Exception("Operand bit sizes must match.");
         }
 
         public virtual string GetOperator()
