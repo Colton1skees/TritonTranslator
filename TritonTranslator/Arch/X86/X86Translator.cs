@@ -26,8 +26,12 @@ namespace TritonTranslator.Arch.X86
         /// <inheritdoc cref="IArchitectureTranslator.TranslateInstruction(Instruction)"/>
         public IEnumerable<SymbolicExpression> TranslateInstruction(Instruction instruction)
         {
-            if (instruction.Address == 0x1400F2948)
+            // Note: This is a goto place to start debugging when translation is incorrect : )
+            bool debugging = false;
+            if (debugging && instruction.Address == 0x1400F2948)
                 Debugger.Break();
+            
+
             // Clear the symbolic expression list beforehand.
             semantics.ExpressionDatabase.SymbolicExpressions.Clear();
 

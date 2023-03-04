@@ -148,7 +148,7 @@ namespace TritonTranslator.Arch.X86
                     mem.SetBits((uint)(size * BitSizes.Byte) - 1, 0);
 
                     // TODO: Revisit and properly handle segmentation.
-                    var segment = true ? X86Registers.Invalid :(IcedRegisterToTritonRegister(instruction.MemorySegment));
+                    var segment = instruction.MemorySegment != Iced.Intel.Register.None ? (IcedRegisterToTritonRegister(instruction.MemorySegment)) : X86Registers.Invalid;
                     var baseReg = IcedRegisterToTritonRegister(instruction.MemoryBase);
                     var index = IcedRegisterToTritonRegister(instruction.MemoryIndex);
 

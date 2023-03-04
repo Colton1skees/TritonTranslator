@@ -91,9 +91,14 @@ namespace TritonTranslator.Expression
 
             // TODO: Handle segmentation and LEAs.
             AbstractNode address = null;
-            if(baseReg.Id != register_e.ID_REG_INVALID)
+            if (baseReg.Id != register_e.ID_REG_INVALID)
                 address = new RegisterNode(baseReg);
+            else if (seg != null && architecture.IsRegisterValid(seg))
+                address = new RegisterNode(seg);
+            else
+                throw new InvalidOperationException("Cannot process memory access.");
 
+            
             if(index.Id != register_e.ID_REG_INVALID)
             {
                 var offset = scaleValue == 1 ? new RegisterNode(index) : astCtxt.bvmul(astCtxt.bv(scaleValue, bitSize), new RegisterNode(index));
