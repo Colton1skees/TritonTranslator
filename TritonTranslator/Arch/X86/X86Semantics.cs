@@ -1704,7 +1704,6 @@ namespace TritonTranslator.Arch.X86
                                 OperandWrapper dst,
                                 bool vol = false)
         {
-            return;
             var low = vol ? 0 : dst.Low;
             var high = vol ? BitSizes.Byte - 1 : low == 0 ? BitSizes.Byte - 1 : BitSizes.Word - 1;
 

@@ -330,6 +330,18 @@ namespace TritonTranslator.Ast
             return result;
         }
 
+        public override bool Equals(object? obj)
+        {
+            if (obj == null)
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj is not AbstractNode)
+                return false;
+
+            return GetHashCode() == obj.GetHashCode();
+        }
+
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
