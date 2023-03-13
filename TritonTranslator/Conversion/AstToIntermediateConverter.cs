@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TritonTranslator.Arch;
 using TritonTranslator.Ast;
 using TritonTranslator.Expression;
 using TritonTranslator.Intermediate;
@@ -12,14 +14,18 @@ namespace TritonTranslator.Conversion
 {
     public class AstToIntermediateConverter : IAstToIntermediateConverter
     {
-        // The number of generated temporaries.
-        private uint temporaryCount = 0;
+        private readonly ICpuArchitecture architecture;
 
         // A list of all generated instructions.
-        private List<AbstractInst> instructions = new List<AbstractInst>();
+        private List<AbstractInst> instructions = new();
 
         // Workaround to avoid hash consing with reference nodes. TODO: Refactor.
-        private Dictionary<ReferenceNode, InstCopy> translatedReferences = new Dictionary<ReferenceNode, InstCopy>();
+        private Dictionary<ReferenceNode, InstCopy> translatedReferences = new();
+
+        public AstToIntermediateConverter(ICpuArchitecture architecture)
+        {
+            this.architecture = architecture;
+        }
 
         public IEnumerable<AbstractInst> ConvertFromSymbolicExpression(SymbolicExpression symbolicExpression)
         {
@@ -41,6 +47,13 @@ namespace TritonTranslator.Conversion
                 instructions.Add(destInst);
             }
 
+            else if(expressionDestinationNode is TemporaryNode tempNode)
+            {
+                // Store the AST result to the register destination.
+                var destInst = new InstCopy(new TemporaryOperand(tempNode.Uid, tempNode.BitSize), instructions.Last().Dest);
+                instructions.Add(destInst);
+            }
+
             else if(expressionDestinationNode is MemoryNode memNode)
             {
                 var destValue = instructions.Last().Dest;
@@ -53,6 +66,11 @@ namespace TritonTranslator.Conversion
                 // Create an instruction to store the AST result to the destination memory address.
                 var destInst = new InstStore(instructions.Last().Dest, destValue);
                 instructions.Add(destInst);
+            }
+
+            else
+            {
+                throw new InvalidOperationException($"Node type of {expressionDestinationNode.GetType().Name} is not a supported destination node type.");
             }
 
             return instructions;
@@ -203,6 +221,9 @@ namespace TritonTranslator.Conversion
                     break;
                 case ParityNode node:
                     inst = FromParity(node);
+                    break;
+                case TemporaryNode node:
+                    inst = FromTemporary(node);
                     break;
                 default:
                     throw new InvalidOperationException(String.Format("Node type {0} is not supported.", ast.Type));
@@ -542,6 +563,16 @@ namespace TritonTranslator.Conversion
             return inst;
         }
 
+        private InstCopy FromTemporary(TemporaryNode node)
+        {
+            if (node.Uid.ToString().StartsWith("t16"))
+                Debugger.Break();
+            var dest = GetTemporary(node.BitSize);
+            var op1 = new TemporaryOperand(node.Uid, node.BitSize);
+            var inst = new InstCopy(dest, op1);
+            return inst;
+        }
+
         private InstSx FromSx(SxNode node)
         {
             var dest = GetTemporary(node.BitSize);
@@ -614,8 +645,7 @@ namespace TritonTranslator.Conversion
 
         private TemporaryOperand GetTemporary(uint bitSize)
         {
-            var temp = new TemporaryOperand(temporaryCount, bitSize);
-            temporaryCount++;
+            var temp = new TemporaryOperand(architecture.GetUniqueTemporaryId(), bitSize);
             return temp;
         }
     }

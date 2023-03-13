@@ -46,6 +46,8 @@ namespace TritonTranslator.Arch.X86
 
         public void ConditionalUndefine(Instruction inst, Register reg, AbstractNode condition)
         {
+            // TODO: Stop doing this.
+            return;
             // Conditionally undefine the register.
             var condExpr = astCtxt.ite(condition, astCtxt.undef(reg.BitSize), astBuilder.GetRegisterAst(reg));
 
@@ -392,7 +394,7 @@ namespace TritonTranslator.Arch.X86
                 case Iced.Intel.Mnemonic.Xorpd: this.xorpd_s(inst); break;
                 case Iced.Intel.Mnemonic.Xorps: this.xorps_s(inst); break;
                 default:
-                    return false;
+                    throw new InvalidOperationException($"Instruction {inst.Type} at address 0x{inst.Address.ToString("X")} is not supported.");
             }
             return true;
         }
@@ -1123,7 +1125,6 @@ namespace TritonTranslator.Arch.X86
 
             /* Create the symbolic expression */
             var expr = this.ExpressionDatabase.StoreSymbolicAssignment(inst, node, cf.Register, "Carry flag");
-
         }
 
 
@@ -1739,7 +1740,6 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
-            return;
             var bvSize = dst.BitSize;
             var low = vol ? 0 : dst.Low;
             var high = vol ? BitSizes.Byte - 1 : low == 0 ? BitSizes.Byte - 1 : BitSizes.Word - 1;
@@ -10865,7 +10865,8 @@ namespace TritonTranslator.Arch.X86
             alignAddStack_s(inst, sp.Size);
 
             /* Create the semantics - side effect */
-            if (inst.Operands.Count() > 0)
+            //if (inst.Operands.Count() > 0)
+            if(false)
             {
                 var offset = inst.Operands[0].Immediate;
                 this.astBuilder.GetImmediateAst(inst, offset);

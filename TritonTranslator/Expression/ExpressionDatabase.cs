@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using TritonTranslator.Arch;
 using TritonTranslator.Ast;
 
@@ -32,39 +31,26 @@ namespace TritonTranslator.Expression
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AbstractNode StoreSymbolicAssignment(Instruction instruction, AbstractNode node, OperandWrapper dst, string comment)
         {
-            var destAst = astBuilder.GetOperandAst(dst);
-            SymbolicExpressions.Add(new SymbolicExpression(node, destAst));
-            return destAst;
-            //return StoreSymbolicAssignment(instruction, node, astBuilder.GetOperandAst(dst), comment);
+            return StoreSymbolicAssignment(instruction, node, astBuilder.GetOperandAst(dst), comment);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AbstractNode StoreSymbolicRegisterAssignment(Instruction inst, AbstractNode node, Register reg, string comment)
         {
-            var regAst = astBuilder.GetRegisterAst(reg);
-            SymbolicExpressions.Add(new SymbolicExpression(node, regAst));
-            return regAst;
-            //return StoreSymbolicAssignment(inst, node, astBuilder.GetRegisterAst(reg), comment);
+            return StoreSymbolicAssignment(inst, node, astBuilder.GetRegisterAst(reg), comment);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AbstractNode StoreSymbolicExpression(Instruction inst, AbstractNode node, string comment)
         {
-            SymbolicExpressions.Add(new SymbolicExpression(node, null));
-            return node;
-            //return StoreSymbolicAssignment(inst, node, (AbstractNode)null, comment);
+            return StoreSymbolicAssignment(inst, node, (AbstractNode)null, comment);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AbstractNode StoreSymbolicAssignment(Instruction instruction, AbstractNode node, AbstractNode dst, string comment)
         {
             SymbolicExpressions.Add(new SymbolicExpression(node, dst));
-            return dst;
-            /*
-            SymbolicExpressions.Add(new SymbolicExpression(node, dst));
             return node;
-            */
-            throw new InvalidOperationException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

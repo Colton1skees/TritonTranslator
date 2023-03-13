@@ -69,5 +69,7 @@ namespace TritonTranslator.Arch
         public Register GetStackPointer();
 
         public Instruction Disassembly(Iced.Intel.Instruction instruction);
+
+        public uint GetUniqueTemporaryId();
     }
 }

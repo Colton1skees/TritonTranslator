@@ -11,6 +11,8 @@ namespace TritonTranslator.Arch.X86
     {
         private bool Is64Bit => ArchitectureId == ArchitectureId.ARCH_X86_64;
 
+        private uint temporaryCount;
+
         public ArchitectureId ArchitectureId { get; }
 
         public uint GprSize => Is64Bit ? ByteSizes.Qword : ByteSizes.Dword;
@@ -209,6 +211,14 @@ namespace TritonTranslator.Arch.X86
                 return X86Registers.Invalid;
 
             return X86Registers.IcedRegisterMapping[regId];
+        }
+
+        // TODO: Refactor this out.
+        public uint GetUniqueTemporaryId()
+        {
+            var result = temporaryCount;
+            temporaryCount++;
+            return result;
         }
     }
 }

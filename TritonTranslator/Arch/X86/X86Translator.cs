@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dna.DataStructures;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace TritonTranslator.Arch.X86
         {
             // Note: This is a goto place to start debugging when translation is incorrect : )
             bool debugging = false;
-            if (debugging && instruction.Address == 0x1400F2948)
+            if (debugging && instruction.Address == 0x140001246)
                 Debugger.Break();
             
 
@@ -46,52 +47,21 @@ namespace TritonTranslator.Arch.X86
             List<SymbolicExpression> newExpressions = new();
 
             // Properly handle register aliasing.
+            // Note(3/11/2023 2:00am): Here we manually break SSA form via inserting writes?
             foreach (var expression in semantics.ExpressionDatabase.SymbolicExpressions)
             {
-                newExpressions.AddRange(PropagateRegisterAliases(expression));
+                //newExpressions.AddRange(PropagateRegisterAliases(expression));
             }
 
-            return newExpressions;
-        }
-
-        /// <summary>
-        /// If the expression destination is the lower 32 bits of a GPR,
-        /// then zero extend the source and destination to 64 bits.
-        /// See: https://stackoverflow.com/q/11177137
-        /// </summary>
-        private void ZeroExtendLowGprBits(SymbolicExpression expression)
-        {
-            // Exit if the destination node is not a register.
-            var destReg = expression.Destination as RegisterNode;
-            if (destReg == null)
-                return;
-
-            // Exit if a 64 bit expression is being written to a 64 bit GPR.
-            var rootDestination = X86Registers.RegisterNodeMapping[architecture.GetRootParentRegister(destReg.Register).Id];
-            if (destReg.BitSize == 64 && rootDestination.BitSize == 64)
-                return;
-
-            // Exit if the destination is a flag register.
-            if (rootDestination.BitSize == 1)
-                return;
-
-            // Exit if the destination is not a 64 bit GPR.
-            if (rootDestination.BitSize != 64)
-                throw new InvalidOperationException(String.Format("Cannot alias register {0} with {1}", rootDestination, destReg));
-
-            // Handle zero extension when writing to the lower 32 bits of a register.
-            if (expression.Source.BitSize == 32)
-            {
-                var extSize = rootDestination.BitSize - destReg.BitSize;
-                expression.Destination = rootDestination;
-                expression.Source = new ZxNode(extSize, expression.Source);
-            }
-
-            // TODO: Handle aliasing when writing to 8-bit or 16-bit registers.
-            else
-            {
-                throw new InvalidOperationException(String.Format("Cannot alias register {0} with {1}", rootDestination, destReg));
-            }
+            // Once the instructions are lifted to ASTs using Triton's semantics,
+            // they are in SSA form(e.g. if you have a symbolic write to RSP,
+            // all subsequent symbolic expressions will still use the original
+            // value of RSP at the start of the instruction execution).
+            // To accomodate this, we need to allocate temporary
+            // registers to preserve SSA form.
+            EnterSsaForm(semantics.ExpressionDatabase.SymbolicExpressions);
+            
+            return semantics.ExpressionDatabase.SymbolicExpressions;
         }
 
         /// <summary>
@@ -151,8 +121,6 @@ namespace TritonTranslator.Arch.X86
 
             return output;
         }
-
-
 
         // Construct an expression for the value of {originalWrittenRegister} which may be legally stored in {newlyUpdatedRegister}.
         private SymbolicExpression WriteToRegister(Register originalWrittenRegister, Register newlyUpdatedRegister)
@@ -221,8 +189,37 @@ namespace TritonTranslator.Arch.X86
             return new SymbolicExpression(expr, new RegisterNode(newlyUpdatedRegister)); 
         }
 
-
         private bool IsHigh8Bits(register_e regId)
             => regId == register_e.ID_REG_X86_AH || regId == register_e.ID_REG_X86_BH || regId == register_e.ID_REG_X86_CH || regId == register_e.ID_REG_X86_DH;
+
+        private void EnterSsaForm(List<SymbolicExpression> expressions)
+        {
+            // Collect all symbolic expressions which write to some operand(e.g. a register or memory node).
+            var nonSsaExpressions = expressions.Where(x => x.Destination != null).ToList();
+
+            OrderedSet<SymbolicExpression> updatedRegisters = new();
+            foreach(var expression in nonSsaExpressions)
+            {
+                // Allocate a temporary node to store the expression result.
+                var temporary = new TemporaryNode(architecture.GetUniqueTemporaryId(), expression.Destination.BitSize);
+
+                // Modify the original expression so that it writes to the newly allocated temporary, 
+                // instead of the original destination.
+                var originalDestination = expression.Destination;
+                expression.Destination = temporary;
+
+                // Append an instruction to the end of the stream, which will update the register
+                // with the correct value.
+                var symbex = new SymbolicExpression(temporary, originalDestination);
+                expressions.Add(symbex);
+                if(originalDestination is RegisterNode regNode)
+                    updatedRegisters.Add(symbex);
+            }
+
+            foreach(var updatedRegister in updatedRegisters)
+            {
+                expressions.AddRange(UpdateAliasingRegisters((updatedRegister.Destination as RegisterNode).Register, updatedRegister));
+            }
+        }
     }
 }
