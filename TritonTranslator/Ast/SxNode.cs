@@ -32,6 +32,11 @@ namespace TritonTranslator.Ast
 
         }
 
+        protected override void ValidateChildSizes()
+        {
+            
+        }
+
         public override uint ComputeBitvecSize()
         {
             var childSize = Children[1].BitvectorSize;

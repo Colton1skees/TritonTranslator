@@ -28,6 +28,11 @@ namespace TritonTranslator.Intermediate
 
         }
 
+        protected override void ValidateOperandSizes()
+        {
+            
+        }
+
         public override uint ComputeBitvecSize()
         {
             var childSize = InputOperand.Bitsize;

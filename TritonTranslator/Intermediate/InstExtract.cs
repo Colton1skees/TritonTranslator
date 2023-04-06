@@ -11,6 +11,12 @@ namespace TritonTranslator.Intermediate
     {
         public override InstructionId Id => InstructionId.Extract;
 
+        public InstExtract(IOperand destination, uint high, uint low, IOperand source) 
+            : base(destination, new ImmediateOperand(high, source.Bitsize), new ImmediateOperand(low, source.Bitsize), source)
+        {
+
+        }
+
         public InstExtract(IOperand destination, IOperand op1, IOperand op2, IOperand op3) : base(destination, op1, op2, op3)
         {
             if (op1 is ImmediateOperand && op2 is ImmediateOperand)

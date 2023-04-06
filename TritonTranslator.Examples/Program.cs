@@ -35,7 +35,7 @@ foreach(var instruction in instructions)
     var liftedInstruction = arch.Disassembly(instruction);
     var symbolicExpression = lifter.TranslateInstruction(liftedInstruction);
 
-    var converter = new AstToIntermediateConverter();
+    var converter = new AstToIntermediateConverter(arch);
 
     // Dump all lifted expressions.
     foreach (var expr in symbolicExpression)

@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7830,7 +7831,6 @@ namespace TritonTranslator.Arch.X86
             this.controlFlow_s(inst);
         }
 
-
         void pcmpgtw_s(Instruction inst)
         {
             var dst = inst.Operands[0];
@@ -9019,11 +9019,13 @@ namespace TritonTranslator.Arch.X86
 
         void pop_s(Instruction inst)
         {
+          //  if (inst.Address == 0x00140029769)
+              //  Debugger.Break();
             bool stackRelative = false;
             var stack = this.architecture.GetStackPointer();
             var stackValue = this.astBuilder.GetRegisterAst(stack);
             var dst = inst.Operands[0];
-            var src = new OperandWrapper(new MemoryAccess() { Size = stack.Size, BaseRegister = stack });
+            var src = new OperandWrapper(new MemoryAccess() { Size = dst.Size, BaseRegister = stack });
 
             /* Create symbolic operands */
             var op1 = this.astBuilder.GetOperandAst(inst, src);
