@@ -133,6 +133,11 @@ LODSQ                        |            | Load quadword at address
 LODSW                        |            | Load word at address
 LOOP                         |            | Loop According to ECX Counter
 LZCNT                        |            | Count the Number of Leading Zero Bits
+FXRSTOR                      | sse1       | Restore the x87 FPU, MMX, XMM, and MXCSR register state from m512byte
+FXRSTOR64                    | sse1       | Restore the x87 FPU, MMX, XMM, and MXCSR register state from m512byte (REX.W = 1)
+FXSAVE                       | sse1       | Save the x87 FPU, MMX, XMM, and MXCSR register state to m512byte
+FXSAVE64                     | sse1       | Save the x87 FPU, MMX, XMM, and MXCSR register state to m512byte (REX.W = 1)
+INT3                         |            | Generate breakpoint trap.
 MFENCE                       | sse2       | Memory Fence
 MOV                          |            | Move
 MOVABS                       |            | Move
@@ -179,7 +184,9 @@ NOT                          |            | One's Complement Negation
 OR                           |            | Logical Inclusive OR
 ORPD                         | sse2       | Bitwise Logical OR of Double-Precision Floating-Point Values
 ORPS                         | sse1       | Bitwise Logical OR of Single-Precision Floating-Point Values
-PACKUSWB                     | mmx/sse2   | Pack with unsigned saturation
+PACKUSWB                     | mmx/sse2   | Pack with Unsigned Saturation
+PACKSSDW                     | mmx/sse2   | Pack with Signed Saturation
+PACKSSWB                     | mmx/sse2   | Pack with Signed Saturation
 PADDB                        | mmx/sse2   | Add packed byte integers
 PADDD                        | mmx/sse2   | Add packed doubleword integers
 PADDQ                        | mmx/sse2   | Add packed quadword integers
@@ -204,6 +211,7 @@ PINSRB                       | sse4.1     | Insert Byte
 PINSRD                       | sse4.1     | Insert Dword
 PINSRQ                       | sse4.1     | Insert Qword
 PINSRW                       | sse2       | Insert Word
+PMADDWD                      | mmx/sse2   | Multiply and Add Packed Integers
 PMAXSB                       | sse4.1     | Maximum of Packed Signed Byte Integers
 PMAXSD                       | sse4.1     | Maximum of Packed Signed Doubleword Integers
 PMAXSW                       | sse1       | Maximum of Packed Signed Word Integers
@@ -229,7 +237,12 @@ PMOVZXBW                     | sse4.1     | Zero Extend 8 Packed Signed 8-bit In
 PMOVZXDQ                     | sse4.1     | Zero Extend 2 Packed Signed 32-bit Integers
 PMOVZXWD                     | sse4.1     | Zero Extend 4 Packed Signed 16-bit Integers
 PMOVZXWQ                     | sse4.1     | Zero Extend 2 Packed Signed 16-bit Integers
+PMULHW                       | sse4.1     | Multiply Packed Signed Integers and Store High Result
+PMULLD                       | sse4.1     | Multiply Packed Integers and Store Low Result
+PMULLW                       | sse4.1     | Multiply Packed Signed Integers and Store Low Result
+PMULUDQ                      | sse2       | Multiply Unsigned Doubleword Integer
 POP                          |            | Pop a Value from the Stack
+POPCNT                       |            | Count Number of Bits Set to 1
 POPAL/POPAD                  |            | Pop All General-Purpose Registers
 POPF                         |            | Pop Stack into lower 16-bit of EFLAGS Register
 POPFD                        |            | Pop Stack into EFLAGS Register
@@ -241,6 +254,7 @@ PREFETCHT0                   | mmx/sse1   | Move data from m8 closer to the proc
 PREFETCHT1                   | mmx/sse1   | Move data from m8 closer to the processor using T1 hint
 PREFETCHT2                   | mmx/sse1   | Move data from m8 closer to the processor using T2 hint
 PREFETCHW                    | 3DNow      | Move data from m8 closer to the processor in anticipation of a write
+PSHUFB                       | sse3       | Shuffle bytes according to contents
 PSHUFD                       | sse2       | Shuffle Packed Doublewords
 PSHUFHW                      | sse2       | Shuffle Packed High Words
 PSHUFLW                      | sse2       | Shuffle Packed Low Words
@@ -249,7 +263,12 @@ PSLLD                        | mmx/ssed2  | Shift Doubleword Left Logical
 PSLLDQ                       | sse2       | Shift Double Quadword Left Logical
 PSLLQ                        | mmx/ssed2  | Shift Quadword Left Logical
 PSLLW                        | mmx/ssed2  | Shift Word Left Logical
+PSRAD                        | mmx/ssed2  | Shift Packed Doubleword Right Arithmetic
+PSRAW                        | mmx/ssed2  | Shift Packed Word Right Arithmetic
+PSRLD                        | sse2       | Shift Packed Doubleword Right Logical
 PSRLDQ                       | sse2       | Shift Double Quadword Right Logical
+PSRLQ                        | sse2       | Shift Quadword Right Logical
+PSRLW                        | sse2       | Shift Word Right Logical
 PSUBB                        | mmx/sse2   | Subtract packed byte integers
 PSUBD                        | mmx/sse2   | Subtract packed doubleword integers
 PSUBQ                        | mmx/sse2   | Subtract packed quadword integers
@@ -324,15 +343,25 @@ UNPCKHPD                     | sse2       | Unpack and Interleave High Packed Do
 UNPCKHPS                     | sse1       | Unpack and Interleave High Packed Single-Precision Floating-Point Values
 UNPCKLPD                     | sse2       | Unpack and Interleave Low Packed Double-Precision Floating-Point Values
 UNPCKLPS                     | sse1       | Unpack and Interleave Low Packed Single-Precision Floating-Point Values
+VEXTRACTI128                 | avx2       | VEX Extract Packed Integer Values
 VMOVD                        | avx        | VEX Move Doubleword
 VMOVDQA                      | avx        | VEX Move aligned packed integer values
 VMOVDQU                      | avx        | VEX Move unaligned packed integer values
+VMOVNTDQ                     | avx        | VEX Store Double Quadword Using Non-Temporal Hint
 VMOVQ                        | avx        | VEX Move Quadword
 VMOVSD                       | avx        | VEX Move or Merge Scalar Double-Precision Floating-Point Value
 VMOVAPS                      | avx        | VEX Move Aligned Packed Single-Precision Floating-Point Values
 VMOVUPS                      | avx        | VEX Move Unaligned Packed Single-Precision Floating-Point Values
+VPACKUSWB                    | avx/avx2   | VEX Pack with Unsigned Saturation
+VPACKSSDW                    | avx/avx2   | VEX Pack with Signed Saturation
+VPACKSSWB                    | avx/avx2   | VEX Pack with Signed Saturation
+VPADDB                       | avx/avx2   | VEX Add Packed Byte Integers
+VPADDD                       | avx/avx2   | VEX Add Packed Doubleword Integers
+VPADDW                       | avx/avx2   | VEX Add Packed Word Integers
 VPAND                        | avx/avx2   | VEX Logical AND
 VPANDN                       | avx/avx2   | VEX Logical AND NOT
+VPERM2I128                   | avx2       | VEX Permute Integer Values
+VPERMQ                       | avx2       | VEX Qwords Element Permutation
 VPEXTRB                      | avx/avx2   | VEX Extract Byte
 VPEXTRD                      | avx/avx2   | VEX Extract Dword
 VPEXTRQ                      | avx/avx2   | VEX Extract Qword
@@ -345,16 +374,33 @@ VPCMPEQW                     | avx/avx2   | VEX Compare packed Words for equalit
 VPCMPGTB                     | avx/avx2   | VEX Compare Packed Bytes for Greater Than
 VPCMPGTD                     | avx/avx2   | VEX Compare Packed Doublewords for Greater Than
 VPCMPGTW                     | avx/avx2   | VEX Compare Packed Words for Greater Than
+VPMADDWD                     | avx/avx    | VEX Multiply and Add Packed Integers
 VPMOVMSKB                    | avx/avx2   | VEX Move Byte Mask
 VPMINUB                      | avx/avx2   | VEX Minimum of Packed Unsigned Byte Integers
+VPMULHW                      | avx/avx2   | VEX Multiply Packed Signed Integers and Store High Result
+VPMULLW                      | avx/avx2   | VEX Multiply Packed Signed Integers and Store Low Result
 VPOR                         | avx/avx2   | VEX Logical OR
 VPSHUFD                      | avx/avx2   | VEX Shuffle Packed Doublewords
-VPSLLDQ                      | avx/avx2   | VEX Byte Shift Double Quadword Left Logical
+VPSIGNW                      | avx/avx2   | VEX Packed SIGN
+VPSLLDQ                      | avx/avx2   | VEX Shift Packed Double Quadword Left Logical
+VPSLLW                       | avx/avx2   | VEX Shift Packed Word Left Logical
+VPSRAD                       | avx/avx2   | VEX Shift Packed Doubleword Right Arithmetic
+VPSRAW                       | avx/avx2   | VEX Shift Packed Word Right Arithmetic
+VPSRLDQ                      | avx/avx2   | VEX Shift Packed Double Quadword Right Logical
+VPSRLW                       | avx/avx2   | VEX Shift Packed Word Right Logical
 VPSUBB                       | avx/avx2   | VEX Subtract packed Byte integers
 VPSUBD                       | avx/avx2   | VEX Subtract packed Doubleword integers
 VPSUBQ                       | avx/avx2   | VEX Subtract packed Quadword integers
 VPSUBW                       | avx/avx2   | VEX Subtract packed Word integers
 VPTEST                       | avx        | VEX Logical Compare
+VPUNPCKHBW                   | avx/avx2   | VEX Unpack High Data (Unpack and interleave high-order bytes)
+VPUNPCKHDQ                   | avx/avx2   | VEX Unpack High Data (Unpack and interleave high-order doublewords)
+VPUNPCKHQDQ                  | avx/avx2   | VEX Unpack High Data (Unpack and interleave high-order quadwords)
+VPUNPCKHWD                   | avx/avx2   | VEX Unpack High Data (Unpack and interleave high-order words)
+VPUNPCKLBW                   | avx/avx2   | VEX Unpack Low Data (Unpack and interleave low-order bytes)
+VPUNPCKLDQ                   | avx/avx2   | VEX Unpack Low Data (Unpack and interleave low-order doublewords)
+VPUNPCKLQDQ                  | avx/avx2   | VEX Unpack Low Data (Unpack and interleave low-order quadwords)
+VPUNPCKLWD                   | avx/avx2   | VEX Unpack Low Data (Unpack and interleave low-order words)
 VPXOR                        | avx/avx2   | VEX Logical XOR
 VXORPS                       | avx        | VEX Bitwise Logical XOR for Single-Precision Floating-Point Values
 WAIT                         |            | Wait
@@ -380,6 +426,7 @@ namespace triton {
                 const triton::ast::SharedAstContext& astCtxt) : modes(modes), astCtxt(astCtxt) {
 
                 this->architecture = architecture;
+                this->exception = triton::arch::NO_FAULT;
                 this->symbolicEngine = symbolicEngine;
                 this->taintEngine = taintEngine;
 
@@ -394,7 +441,8 @@ namespace triton {
             }
 
 
-            bool x86Semantics::buildSemantics(triton::arch::Instruction& inst) {
+            triton::arch::exception_e x86Semantics::buildSemantics(triton::arch::Instruction& inst) {
+                this->exception = triton::arch::NO_FAULT;
                 switch (inst.getType()) {
                 case ID_INS_AAA:            this->aaa_s(inst);          break;
                 case ID_INS_AAD:            this->aad_s(inst);          break;
@@ -463,6 +511,10 @@ namespace triton {
                 case ID_INS_ENDBR32:        this->endbr32_s(inst);      break;
                 case ID_INS_ENDBR64:        this->endbr64_s(inst);      break;
                 case ID_INS_EXTRACTPS:      this->extractps_s(inst);    break;
+                case ID_INS_FXRSTOR64:      this->fxrstor64_s(inst);    break;
+                case ID_INS_FXRSTOR:        this->fxrstor_s(inst);      break;
+                case ID_INS_FXSAVE64:       this->fxsave64_s(inst);     break;
+                case ID_INS_FXSAVE:         this->fxsave_s(inst);       break;
                 case ID_INS_IDIV:           this->idiv_s(inst);         break;
                 case ID_INS_IMUL:           this->imul_s(inst);         break;
                 case ID_INS_INC:            this->inc_s(inst);          break;
@@ -500,6 +552,7 @@ namespace triton {
                 case ID_INS_LODSW:          this->lodsw_s(inst);        break;
                 case ID_INS_LOOP:           this->loop_s(inst);         break;
                 case ID_INS_LZCNT:          this->lzcnt_s(inst);        break;
+                case ID_INS_INT3:           this->int3_s(inst);         break;
                 case ID_INS_MFENCE:         this->mfence_s(inst);       break;
                 case ID_INS_MOV:            this->mov_s(inst);          break;
                 case ID_INS_MOVABS:         this->movabs_s(inst);       break;
@@ -547,6 +600,8 @@ namespace triton {
                 case ID_INS_ORPD:           this->orpd_s(inst);         break;
                 case ID_INS_ORPS:           this->orps_s(inst);         break;
                 case ID_INS_PACKUSWB:       this->packuswb_s(inst);     break;
+                case ID_INS_PACKSSDW:       this->packssdw_s(inst);     break;
+                case ID_INS_PACKSSWB:       this->packsswb_s(inst);     break;
                 case ID_INS_PADDB:          this->paddb_s(inst);        break;
                 case ID_INS_PADDD:          this->paddd_s(inst);        break;
                 case ID_INS_PADDQ:          this->paddq_s(inst);        break;
@@ -571,6 +626,7 @@ namespace triton {
                 case ID_INS_PINSRD:         this->pinsrd_s(inst);       break;
                 case ID_INS_PINSRQ:         this->pinsrq_s(inst);       break;
                 case ID_INS_PINSRW:         this->pinsrw_s(inst);       break;
+                case ID_INS_PMADDWD:        this->pmaddwd_s(inst);      break;
                 case ID_INS_PMAXSB:         this->pmaxsb_s(inst);       break;
                 case ID_INS_PMAXSD:         this->pmaxsd_s(inst);       break;
                 case ID_INS_PMAXSW:         this->pmaxsw_s(inst);       break;
@@ -596,6 +652,11 @@ namespace triton {
                 case ID_INS_PMOVZXDQ:       this->pmovzxdq_s(inst);     break;
                 case ID_INS_PMOVZXWD:       this->pmovzxwd_s(inst);     break;
                 case ID_INS_PMOVZXWQ:       this->pmovzxwq_s(inst);     break;
+                case ID_INS_PMULHW:         this->pmulhw_s(inst);       break;
+                case ID_INS_PMULLD:         this->pmulld_s(inst);       break;
+                case ID_INS_PMULLW:         this->pmullw_s(inst);       break;
+                case ID_INS_PMULUDQ:        this->pmuludq_s(inst);      break;
+                case ID_INS_POPCNT:         this->popcnt_s(inst);       break;
                 case ID_INS_POP:            this->pop_s(inst);          break;
                 case ID_INS_POPAL:          this->popal_s(inst);        break;
                 case ID_INS_POPF:           this->popf_s(inst);         break;
@@ -608,6 +669,7 @@ namespace triton {
                 case ID_INS_PREFETCHT1:     this->prefetchx_s(inst);    break;
                 case ID_INS_PREFETCHT2:     this->prefetchx_s(inst);    break;
                 case ID_INS_PREFETCHW:      this->prefetchx_s(inst);    break;
+                case ID_INS_PSHUFB:         this->pshufb_s(inst);       break;
                 case ID_INS_PSHUFD:         this->pshufd_s(inst);       break;
                 case ID_INS_PSHUFHW:        this->pshufhw_s(inst);      break;
                 case ID_INS_PSHUFLW:        this->pshuflw_s(inst);      break;
@@ -616,7 +678,12 @@ namespace triton {
                 case ID_INS_PSLLDQ:         this->pslldq_s(inst);       break;
                 case ID_INS_PSLLQ:          this->psllq_s(inst);        break;
                 case ID_INS_PSLLW:          this->psllw_s(inst);        break;
+                case ID_INS_PSRAD:          this->psrad_s(inst);        break;
+                case ID_INS_PSRAW:          this->psraw_s(inst);        break;
+                case ID_INS_PSRLD:          this->psrld_s(inst);        break;
                 case ID_INS_PSRLDQ:         this->psrldq_s(inst);       break;
+                case ID_INS_PSRLQ:          this->psrlq_s(inst);        break;
+                case ID_INS_PSRLW:          this->psrlw_s(inst);        break;
                 case ID_INS_PSUBB:          this->psubb_s(inst);        break;
                 case ID_INS_PSUBD:          this->psubd_s(inst);        break;
                 case ID_INS_PSUBQ:          this->psubq_s(inst);        break;
@@ -691,15 +758,25 @@ namespace triton {
                 case ID_INS_UNPCKHPS:       this->unpckhps_s(inst);     break;
                 case ID_INS_UNPCKLPD:       this->unpcklpd_s(inst);     break;
                 case ID_INS_UNPCKLPS:       this->unpcklps_s(inst);     break;
+                case ID_INS_VEXTRACTI128:   this->vextracti128_s(inst); break;
                 case ID_INS_VMOVD:          this->vmovd_s(inst);        break;
                 case ID_INS_VMOVDQA:        this->vmovdqa_s(inst);      break;
                 case ID_INS_VMOVDQU:        this->vmovdqu_s(inst);      break;
+                case ID_INS_VMOVNTDQ:       this->vmovntdq_s(inst);     break;
                 case ID_INS_VMOVQ:          this->vmovq_s(inst);        break;
                 case ID_INS_VMOVSD:         this->vmovsd_s(inst);       break;
                 case ID_INS_VMOVAPS:        this->vmovaps_s(inst);      break;
                 case ID_INS_VMOVUPS:        this->vmovups_s(inst);      break;
+                case ID_INS_VPACKUSWB:      this->vpackuswb_s(inst);    break;
+                case ID_INS_VPACKSSDW:      this->vpackssdw_s(inst);    break;
+                case ID_INS_VPACKSSWB:      this->vpacksswb_s(inst);    break;
+                case ID_INS_VPADDB:         this->vpaddb_s(inst);       break;
+                case ID_INS_VPADDD:         this->vpaddd_s(inst);       break;
+                case ID_INS_VPADDW:         this->vpaddw_s(inst);       break;
                 case ID_INS_VPAND:          this->vpand_s(inst);        break;
                 case ID_INS_VPANDN:         this->vpandn_s(inst);       break;
+                case ID_INS_VPERM2I128:     this->vperm2i128_s(inst);   break;
+                case ID_INS_VPERMQ:         this->vpermq_s(inst);       break;
                 case ID_INS_VPEXTRB:        this->vpextrb_s(inst);      break;
                 case ID_INS_VPEXTRD:        this->vpextrd_s(inst);      break;
                 case ID_INS_VPEXTRQ:        this->vpextrq_s(inst);      break;
@@ -712,16 +789,33 @@ namespace triton {
                 case ID_INS_VPCMPGTB:       this->vpcmpgtb_s(inst);     break;
                 case ID_INS_VPCMPGTD:       this->vpcmpgtd_s(inst);     break;
                 case ID_INS_VPCMPGTW:       this->vpcmpgtw_s(inst);     break;
+                case ID_INS_VPMADDWD:       this->vpmaddwd_s(inst);     break;
                 case ID_INS_VPMOVMSKB:      this->vpmovmskb_s(inst);    break;
                 case ID_INS_VPMINUB:        this->vpminub_s(inst);      break;
+                case ID_INS_VPMULHW:        this->vpmulhw_s(inst);      break;
+                case ID_INS_VPMULLW:        this->vpmullw_s(inst);      break;
                 case ID_INS_VPOR:           this->vpor_s(inst);         break;
                 case ID_INS_VPSHUFD:        this->vpshufd_s(inst);      break;
+                case ID_INS_VPSIGNW:        this->vpsignw_s(inst);      break;
                 case ID_INS_VPSLLDQ:        this->vpslldq_s(inst);      break;
+                case ID_INS_VPSLLW:         this->vpsllw_s(inst);       break;
+                case ID_INS_VPSRAD:         this->vpsrad_s(inst);       break;
+                case ID_INS_VPSRAW:         this->vpsraw_s(inst);       break;
+                case ID_INS_VPSRLDQ:        this->vpsrldq_s(inst);      break;
+                case ID_INS_VPSRLW:         this->vpsrlw_s(inst);       break;
                 case ID_INS_VPSUBB:         this->vpsubb_s(inst);       break;
                 case ID_INS_VPSUBD:         this->vpsubd_s(inst);       break;
                 case ID_INS_VPSUBQ:         this->vpsubq_s(inst);       break;
                 case ID_INS_VPSUBW:         this->vpsubw_s(inst);       break;
                 case ID_INS_VPTEST:         this->vptest_s(inst);       break;
+                case ID_INS_VPUNPCKHBW:     this->vpunpckhbw_s(inst);   break;
+                case ID_INS_VPUNPCKHDQ:     this->vpunpckhdq_s(inst);   break;
+                case ID_INS_VPUNPCKHQDQ:    this->vpunpckhqdq_s(inst);  break;
+                case ID_INS_VPUNPCKHWD:     this->vpunpckhwd_s(inst);   break;
+                case ID_INS_VPUNPCKLBW:     this->vpunpcklbw_s(inst);   break;
+                case ID_INS_VPUNPCKLDQ:     this->vpunpckldq_s(inst);   break;
+                case ID_INS_VPUNPCKLQDQ:    this->vpunpcklqdq_s(inst);  break;
+                case ID_INS_VPUNPCKLWD:     this->vpunpcklwd_s(inst);   break;
                 case ID_INS_VPXOR:          this->vpxor_s(inst);        break;
                 case ID_INS_VXORPS:         this->vxorps_s(inst);       break;
                 case ID_INS_WAIT:           this->wait_s(inst);         break;
@@ -732,9 +826,10 @@ namespace triton {
                 case ID_INS_XORPD:          this->xorpd_s(inst);        break;
                 case ID_INS_XORPS:          this->xorps_s(inst);        break;
                 default:
-                    return false;
+                    this->exception = triton::arch::FAULT_UD;
+                    break;
                 }
-                return true;
+                return this->exception;
             }
 
 
@@ -755,7 +850,7 @@ namespace triton {
                 expr->isTainted = this->taintEngine->taintUnion(dst, dst);
 
                 /* Return the new stack value */
-                return node->evaluate().convert_to<triton::uint64>();
+                return static_cast<triton::uint64>(node->evaluate());
             }
 
 
@@ -776,7 +871,7 @@ namespace triton {
                 expr->isTainted = this->taintEngine->taintUnion(dst, dst);
 
                 /* Return the new stack value */
-                return node->evaluate().convert_to<triton::uint64>();
+                return static_cast<triton::uint64>(node->evaluate());
             }
 
 
@@ -925,6 +1020,234 @@ namespace triton {
                     break;
                 }
                 }
+            }
+
+
+            //! Update the FPU x87 Tag Word (whenever an STX register changes)
+            void x86Semantics::updateFTW(triton::arch::Instruction& inst, const triton::engines::symbolic::SharedSymbolicExpression& parent) {
+                /* Fetch the STX registers */
+                auto st0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST0));
+                auto st1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST1));
+                auto st2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST2));
+                auto st3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST3));
+                auto st4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST4));
+                auto st5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST5));
+                auto st6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST6));
+                auto st7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST7));
+
+                /* Fetch the STX ASTs */
+                auto st0_ast = this->symbolicEngine->getOperandAst(inst, st0);
+                auto st1_ast = this->symbolicEngine->getOperandAst(inst, st1);
+                auto st2_ast = this->symbolicEngine->getOperandAst(inst, st2);
+                auto st3_ast = this->symbolicEngine->getOperandAst(inst, st3);
+                auto st4_ast = this->symbolicEngine->getOperandAst(inst, st4);
+                auto st5_ast = this->symbolicEngine->getOperandAst(inst, st5);
+                auto st6_ast = this->symbolicEngine->getOperandAst(inst, st6);
+                auto st7_ast = this->symbolicEngine->getOperandAst(inst, st7);
+
+                /* Extract the fraction from the STX registers */
+                auto fraction_st0 = this->astCtxt->extract(62, 0, st0_ast);
+                auto fraction_st1 = this->astCtxt->extract(62, 0, st1_ast);
+                auto fraction_st2 = this->astCtxt->extract(62, 0, st2_ast);
+                auto fraction_st3 = this->astCtxt->extract(62, 0, st3_ast);
+                auto fraction_st4 = this->astCtxt->extract(62, 0, st4_ast);
+                auto fraction_st5 = this->astCtxt->extract(62, 0, st5_ast);
+                auto fraction_st6 = this->astCtxt->extract(62, 0, st6_ast);
+                auto fraction_st7 = this->astCtxt->extract(62, 0, st7_ast);
+
+                /* Extract the integer bit from the STX registers */
+                auto integer_st0 = this->astCtxt->extract(63, 63, st0_ast);
+                auto integer_st1 = this->astCtxt->extract(63, 63, st1_ast);
+                auto integer_st2 = this->astCtxt->extract(63, 63, st2_ast);
+                auto integer_st3 = this->astCtxt->extract(63, 63, st3_ast);
+                auto integer_st4 = this->astCtxt->extract(63, 63, st4_ast);
+                auto integer_st5 = this->astCtxt->extract(63, 63, st5_ast);
+                auto integer_st6 = this->astCtxt->extract(63, 63, st6_ast);
+                auto integer_st7 = this->astCtxt->extract(63, 63, st7_ast);
+
+                /* Extract the exponent from the STX registers */
+                auto exponent_st0 = this->astCtxt->extract(79, 64, st0_ast);
+                auto exponent_st1 = this->astCtxt->extract(79, 64, st1_ast);
+                auto exponent_st2 = this->astCtxt->extract(79, 64, st2_ast);
+                auto exponent_st3 = this->astCtxt->extract(79, 64, st3_ast);
+                auto exponent_st4 = this->astCtxt->extract(79, 64, st4_ast);
+                auto exponent_st5 = this->astCtxt->extract(79, 64, st5_ast);
+                auto exponent_st6 = this->astCtxt->extract(79, 64, st6_ast);
+                auto exponent_st7 = this->astCtxt->extract(79, 64, st7_ast);
+
+                /* Exponent All Zeros */
+                auto ea0_st0 = this->astCtxt->equal(exponent_st0, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st1 = this->astCtxt->equal(exponent_st1, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st2 = this->astCtxt->equal(exponent_st2, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st3 = this->astCtxt->equal(exponent_st3, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st4 = this->astCtxt->equal(exponent_st4, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st5 = this->astCtxt->equal(exponent_st5, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st6 = this->astCtxt->equal(exponent_st6, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st7 = this->astCtxt->equal(exponent_st7, this->astCtxt->bv(0x0000, 16));
+
+                /* Exponent All Ones */
+                auto ea1_st0 = this->astCtxt->equal(exponent_st0, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st1 = this->astCtxt->equal(exponent_st1, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st2 = this->astCtxt->equal(exponent_st2, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st3 = this->astCtxt->equal(exponent_st3, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st4 = this->astCtxt->equal(exponent_st4, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st5 = this->astCtxt->equal(exponent_st5, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st6 = this->astCtxt->equal(exponent_st6, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st7 = this->astCtxt->equal(exponent_st7, this->astCtxt->bv(0xFFFF, 16));
+
+                /* Exponent Neither All Zeroes Or Ones */
+                auto ena01_st0 = this->astCtxt->equal(this->astCtxt->lor(ea0_st0, ea1_st0), this->astCtxt->bvfalse());
+                auto ena01_st1 = this->astCtxt->equal(this->astCtxt->lor(ea0_st1, ea1_st1), this->astCtxt->bvfalse());
+                auto ena01_st2 = this->astCtxt->equal(this->astCtxt->lor(ea0_st2, ea1_st2), this->astCtxt->bvfalse());
+                auto ena01_st3 = this->astCtxt->equal(this->astCtxt->lor(ea0_st3, ea1_st3), this->astCtxt->bvfalse());
+                auto ena01_st4 = this->astCtxt->equal(this->astCtxt->lor(ea0_st4, ea1_st4), this->astCtxt->bvfalse());
+                auto ena01_st5 = this->astCtxt->equal(this->astCtxt->lor(ea0_st5, ea1_st5), this->astCtxt->bvfalse());
+                auto ena01_st6 = this->astCtxt->equal(this->astCtxt->lor(ea0_st6, ea1_st6), this->astCtxt->bvfalse());
+                auto ena01_st7 = this->astCtxt->equal(this->astCtxt->lor(ea0_st7, ea1_st7), this->astCtxt->bvfalse());
+
+                /* Integer Bit 0 */
+                auto ib0_st0 = this->astCtxt->equal(integer_st0, this->astCtxt->bv(0, 1));
+                auto ib0_st1 = this->astCtxt->equal(integer_st1, this->astCtxt->bv(0, 1));
+                auto ib0_st2 = this->astCtxt->equal(integer_st2, this->astCtxt->bv(0, 1));
+                auto ib0_st3 = this->astCtxt->equal(integer_st3, this->astCtxt->bv(0, 1));
+                auto ib0_st4 = this->astCtxt->equal(integer_st4, this->astCtxt->bv(0, 1));
+                auto ib0_st5 = this->astCtxt->equal(integer_st5, this->astCtxt->bv(0, 1));
+                auto ib0_st6 = this->astCtxt->equal(integer_st6, this->astCtxt->bv(0, 1));
+                auto ib0_st7 = this->astCtxt->equal(integer_st7, this->astCtxt->bv(0, 1));
+
+                /* Fraction All Zeroes */
+                auto fa0_st0 = this->astCtxt->equal(fraction_st0, this->astCtxt->bv(0, 63));
+                auto fa0_st1 = this->astCtxt->equal(fraction_st1, this->astCtxt->bv(0, 63));
+                auto fa0_st2 = this->astCtxt->equal(fraction_st2, this->astCtxt->bv(0, 63));
+                auto fa0_st3 = this->astCtxt->equal(fraction_st3, this->astCtxt->bv(0, 63));
+                auto fa0_st4 = this->astCtxt->equal(fraction_st4, this->astCtxt->bv(0, 63));
+                auto fa0_st5 = this->astCtxt->equal(fraction_st5, this->astCtxt->bv(0, 63));
+                auto fa0_st6 = this->astCtxt->equal(fraction_st6, this->astCtxt->bv(0, 63));
+                auto fa0_st7 = this->astCtxt->equal(fraction_st7, this->astCtxt->bv(0, 63));
+
+                /* Determine the x87 FPU Tag Word (Diagram at page 379 of the AMD Architecture Programmer's Manual, Volume 2: System Programming) */
+                auto db_1_0 = this->astCtxt->ite(ea0_st0,
+                    this->astCtxt->ite(ib0_st0,
+                        this->astCtxt->ite(fa0_st0,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st0,
+                        this->astCtxt->ite(ib0_st0,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                auto db_3_2 = this->astCtxt->ite(ea0_st1,
+                    this->astCtxt->ite(ib0_st1,
+                        this->astCtxt->ite(fa0_st1,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st1,
+                        this->astCtxt->ite(ib0_st1,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                auto db_5_4 = this->astCtxt->ite(ea0_st2,
+                    this->astCtxt->ite(ib0_st2,
+                        this->astCtxt->ite(fa0_st2,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st2,
+                        this->astCtxt->ite(ib0_st2,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                auto db_7_6 = this->astCtxt->ite(ea0_st3,
+                    this->astCtxt->ite(ib0_st3,
+                        this->astCtxt->ite(fa0_st3,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st3,
+                        this->astCtxt->ite(ib0_st3,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                auto db_9_8 = this->astCtxt->ite(ea0_st4,
+                    this->astCtxt->ite(ib0_st4,
+                        this->astCtxt->ite(fa0_st4,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st4,
+                        this->astCtxt->ite(ib0_st4,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                auto db_11_10 = this->astCtxt->ite(ea0_st5,
+                    this->astCtxt->ite(ib0_st5,
+                        this->astCtxt->ite(fa0_st5,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st5,
+                        this->astCtxt->ite(ib0_st5,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                auto db_13_12 = this->astCtxt->ite(ea0_st6,
+                    this->astCtxt->ite(ib0_st6,
+                        this->astCtxt->ite(fa0_st6,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st6,
+                        this->astCtxt->ite(ib0_st6,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                auto db_15_14 = this->astCtxt->ite(ea0_st7,
+                    this->astCtxt->ite(ib0_st7,
+                        this->astCtxt->ite(fa0_st7,
+                            this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                            this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                        this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                    this->astCtxt->ite(ena01_st7,
+                        this->astCtxt->ite(ib0_st7,
+                            this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                            this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                        this->astCtxt->bv(2, 2)));    // 'Exponent All 1'
+
+                /* Restore the x87 FPU Tag Word */
+                auto node = this->astCtxt->concat(db_15_14,
+                    this->astCtxt->concat(db_13_12,
+                        this->astCtxt->concat(db_11_10,
+                            this->astCtxt->concat(db_9_8,
+                                this->astCtxt->concat(db_7_6,
+                                    this->astCtxt->concat(db_5_4,
+                                        this->astCtxt->concat(db_3_2, db_1_0)))))));
+
+                /* Create the symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, this->architecture->getRegister(ID_REG_X86_FTW), "x87 FPU Tag Word");
+
+                /* Spread the taint from the parent to the child */
+                auto st0_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST0));
+                auto st1_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST1));
+                auto st2_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST2));
+                auto st3_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST3));
+                auto st4_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST4));
+                auto st5_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST5));
+                auto st6_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST6));
+                auto st7_taint = this->taintEngine->isRegisterTainted(this->architecture->getRegister(ID_REG_X86_ST7));
+
+                auto is_ftw_tainted = st0_taint | st1_taint | st2_taint | st3_taint |
+                    st4_taint | st5_taint | st6_taint | st7_taint;
+
+                expr->isTainted = this->taintEngine->setTaintRegister(this->architecture->getRegister(ID_REG_X86_FTW), is_ftw_tainted);
             }
 
 
@@ -2190,15 +2513,7 @@ namespace triton {
                  */
                 auto node = this->astCtxt->bv(1, 1);
                 for (triton::uint32 counter = 0; counter <= triton::bitsize::byte - 1; counter++) {
-                    node = this->astCtxt->bvxor(
-                        node,
-                        this->astCtxt->extract(0, 0,
-                            this->astCtxt->bvlshr(
-                                this->astCtxt->extract(high, low, this->astCtxt->reference(parent)),
-                                this->astCtxt->bv(counter, triton::bitsize::byte)
-                            )
-                        )
-                    );
+                    node = this->astCtxt->bvxor(node, this->astCtxt->extract(counter, counter, this->astCtxt->reference(parent)));
                 }
 
                 /* Create the symbolic expression */
@@ -2226,15 +2541,7 @@ namespace triton {
                  */
                 auto node1 = this->astCtxt->bv(1, 1);
                 for (triton::uint32 counter = 0; counter <= triton::bitsize::byte - 1; counter++) {
-                    node1 = this->astCtxt->bvxor(
-                        node1,
-                        this->astCtxt->extract(0, 0,
-                            this->astCtxt->bvlshr(
-                                this->astCtxt->extract(high, low, this->astCtxt->reference(parent)),
-                                this->astCtxt->bv(counter, triton::bitsize::byte)
-                            )
-                        )
-                    );
+                    node1 = this->astCtxt->bvxor(node1, this->astCtxt->extract(counter, counter, this->astCtxt->reference(parent)));
                 }
 
                 auto node2 = this->astCtxt->ite(
@@ -3458,9 +3765,13 @@ namespace triton {
                 case triton::size::dword:
                     bytes.push_front(this->astCtxt->extract(31, 24, op1));
                     bytes.push_front(this->astCtxt->extract(23, 16, op1));
-                case triton::size::word:
                     bytes.push_front(this->astCtxt->extract(15, 8, op1));
                     bytes.push_front(this->astCtxt->extract(7, 0, op1));
+                    break;
+                case triton::size::word:
+                    // See #1131
+                    bytes.push_front(this->astCtxt->bv(0, 8));
+                    bytes.push_front(this->astCtxt->bv(0, 8));
                     break;
                 default:
                     throw triton::exceptions::Semantics("x86Semantics::bswap_s(): Invalid operand size.");
@@ -3699,18 +4010,17 @@ namespace triton {
 
 
             void x86Semantics::call_s(triton::arch::Instruction& inst) {
-                auto stack = this->architecture->getStackPointer();
-
-                /* Create the semantics - side effect */
-                auto  stackValue = alignSubStack_s(inst, stack.getSize());
-                auto  pc = triton::arch::OperandWrapper(this->architecture->getProgramCounter());
-                auto  sp = triton::arch::OperandWrapper(triton::arch::MemoryAccess(stackValue, stack.getSize()));
                 auto& src = inst.operands[0];
 
                 /* Create symbolic operands */
                 auto op1 = this->symbolicEngine->getOperandAst(inst, src);
 
                 /* Create the semantics - side effect */
+                auto stack = this->architecture->getStackPointer();
+                auto stackValue = alignSubStack_s(inst, stack.getSize());
+                auto pc = triton::arch::OperandWrapper(this->architecture->getProgramCounter());
+                auto sp = triton::arch::OperandWrapper(triton::arch::MemoryAccess(stackValue, stack.getSize()));
+
                 auto node1 = this->astCtxt->bv(inst.getNextAddress(), pc.getBitSize());
 
                 /* Create the semantics */
@@ -4893,7 +5203,7 @@ namespace triton {
                 triton::ast::SharedAbstractNode node4 = nullptr;
 
                 /* In this case, we concretize the AX option */
-                switch (op1->evaluate().convert_to<triton::uint32>()) {
+                switch (static_cast<triton::uint32>(op1->evaluate())) {
                 case 0:
                     node1 = this->astCtxt->bv(0x0000000d, dst1.getBitSize());
                     node2 = this->astCtxt->bv(0x756e6547, dst2.getBitSize());
@@ -5144,6 +5454,11 @@ namespace triton {
                     auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, ax, "DIV operation");
                     /* Apply the taint */
                     expr->isTainted = this->taintEngine->taintUnion(ax, src);
+                    /* Divide error */
+                    if (result->evaluate() > 0xff) {
+                        this->exception = triton::arch::FAULT_DE;
+                        return;
+                    }
                     break;
                 }
 
@@ -5153,7 +5468,8 @@ namespace triton {
                     auto ax = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_AX));
                     auto dividend = this->astCtxt->concat(this->symbolicEngine->getOperandAst(inst, dx), this->symbolicEngine->getOperandAst(inst, ax));
                     /* res = DX:AX / Source */
-                    auto result = this->astCtxt->extract((triton::bitsize::word - 1), 0, this->astCtxt->bvudiv(dividend, this->astCtxt->zx(triton::bitsize::word, divisor)));
+                    auto temp = this->astCtxt->bvudiv(dividend, this->astCtxt->zx(triton::bitsize::word, divisor));
+                    auto result = this->astCtxt->extract((triton::bitsize::word - 1), 0, temp);
                     /* mod = DX:AX % Source */
                     auto mod = this->astCtxt->extract((triton::bitsize::word - 1), 0, this->astCtxt->bvurem(dividend, this->astCtxt->zx(triton::bitsize::word, divisor)));
                     /* Create the symbolic expression for AX */
@@ -5164,6 +5480,11 @@ namespace triton {
                     auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, mod, dx, "DIV operation");
                     /* Apply the taint for DX */
                     expr2->isTainted = this->taintEngine->taintUnion(dx, src);
+                    /* Divide error */
+                    if (temp->evaluate() > 0xffff) {
+                        this->exception = triton::arch::FAULT_DE;
+                        return;
+                    }
                     break;
                 }
 
@@ -5173,7 +5494,8 @@ namespace triton {
                     auto eax = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EAX));
                     auto dividend = this->astCtxt->concat(this->symbolicEngine->getOperandAst(inst, edx), this->symbolicEngine->getOperandAst(inst, eax));
                     /* res = EDX:EAX / Source */
-                    auto result = this->astCtxt->extract((triton::bitsize::dword - 1), 0, this->astCtxt->bvudiv(dividend, this->astCtxt->zx(triton::bitsize::dword, divisor)));
+                    auto temp = this->astCtxt->bvudiv(dividend, this->astCtxt->zx(triton::bitsize::dword, divisor));
+                    auto result = this->astCtxt->extract((triton::bitsize::dword - 1), 0, temp);
                     /* mod = EDX:EAX % Source */
                     auto mod = this->astCtxt->extract((triton::bitsize::dword - 1), 0, this->astCtxt->bvurem(dividend, this->astCtxt->zx(triton::bitsize::dword, divisor)));
                     /* Create the symbolic expression for EAX */
@@ -5184,6 +5506,11 @@ namespace triton {
                     auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, mod, edx, "DIV operation");
                     /* Apply the taint for EDX */
                     expr2->isTainted = this->taintEngine->taintUnion(edx, src);
+                    /* Divide error */
+                    if (temp->evaluate() > 0xffffffff) {
+                        this->exception = triton::arch::FAULT_DE;
+                        return;
+                    }
                     break;
                 }
 
@@ -5193,7 +5520,8 @@ namespace triton {
                     auto rax = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_RAX));
                     auto dividend = this->astCtxt->concat(this->symbolicEngine->getOperandAst(inst, rdx), this->symbolicEngine->getOperandAst(inst, rax));
                     /* res = RDX:RAX / Source */
-                    auto result = this->astCtxt->extract((triton::bitsize::qword - 1), 0, this->astCtxt->bvudiv(dividend, this->astCtxt->zx(triton::bitsize::qword, divisor)));
+                    auto temp = this->astCtxt->bvudiv(dividend, this->astCtxt->zx(triton::bitsize::qword, divisor));
+                    auto result = this->astCtxt->extract((triton::bitsize::qword - 1), 0, temp);
                     /* mod = RDX:RAX % Source */
                     auto mod = this->astCtxt->extract((triton::bitsize::qword - 1), 0, this->astCtxt->bvurem(dividend, this->astCtxt->zx(triton::bitsize::qword, divisor)));
                     /* Create the symbolic expression for RAX */
@@ -5204,6 +5532,11 @@ namespace triton {
                     auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, mod, rdx, "DIV operation");
                     /* Apply the taint for EDX */
                     expr2->isTainted = this->taintEngine->taintUnion(rdx, src);
+                    /* Divide error */
+                    if (temp->evaluate() > 0xffffffffffffffff) {
+                        this->exception = triton::arch::FAULT_DE;
+                        return;
+                    }
                     break;
                 }
 
@@ -5216,6 +5549,12 @@ namespace triton {
                 this->undefined_s(inst, this->architecture->getRegister(ID_REG_X86_PF));
                 this->undefined_s(inst, this->architecture->getRegister(ID_REG_X86_SF));
                 this->undefined_s(inst, this->architecture->getRegister(ID_REG_X86_ZF));
+
+                /* Return an exception if the divisor is zero */
+                if (divisor->evaluate() == 0) {
+                    this->exception = triton::arch::FAULT_DE;
+                    return;
+                }
 
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
@@ -5275,6 +5614,1531 @@ namespace triton {
             }
 
 
+            void x86Semantics::fxrstor_s(triton::arch::Instruction& inst) {
+                /* Fetch the current architecture */
+                auto arch = this->architecture->getArchitecture();
+
+                /* Determine if we are executing in 64 bit mode */
+                auto is64bits = arch == triton::arch::architecture_e::ARCH_X86_64;
+
+                /* Fetch the memory operand */
+                auto& dst = inst.operands[0];
+                auto& mem = dst.getMemory();
+                auto m512byte = mem.getAddress();
+
+                /* Check if the address is on a 16-byte boundary */
+                if (m512byte & 0xF) {
+                    this->exception = triton::arch::FAULT_GP;
+                    return;
+                }
+
+                /* Fetch the FPU, STX, SSE, EFER and CS implicit operands */
+                auto fcw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCW));
+                auto fsw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FSW));
+                auto ftw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FTW));
+                auto fop = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FOP));
+                auto fip = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FIP));
+                auto fcs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCS));
+                auto fdp = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDP));
+                auto fds = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDS));
+                auto mxcsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR));
+                auto mxcsr_mask = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR_MASK));
+                auto st0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST0));
+                auto st1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST1));
+                auto st2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST2));
+                auto st3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST3));
+                auto st4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST4));
+                auto st5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST5));
+                auto st6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST6));
+                auto st7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST7));
+                auto xmm0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM0));
+                auto xmm1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM1));
+                auto xmm2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM2));
+                auto xmm3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM3));
+                auto xmm4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM4));
+                auto xmm5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM5));
+                auto xmm6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM6));
+                auto xmm7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM7));
+                auto ffxsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EFER_FFXSR));
+                auto cs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_CS));
+
+                /* Fetch the implicit memory slots for the 'Non-64-bit Mode Layout' */
+                auto fcw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 0, fcw.getSize()));
+                auto fsw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 2, fsw.getSize()));
+                auto ftw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 4, ftw.getSize() / 2));
+                auto fop_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 6, fop.getSize()));
+                auto fip_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 8, fip.getSize() / 2));
+                auto fcs_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 12, fcs.getSize()));
+                auto fdp_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 16, fdp.getSize() / 2));
+                auto fds_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 20, fds.getSize()));
+                auto mxcsr_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 24, mxcsr.getSize()));
+                auto mxcsr_mask_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 28, mxcsr_mask.getSize()));
+                auto st0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 32, st0.getSize()));
+                auto st1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 48, st1.getSize()));
+                auto st2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 64, st2.getSize()));
+                auto st3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 80, st3.getSize()));
+                auto st4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 96, st4.getSize()));
+                auto st5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 112, st5.getSize()));
+                auto st6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 128, st6.getSize()));
+                auto st7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 144, st7.getSize()));
+                auto xmm0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 160, xmm0.getSize()));
+                auto xmm1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 176, xmm1.getSize()));
+                auto xmm2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 192, xmm2.getSize()));
+                auto xmm3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 208, xmm3.getSize()));
+                auto xmm4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 224, xmm4.getSize()));
+                auto xmm5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 240, xmm5.getSize()));
+                auto xmm6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 256, xmm6.getSize()));
+                auto xmm7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 272, xmm7.getSize()));
+
+                /* Create the symbolic operands */
+                auto fcw_ast = this->symbolicEngine->getOperandAst(inst, fcw_addr);
+                auto fsw_ast = this->symbolicEngine->getOperandAst(inst, fsw_addr);
+                auto ftw_ast = this->symbolicEngine->getOperandAst(inst, ftw_addr);
+                auto fop_ast = this->symbolicEngine->getOperandAst(inst, fop_addr);
+                auto fip_ast = this->astCtxt->zx(triton::bitsize::dword, this->symbolicEngine->getOperandAst(inst, fip_addr));
+                auto fcs_ast = this->symbolicEngine->getOperandAst(inst, fcs_addr);
+                auto fdp_ast = this->astCtxt->zx(triton::bitsize::dword, this->symbolicEngine->getOperandAst(inst, fdp_addr));
+                auto fds_ast = this->symbolicEngine->getOperandAst(inst, fds_addr);
+                auto mxcsr_ast = this->symbolicEngine->getOperandAst(inst, mxcsr_addr);
+                auto mxcsr_mask_ast = this->symbolicEngine->getOperandAst(inst, mxcsr_mask_addr);
+                auto st0_ast = this->symbolicEngine->getOperandAst(inst, st0_addr);
+                auto st1_ast = this->symbolicEngine->getOperandAst(inst, st1_addr);
+                auto st2_ast = this->symbolicEngine->getOperandAst(inst, st2_addr);
+                auto st3_ast = this->symbolicEngine->getOperandAst(inst, st3_addr);
+                auto st4_ast = this->symbolicEngine->getOperandAst(inst, st4_addr);
+                auto st5_ast = this->symbolicEngine->getOperandAst(inst, st5_addr);
+                auto st6_ast = this->symbolicEngine->getOperandAst(inst, st6_addr);
+                auto st7_ast = this->symbolicEngine->getOperandAst(inst, st7_addr);
+                auto xmm0_ast = this->symbolicEngine->getOperandAst(inst, xmm0_addr);
+                auto xmm1_ast = this->symbolicEngine->getOperandAst(inst, xmm1_addr);
+                auto xmm2_ast = this->symbolicEngine->getOperandAst(inst, xmm2_addr);
+                auto xmm3_ast = this->symbolicEngine->getOperandAst(inst, xmm3_addr);
+                auto xmm4_ast = this->symbolicEngine->getOperandAst(inst, xmm4_addr);
+                auto xmm5_ast = this->symbolicEngine->getOperandAst(inst, xmm5_addr);
+                auto xmm6_ast = this->symbolicEngine->getOperandAst(inst, xmm6_addr);
+                auto xmm7_ast = this->symbolicEngine->getOperandAst(inst, xmm7_addr);
+                auto ffxsr_ast = this->symbolicEngine->getOperandAst(inst, ffxsr);
+                auto cs_ast = this->symbolicEngine->getOperandAst(inst, cs);
+
+                /* Fetch the original values for the XMM0-XMM7 registers */
+                auto xmm0_orig = this->symbolicEngine->getOperandAst(inst, xmm0);
+                auto xmm1_orig = this->symbolicEngine->getOperandAst(inst, xmm1);
+                auto xmm2_orig = this->symbolicEngine->getOperandAst(inst, xmm2);
+                auto xmm3_orig = this->symbolicEngine->getOperandAst(inst, xmm3);
+                auto xmm4_orig = this->symbolicEngine->getOperandAst(inst, xmm4);
+                auto xmm5_orig = this->symbolicEngine->getOperandAst(inst, xmm5);
+                auto xmm6_orig = this->symbolicEngine->getOperandAst(inst, xmm6);
+                auto xmm7_orig = this->symbolicEngine->getOperandAst(inst, xmm7);
+
+                /* Check if we are running in CPL = 0 (ring 0) and if the FFXSR bit is set in EFER */
+                auto cpl = this->astCtxt->equal(this->astCtxt->extract(1, 0, cs_ast), this->astCtxt->bv(0, 2));
+                auto ffx = this->astCtxt->equal(ffxsr_ast, this->astCtxt->bv(1, 1));
+                auto b64 = this->astCtxt->equal(this->astCtxt->bv(is64bits, 1), this->astCtxt->bv(1, 1));
+                auto is_fast = this->astCtxt->land(this->astCtxt->land(cpl, ffx), b64);
+
+                /* Apply the fast restore logic if needed */
+                xmm0_ast = this->astCtxt->ite(is_fast, xmm0_orig, xmm0_ast);
+                xmm1_ast = this->astCtxt->ite(is_fast, xmm1_orig, xmm1_ast);
+                xmm2_ast = this->astCtxt->ite(is_fast, xmm2_orig, xmm2_ast);
+                xmm3_ast = this->astCtxt->ite(is_fast, xmm3_orig, xmm3_ast);
+                xmm4_ast = this->astCtxt->ite(is_fast, xmm4_orig, xmm4_ast);
+                xmm5_ast = this->astCtxt->ite(is_fast, xmm5_orig, xmm5_ast);
+                xmm6_ast = this->astCtxt->ite(is_fast, xmm6_orig, xmm6_ast);
+                xmm7_ast = this->astCtxt->ite(is_fast, xmm7_orig, xmm7_ast);
+
+                /* Fetch the abridged x87 FPU Tag Word Encoded Bits */
+                auto eb_1_0 = this->astCtxt->extract(0, 0, ftw_ast);
+                auto eb_3_2 = this->astCtxt->extract(1, 1, ftw_ast);
+                auto eb_5_4 = this->astCtxt->extract(2, 2, ftw_ast);
+                auto eb_7_6 = this->astCtxt->extract(3, 3, ftw_ast);
+                auto eb_9_8 = this->astCtxt->extract(4, 4, ftw_ast);
+                auto eb_11_10 = this->astCtxt->extract(5, 5, ftw_ast);
+                auto eb_13_12 = this->astCtxt->extract(6, 6, ftw_ast);
+                auto eb_15_14 = this->astCtxt->extract(7, 7, ftw_ast);
+
+                /* Extract the fraction from the STX registers */
+                auto fraction_st0 = this->astCtxt->extract(62, 0, st0_ast);
+                auto fraction_st1 = this->astCtxt->extract(62, 0, st1_ast);
+                auto fraction_st2 = this->astCtxt->extract(62, 0, st2_ast);
+                auto fraction_st3 = this->astCtxt->extract(62, 0, st3_ast);
+                auto fraction_st4 = this->astCtxt->extract(62, 0, st4_ast);
+                auto fraction_st5 = this->astCtxt->extract(62, 0, st5_ast);
+                auto fraction_st6 = this->astCtxt->extract(62, 0, st6_ast);
+                auto fraction_st7 = this->astCtxt->extract(62, 0, st7_ast);
+
+                /* Extract the integer bit from the STX registers */
+                auto integer_st0 = this->astCtxt->extract(63, 63, st0_ast);
+                auto integer_st1 = this->astCtxt->extract(63, 63, st1_ast);
+                auto integer_st2 = this->astCtxt->extract(63, 63, st2_ast);
+                auto integer_st3 = this->astCtxt->extract(63, 63, st3_ast);
+                auto integer_st4 = this->astCtxt->extract(63, 63, st4_ast);
+                auto integer_st5 = this->astCtxt->extract(63, 63, st5_ast);
+                auto integer_st6 = this->astCtxt->extract(63, 63, st6_ast);
+                auto integer_st7 = this->astCtxt->extract(63, 63, st7_ast);
+
+                /* Extract the exponent from the STX registers */
+                auto exponent_st0 = this->astCtxt->extract(79, 64, st0_ast);
+                auto exponent_st1 = this->astCtxt->extract(79, 64, st1_ast);
+                auto exponent_st2 = this->astCtxt->extract(79, 64, st2_ast);
+                auto exponent_st3 = this->astCtxt->extract(79, 64, st3_ast);
+                auto exponent_st4 = this->astCtxt->extract(79, 64, st4_ast);
+                auto exponent_st5 = this->astCtxt->extract(79, 64, st5_ast);
+                auto exponent_st6 = this->astCtxt->extract(79, 64, st6_ast);
+                auto exponent_st7 = this->astCtxt->extract(79, 64, st7_ast);
+
+                /* Exponent All Zeros */
+                auto ea0_st0 = this->astCtxt->equal(exponent_st0, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st1 = this->astCtxt->equal(exponent_st1, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st2 = this->astCtxt->equal(exponent_st2, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st3 = this->astCtxt->equal(exponent_st3, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st4 = this->astCtxt->equal(exponent_st4, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st5 = this->astCtxt->equal(exponent_st5, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st6 = this->astCtxt->equal(exponent_st6, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st7 = this->astCtxt->equal(exponent_st7, this->astCtxt->bv(0x0000, 16));
+
+                /* Exponent All Ones */
+                auto ea1_st0 = this->astCtxt->equal(exponent_st0, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st1 = this->astCtxt->equal(exponent_st1, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st2 = this->astCtxt->equal(exponent_st2, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st3 = this->astCtxt->equal(exponent_st3, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st4 = this->astCtxt->equal(exponent_st4, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st5 = this->astCtxt->equal(exponent_st5, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st6 = this->astCtxt->equal(exponent_st6, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st7 = this->astCtxt->equal(exponent_st7, this->astCtxt->bv(0xFFFF, 16));
+
+                /* Exponent Neither All Zeroes Or Ones */
+                auto ena01_st0 = this->astCtxt->equal(this->astCtxt->lor(ea0_st0, ea1_st0), this->astCtxt->bvfalse());
+                auto ena01_st1 = this->astCtxt->equal(this->astCtxt->lor(ea0_st1, ea1_st1), this->astCtxt->bvfalse());
+                auto ena01_st2 = this->astCtxt->equal(this->astCtxt->lor(ea0_st2, ea1_st2), this->astCtxt->bvfalse());
+                auto ena01_st3 = this->astCtxt->equal(this->astCtxt->lor(ea0_st3, ea1_st3), this->astCtxt->bvfalse());
+                auto ena01_st4 = this->astCtxt->equal(this->astCtxt->lor(ea0_st4, ea1_st4), this->astCtxt->bvfalse());
+                auto ena01_st5 = this->astCtxt->equal(this->astCtxt->lor(ea0_st5, ea1_st5), this->astCtxt->bvfalse());
+                auto ena01_st6 = this->astCtxt->equal(this->astCtxt->lor(ea0_st6, ea1_st6), this->astCtxt->bvfalse());
+                auto ena01_st7 = this->astCtxt->equal(this->astCtxt->lor(ea0_st7, ea1_st7), this->astCtxt->bvfalse());
+
+                /* Integer Bit 0 */
+                auto ib0_st0 = this->astCtxt->equal(integer_st0, this->astCtxt->bv(0, 1));
+                auto ib0_st1 = this->astCtxt->equal(integer_st1, this->astCtxt->bv(0, 1));
+                auto ib0_st2 = this->astCtxt->equal(integer_st2, this->astCtxt->bv(0, 1));
+                auto ib0_st3 = this->astCtxt->equal(integer_st3, this->astCtxt->bv(0, 1));
+                auto ib0_st4 = this->astCtxt->equal(integer_st4, this->astCtxt->bv(0, 1));
+                auto ib0_st5 = this->astCtxt->equal(integer_st5, this->astCtxt->bv(0, 1));
+                auto ib0_st6 = this->astCtxt->equal(integer_st6, this->astCtxt->bv(0, 1));
+                auto ib0_st7 = this->astCtxt->equal(integer_st7, this->astCtxt->bv(0, 1));
+
+                /* Fraction All Zeroes */
+                auto fa0_st0 = this->astCtxt->equal(fraction_st0, this->astCtxt->bv(0, 63));
+                auto fa0_st1 = this->astCtxt->equal(fraction_st1, this->astCtxt->bv(0, 63));
+                auto fa0_st2 = this->astCtxt->equal(fraction_st2, this->astCtxt->bv(0, 63));
+                auto fa0_st3 = this->astCtxt->equal(fraction_st3, this->astCtxt->bv(0, 63));
+                auto fa0_st4 = this->astCtxt->equal(fraction_st4, this->astCtxt->bv(0, 63));
+                auto fa0_st5 = this->astCtxt->equal(fraction_st5, this->astCtxt->bv(0, 63));
+                auto fa0_st6 = this->astCtxt->equal(fraction_st6, this->astCtxt->bv(0, 63));
+                auto fa0_st7 = this->astCtxt->equal(fraction_st7, this->astCtxt->bv(0, 63));
+
+                /* Determine the x87 FPU Tag Word (Diagram at page 379 of the AMD Architecture Programmer's Manual, Volume 2: System Programming) */
+                auto db_1_0 = this->astCtxt->ite(this->astCtxt->equal(eb_1_0, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st0,
+                        this->astCtxt->ite(ib0_st0,
+                            this->astCtxt->ite(fa0_st0,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st0,
+                            this->astCtxt->ite(ib0_st0,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_3_2 = this->astCtxt->ite(this->astCtxt->equal(eb_3_2, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st1,
+                        this->astCtxt->ite(ib0_st1,
+                            this->astCtxt->ite(fa0_st1,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st1,
+                            this->astCtxt->ite(ib0_st1,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_5_4 = this->astCtxt->ite(this->astCtxt->equal(eb_5_4, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st2,
+                        this->astCtxt->ite(ib0_st2,
+                            this->astCtxt->ite(fa0_st2,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st2,
+                            this->astCtxt->ite(ib0_st2,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_7_6 = this->astCtxt->ite(this->astCtxt->equal(eb_7_6, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st3,
+                        this->astCtxt->ite(ib0_st3,
+                            this->astCtxt->ite(fa0_st3,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st3,
+                            this->astCtxt->ite(ib0_st3,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_9_8 = this->astCtxt->ite(this->astCtxt->equal(eb_9_8, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st4,
+                        this->astCtxt->ite(ib0_st4,
+                            this->astCtxt->ite(fa0_st4,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st4,
+                            this->astCtxt->ite(ib0_st4,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_11_10 = this->astCtxt->ite(this->astCtxt->equal(eb_11_10, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st5,
+                        this->astCtxt->ite(ib0_st5,
+                            this->astCtxt->ite(fa0_st5,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st5,
+                            this->astCtxt->ite(ib0_st5,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_13_12 = this->astCtxt->ite(this->astCtxt->equal(eb_13_12, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st6,
+                        this->astCtxt->ite(ib0_st6,
+                            this->astCtxt->ite(fa0_st6,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st6,
+                            this->astCtxt->ite(ib0_st6,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_15_14 = this->astCtxt->ite(this->astCtxt->equal(eb_15_14, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st7,
+                        this->astCtxt->ite(ib0_st7,
+                            this->astCtxt->ite(fa0_st7,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st7,
+                            this->astCtxt->ite(ib0_st7,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                /* Restore the x87 FPU Tag Word */
+                auto uftw_ast = this->astCtxt->concat(db_15_14,
+                    this->astCtxt->concat(db_13_12,
+                        this->astCtxt->concat(db_11_10,
+                            this->astCtxt->concat(db_9_8,
+                                this->astCtxt->concat(db_7_6,
+                                    this->astCtxt->concat(db_5_4,
+                                        this->astCtxt->concat(db_3_2, db_1_0)))))));
+
+                /* Craft the symbolic expressions */
+                auto fcw_expr = this->symbolicEngine->createSymbolicExpression(inst, fcw_ast, fcw, "FXRSTOR FCW operation");
+                auto fsw_expr = this->symbolicEngine->createSymbolicExpression(inst, fsw_ast, fsw, "FXRSTOR FSW operation");
+                auto ftw_expr = this->symbolicEngine->createSymbolicExpression(inst, uftw_ast, ftw, "FXRSTOR Updated FTW operation");
+                auto fop_expr = this->symbolicEngine->createSymbolicExpression(inst, fop_ast, fop, "FXRSTOR FOP operation");
+                auto fip_expr = this->symbolicEngine->createSymbolicExpression(inst, fip_ast, fip, "FXRSTOR FIP operation");
+                auto fcs_expr = this->symbolicEngine->createSymbolicExpression(inst, fcs_ast, fcs, "FXRSTOR FCS operation");
+                auto fdp_expr = this->symbolicEngine->createSymbolicExpression(inst, fdp_ast, fdp, "FXRSTOR FDP operation");
+                auto fds_expr = this->symbolicEngine->createSymbolicExpression(inst, fds_ast, fds, "FXRSTOR FDS operation");
+                auto mxcsr_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_ast, mxcsr, "FXRSTOR MXCSR operation");
+                auto mxcsr_mask_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_mask_ast, mxcsr_mask, "FXRSTOR MXCSR_MASK operation");
+                auto st0_expr = this->symbolicEngine->createSymbolicExpression(inst, st0_ast, st0, "FXRSTOR ST0 operation");
+                auto st1_expr = this->symbolicEngine->createSymbolicExpression(inst, st1_ast, st1, "FXRSTOR ST1 operation");
+                auto st2_expr = this->symbolicEngine->createSymbolicExpression(inst, st2_ast, st2, "FXRSTOR ST2 operation");
+                auto st3_expr = this->symbolicEngine->createSymbolicExpression(inst, st3_ast, st3, "FXRSTOR ST3 operation");
+                auto st4_expr = this->symbolicEngine->createSymbolicExpression(inst, st4_ast, st4, "FXRSTOR ST4 operation");
+                auto st5_expr = this->symbolicEngine->createSymbolicExpression(inst, st5_ast, st5, "FXRSTOR ST5 operation");
+                auto st6_expr = this->symbolicEngine->createSymbolicExpression(inst, st6_ast, st6, "FXRSTOR ST6 operation");
+                auto st7_expr = this->symbolicEngine->createSymbolicExpression(inst, st7_ast, st7, "FXRSTOR ST7 operation");
+                auto xmm0_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm0_ast, xmm0, "FXRSTOR XMM0 operation");
+                auto xmm1_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm1_ast, xmm1, "FXRSTOR XMM1 operation");
+                auto xmm2_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm2_ast, xmm2, "FXRSTOR XMM2 operation");
+                auto xmm3_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm3_ast, xmm3, "FXRSTOR XMM3 operation");
+                auto xmm4_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm4_ast, xmm4, "FXRSTOR XMM4 operation");
+                auto xmm5_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm5_ast, xmm5, "FXRSTOR XMM5 operation");
+                auto xmm6_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm6_ast, xmm6, "FXRSTOR XMM6 operation");
+                auto xmm7_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm7_ast, xmm7, "FXRSTOR XMM7 operation");
+
+                /* Spread the taint */
+                fcw_expr->isTainted = this->taintEngine->taintAssignment(fcw, fcw_addr);
+                fsw_expr->isTainted = this->taintEngine->taintAssignment(fsw, fsw_addr);
+                ftw_expr->isTainted = this->taintEngine->taintAssignment(ftw, ftw_addr);
+                fop_expr->isTainted = this->taintEngine->taintAssignment(fop, fop_addr);
+                fip_expr->isTainted = this->taintEngine->taintAssignment(fip, fip_addr);
+                fcs_expr->isTainted = this->taintEngine->taintAssignment(fcs, fcs_addr);
+                fdp_expr->isTainted = this->taintEngine->taintAssignment(fdp, fdp_addr);
+                fds_expr->isTainted = this->taintEngine->taintAssignment(fds, fds_addr);
+                mxcsr_expr->isTainted = this->taintEngine->taintAssignment(mxcsr, mxcsr_addr);
+                mxcsr_mask_expr->isTainted = this->taintEngine->taintAssignment(mxcsr_mask, mxcsr_mask_addr);
+                st0_expr->isTainted = this->taintEngine->taintAssignment(st0, st0_addr);
+                st1_expr->isTainted = this->taintEngine->taintAssignment(st1, st1_addr);
+                st2_expr->isTainted = this->taintEngine->taintAssignment(st2, st2_addr);
+                st3_expr->isTainted = this->taintEngine->taintAssignment(st3, st3_addr);
+                st4_expr->isTainted = this->taintEngine->taintAssignment(st4, st4_addr);
+                st5_expr->isTainted = this->taintEngine->taintAssignment(st5, st5_addr);
+                st6_expr->isTainted = this->taintEngine->taintAssignment(st6, st6_addr);
+                st7_expr->isTainted = this->taintEngine->taintAssignment(st7, st7_addr);
+                xmm0_expr->isTainted = this->taintEngine->taintAssignment(xmm0, xmm0_addr);
+                xmm1_expr->isTainted = this->taintEngine->taintAssignment(xmm1, xmm1_addr);
+                xmm2_expr->isTainted = this->taintEngine->taintAssignment(xmm2, xmm2_addr);
+                xmm3_expr->isTainted = this->taintEngine->taintAssignment(xmm3, xmm3_addr);
+                xmm4_expr->isTainted = this->taintEngine->taintAssignment(xmm4, xmm4_addr);
+                xmm5_expr->isTainted = this->taintEngine->taintAssignment(xmm5, xmm5_addr);
+                xmm6_expr->isTainted = this->taintEngine->taintAssignment(xmm6, xmm6_addr);
+                xmm7_expr->isTainted = this->taintEngine->taintAssignment(xmm7, xmm7_addr);
+
+                /* Additional semantics, symbolic expressions and tainting for the '64-bit Mode Layout (with REX.W = 0)' */
+                if (is64bits) {
+                    auto xmm8 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM8));
+                    auto xmm9 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM9));
+                    auto xmm10 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM10));
+                    auto xmm11 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM11));
+                    auto xmm12 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM12));
+                    auto xmm13 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM13));
+                    auto xmm14 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM14));
+                    auto xmm15 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM15));
+
+                    auto xmm8_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 288, xmm8.getSize()));
+                    auto xmm9_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 304, xmm9.getSize()));
+                    auto xmm10_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 320, xmm10.getSize()));
+                    auto xmm11_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 336, xmm11.getSize()));
+                    auto xmm12_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 352, xmm12.getSize()));
+                    auto xmm13_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 368, xmm13.getSize()));
+                    auto xmm14_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 384, xmm14.getSize()));
+                    auto xmm15_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 400, xmm15.getSize()));
+
+                    auto xmm8_ast = this->symbolicEngine->getOperandAst(inst, xmm8_addr);
+                    auto xmm9_ast = this->symbolicEngine->getOperandAst(inst, xmm9_addr);
+                    auto xmm10_ast = this->symbolicEngine->getOperandAst(inst, xmm10_addr);
+                    auto xmm11_ast = this->symbolicEngine->getOperandAst(inst, xmm11_addr);
+                    auto xmm12_ast = this->symbolicEngine->getOperandAst(inst, xmm12_addr);
+                    auto xmm13_ast = this->symbolicEngine->getOperandAst(inst, xmm13_addr);
+                    auto xmm14_ast = this->symbolicEngine->getOperandAst(inst, xmm14_addr);
+                    auto xmm15_ast = this->symbolicEngine->getOperandAst(inst, xmm15_addr);
+
+                    /* Fetch the original values for the XMM8-XMM15 registers */
+                    auto xmm8_orig = this->symbolicEngine->getOperandAst(inst, xmm8);
+                    auto xmm9_orig = this->symbolicEngine->getOperandAst(inst, xmm9);
+                    auto xmm10_orig = this->symbolicEngine->getOperandAst(inst, xmm10);
+                    auto xmm11_orig = this->symbolicEngine->getOperandAst(inst, xmm11);
+                    auto xmm12_orig = this->symbolicEngine->getOperandAst(inst, xmm12);
+                    auto xmm13_orig = this->symbolicEngine->getOperandAst(inst, xmm13);
+                    auto xmm14_orig = this->symbolicEngine->getOperandAst(inst, xmm14);
+                    auto xmm15_orig = this->symbolicEngine->getOperandAst(inst, xmm15);
+
+                    /* Apply the fast restore logic if needed */
+                    xmm8_ast = this->astCtxt->ite(is_fast, xmm8_orig, xmm8_ast);
+                    xmm9_ast = this->astCtxt->ite(is_fast, xmm9_orig, xmm9_ast);
+                    xmm10_ast = this->astCtxt->ite(is_fast, xmm10_orig, xmm10_ast);
+                    xmm11_ast = this->astCtxt->ite(is_fast, xmm11_orig, xmm11_ast);
+                    xmm12_ast = this->astCtxt->ite(is_fast, xmm12_orig, xmm12_ast);
+                    xmm13_ast = this->astCtxt->ite(is_fast, xmm13_orig, xmm13_ast);
+                    xmm14_ast = this->astCtxt->ite(is_fast, xmm14_orig, xmm14_ast);
+                    xmm15_ast = this->astCtxt->ite(is_fast, xmm15_orig, xmm15_ast);
+
+                    auto xmm8_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm8_ast, xmm8, "FXRSTOR XMM8 operation");
+                    auto xmm9_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm9_ast, xmm9, "FXRSTOR XMM9 operation");
+                    auto xmm10_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm10_ast, xmm10, "FXRSTOR XMM10 operation");
+                    auto xmm11_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm11_ast, xmm11, "FXRSTOR XMM11 operation");
+                    auto xmm12_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm12_ast, xmm12, "FXRSTOR XMM12 operation");
+                    auto xmm13_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm13_ast, xmm13, "FXRSTOR XMM13 operation");
+                    auto xmm14_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm14_ast, xmm14, "FXRSTOR XMM14 operation");
+                    auto xmm15_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm15_ast, xmm15, "FXRSTOR XMM15 operation");
+
+                    xmm8_expr->isTainted = this->taintEngine->taintAssignment(xmm8, xmm8_addr);
+                    xmm9_expr->isTainted = this->taintEngine->taintAssignment(xmm9, xmm9_addr);
+                    xmm10_expr->isTainted = this->taintEngine->taintAssignment(xmm10, xmm10_addr);
+                    xmm11_expr->isTainted = this->taintEngine->taintAssignment(xmm11, xmm11_addr);
+                    xmm12_expr->isTainted = this->taintEngine->taintAssignment(xmm12, xmm12_addr);
+                    xmm13_expr->isTainted = this->taintEngine->taintAssignment(xmm13, xmm13_addr);
+                    xmm14_expr->isTainted = this->taintEngine->taintAssignment(xmm14, xmm14_addr);
+                    xmm15_expr->isTainted = this->taintEngine->taintAssignment(xmm15, xmm15_addr);
+                }
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::fxrstor64_s(triton::arch::Instruction& inst) {
+                /* Fetch the memory operand */
+                auto& dst = inst.operands[0];
+                auto& mem = dst.getMemory();
+                auto m512byte = mem.getAddress();
+
+                /* Check if the address is on a 16-byte boundary */
+                if (m512byte & 0xF) {
+                    this->exception = triton::arch::FAULT_GP;
+                    return;
+                }
+
+                /* Fetch the FPU, STX, SSE, EFER and CS implicit operands */
+                auto fcw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCW));
+                auto fsw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FSW));
+                auto ftw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FTW));
+                auto fop = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FOP));
+                auto fip = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FIP));
+                auto fcs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCS));
+                auto fdp = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDP));
+                auto fds = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDS));
+                auto mxcsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR));
+                auto mxcsr_mask = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR_MASK));
+                auto st0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST0));
+                auto st1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST1));
+                auto st2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST2));
+                auto st3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST3));
+                auto st4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST4));
+                auto st5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST5));
+                auto st6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST6));
+                auto st7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST7));
+                auto xmm0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM0));
+                auto xmm1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM1));
+                auto xmm2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM2));
+                auto xmm3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM3));
+                auto xmm4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM4));
+                auto xmm5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM5));
+                auto xmm6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM6));
+                auto xmm7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM7));
+                auto xmm8 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM8));
+                auto xmm9 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM9));
+                auto xmm10 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM10));
+                auto xmm11 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM11));
+                auto xmm12 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM12));
+                auto xmm13 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM13));
+                auto xmm14 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM14));
+                auto xmm15 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM15));
+                auto ffxsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EFER_FFXSR));
+                auto cs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_CS));
+
+                /* Fetch the implicit memory slots for the '64-bit Mode Layout (with REX.W = 1)' */
+                auto fcw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 0, fcw.getSize()));
+                auto fsw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 2, fsw.getSize()));
+                auto ftw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 4, ftw.getSize() / 2));
+                auto fop_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 6, fop.getSize()));
+                auto fip_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 8, fip.getSize()));
+                auto fcs_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 12, fcs.getSize()));
+                auto fdp_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 16, fdp.getSize()));
+                auto fds_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 20, fds.getSize()));
+                auto mxcsr_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 24, mxcsr.getSize()));
+                auto mxcsr_mask_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 28, mxcsr_mask.getSize()));
+                auto st0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 32, st0.getSize()));
+                auto st1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 48, st1.getSize()));
+                auto st2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 64, st2.getSize()));
+                auto st3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 80, st3.getSize()));
+                auto st4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 96, st4.getSize()));
+                auto st5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 112, st5.getSize()));
+                auto st6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 128, st6.getSize()));
+                auto st7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 144, st7.getSize()));
+                auto xmm0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 160, xmm0.getSize()));
+                auto xmm1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 176, xmm1.getSize()));
+                auto xmm2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 192, xmm2.getSize()));
+                auto xmm3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 208, xmm3.getSize()));
+                auto xmm4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 224, xmm4.getSize()));
+                auto xmm5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 240, xmm5.getSize()));
+                auto xmm6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 256, xmm6.getSize()));
+                auto xmm7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 272, xmm7.getSize()));
+                auto xmm8_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 288, xmm8.getSize()));
+                auto xmm9_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 304, xmm9.getSize()));
+                auto xmm10_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 320, xmm10.getSize()));
+                auto xmm11_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 336, xmm11.getSize()));
+                auto xmm12_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 352, xmm12.getSize()));
+                auto xmm13_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 368, xmm13.getSize()));
+                auto xmm14_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 384, xmm14.getSize()));
+                auto xmm15_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 400, xmm15.getSize()));
+
+                /* Create the symbolic operands */
+                auto fcw_ast = this->symbolicEngine->getOperandAst(inst, fcw_addr);
+                auto fsw_ast = this->symbolicEngine->getOperandAst(inst, fsw_addr);
+                auto ftw_ast = this->symbolicEngine->getOperandAst(inst, ftw_addr);
+                auto fop_ast = this->symbolicEngine->getOperandAst(inst, fop_addr);
+                auto fip_ast = this->symbolicEngine->getOperandAst(inst, fip_addr);
+                auto fcs_ast = this->symbolicEngine->getOperandAst(inst, fcs_addr);
+                auto fdp_ast = this->symbolicEngine->getOperandAst(inst, fdp_addr);
+                auto fds_ast = this->symbolicEngine->getOperandAst(inst, fds_addr);
+                auto mxcsr_ast = this->symbolicEngine->getOperandAst(inst, mxcsr_addr);
+                auto mxcsr_mask_ast = this->symbolicEngine->getOperandAst(inst, mxcsr_mask_addr);
+                auto st0_ast = this->symbolicEngine->getOperandAst(inst, st0_addr);
+                auto st1_ast = this->symbolicEngine->getOperandAst(inst, st1_addr);
+                auto st2_ast = this->symbolicEngine->getOperandAst(inst, st2_addr);
+                auto st3_ast = this->symbolicEngine->getOperandAst(inst, st3_addr);
+                auto st4_ast = this->symbolicEngine->getOperandAst(inst, st4_addr);
+                auto st5_ast = this->symbolicEngine->getOperandAst(inst, st5_addr);
+                auto st6_ast = this->symbolicEngine->getOperandAst(inst, st6_addr);
+                auto st7_ast = this->symbolicEngine->getOperandAst(inst, st7_addr);
+                auto xmm0_ast = this->symbolicEngine->getOperandAst(inst, xmm0_addr);
+                auto xmm1_ast = this->symbolicEngine->getOperandAst(inst, xmm1_addr);
+                auto xmm2_ast = this->symbolicEngine->getOperandAst(inst, xmm2_addr);
+                auto xmm3_ast = this->symbolicEngine->getOperandAst(inst, xmm3_addr);
+                auto xmm4_ast = this->symbolicEngine->getOperandAst(inst, xmm4_addr);
+                auto xmm5_ast = this->symbolicEngine->getOperandAst(inst, xmm5_addr);
+                auto xmm6_ast = this->symbolicEngine->getOperandAst(inst, xmm6_addr);
+                auto xmm7_ast = this->symbolicEngine->getOperandAst(inst, xmm7_addr);
+                auto xmm8_ast = this->symbolicEngine->getOperandAst(inst, xmm8_addr);
+                auto xmm9_ast = this->symbolicEngine->getOperandAst(inst, xmm9_addr);
+                auto xmm10_ast = this->symbolicEngine->getOperandAst(inst, xmm10_addr);
+                auto xmm11_ast = this->symbolicEngine->getOperandAst(inst, xmm11_addr);
+                auto xmm12_ast = this->symbolicEngine->getOperandAst(inst, xmm12_addr);
+                auto xmm13_ast = this->symbolicEngine->getOperandAst(inst, xmm13_addr);
+                auto xmm14_ast = this->symbolicEngine->getOperandAst(inst, xmm14_addr);
+                auto xmm15_ast = this->symbolicEngine->getOperandAst(inst, xmm15_addr);
+                auto ffxsr_ast = this->symbolicEngine->getOperandAst(inst, ffxsr);
+                auto cs_ast = this->symbolicEngine->getOperandAst(inst, cs);
+
+                /* Fetch the original values for the XMM0-XMM15 registers */
+                auto xmm0_orig = this->symbolicEngine->getOperandAst(inst, xmm0);
+                auto xmm1_orig = this->symbolicEngine->getOperandAst(inst, xmm1);
+                auto xmm2_orig = this->symbolicEngine->getOperandAst(inst, xmm2);
+                auto xmm3_orig = this->symbolicEngine->getOperandAst(inst, xmm3);
+                auto xmm4_orig = this->symbolicEngine->getOperandAst(inst, xmm4);
+                auto xmm5_orig = this->symbolicEngine->getOperandAst(inst, xmm5);
+                auto xmm6_orig = this->symbolicEngine->getOperandAst(inst, xmm6);
+                auto xmm7_orig = this->symbolicEngine->getOperandAst(inst, xmm7);
+                auto xmm8_orig = this->symbolicEngine->getOperandAst(inst, xmm8);
+                auto xmm9_orig = this->symbolicEngine->getOperandAst(inst, xmm9);
+                auto xmm10_orig = this->symbolicEngine->getOperandAst(inst, xmm10);
+                auto xmm11_orig = this->symbolicEngine->getOperandAst(inst, xmm11);
+                auto xmm12_orig = this->symbolicEngine->getOperandAst(inst, xmm12);
+                auto xmm13_orig = this->symbolicEngine->getOperandAst(inst, xmm13);
+                auto xmm14_orig = this->symbolicEngine->getOperandAst(inst, xmm14);
+                auto xmm15_orig = this->symbolicEngine->getOperandAst(inst, xmm15);
+
+                /* Check if we are running in CPL = 0 (ring 0) and if the FFXSR bit is set in EFER */
+                auto cpl = this->astCtxt->equal(this->astCtxt->extract(1, 0, cs_ast), this->astCtxt->bv(0, 2));
+                auto ffx = this->astCtxt->equal(ffxsr_ast, this->astCtxt->bv(1, 1));
+                auto is_fast = this->astCtxt->land(cpl, ffx);
+
+                /* Apply the fast restore logic if needed */
+                xmm0_ast = this->astCtxt->ite(is_fast, xmm0_orig, xmm0_ast);
+                xmm1_ast = this->astCtxt->ite(is_fast, xmm1_orig, xmm1_ast);
+                xmm2_ast = this->astCtxt->ite(is_fast, xmm2_orig, xmm2_ast);
+                xmm3_ast = this->astCtxt->ite(is_fast, xmm3_orig, xmm3_ast);
+                xmm4_ast = this->astCtxt->ite(is_fast, xmm4_orig, xmm4_ast);
+                xmm5_ast = this->astCtxt->ite(is_fast, xmm5_orig, xmm5_ast);
+                xmm6_ast = this->astCtxt->ite(is_fast, xmm6_orig, xmm6_ast);
+                xmm7_ast = this->astCtxt->ite(is_fast, xmm7_orig, xmm7_ast);
+                xmm8_ast = this->astCtxt->ite(is_fast, xmm8_orig, xmm8_ast);
+                xmm9_ast = this->astCtxt->ite(is_fast, xmm9_orig, xmm9_ast);
+                xmm10_ast = this->astCtxt->ite(is_fast, xmm10_orig, xmm10_ast);
+                xmm11_ast = this->astCtxt->ite(is_fast, xmm11_orig, xmm11_ast);
+                xmm12_ast = this->astCtxt->ite(is_fast, xmm12_orig, xmm12_ast);
+                xmm13_ast = this->astCtxt->ite(is_fast, xmm13_orig, xmm13_ast);
+                xmm14_ast = this->astCtxt->ite(is_fast, xmm14_orig, xmm14_ast);
+                xmm15_ast = this->astCtxt->ite(is_fast, xmm15_orig, xmm15_ast);
+
+                /* Fetch the abridged x87 FPU Tag Word Encoded Bits */
+                auto eb_1_0 = this->astCtxt->extract(0, 0, ftw_ast);
+                auto eb_3_2 = this->astCtxt->extract(1, 1, ftw_ast);
+                auto eb_5_4 = this->astCtxt->extract(2, 2, ftw_ast);
+                auto eb_7_6 = this->astCtxt->extract(3, 3, ftw_ast);
+                auto eb_9_8 = this->astCtxt->extract(4, 4, ftw_ast);
+                auto eb_11_10 = this->astCtxt->extract(5, 5, ftw_ast);
+                auto eb_13_12 = this->astCtxt->extract(6, 6, ftw_ast);
+                auto eb_15_14 = this->astCtxt->extract(7, 7, ftw_ast);
+
+                /* Extract the fraction from the STX registers */
+                auto fraction_st0 = this->astCtxt->extract(62, 0, st0_ast);
+                auto fraction_st1 = this->astCtxt->extract(62, 0, st1_ast);
+                auto fraction_st2 = this->astCtxt->extract(62, 0, st2_ast);
+                auto fraction_st3 = this->astCtxt->extract(62, 0, st3_ast);
+                auto fraction_st4 = this->astCtxt->extract(62, 0, st4_ast);
+                auto fraction_st5 = this->astCtxt->extract(62, 0, st5_ast);
+                auto fraction_st6 = this->astCtxt->extract(62, 0, st6_ast);
+                auto fraction_st7 = this->astCtxt->extract(62, 0, st7_ast);
+
+                /* Extract the integer bit from the STX registers */
+                auto integer_st0 = this->astCtxt->extract(63, 63, st0_ast);
+                auto integer_st1 = this->astCtxt->extract(63, 63, st1_ast);
+                auto integer_st2 = this->astCtxt->extract(63, 63, st2_ast);
+                auto integer_st3 = this->astCtxt->extract(63, 63, st3_ast);
+                auto integer_st4 = this->astCtxt->extract(63, 63, st4_ast);
+                auto integer_st5 = this->astCtxt->extract(63, 63, st5_ast);
+                auto integer_st6 = this->astCtxt->extract(63, 63, st6_ast);
+                auto integer_st7 = this->astCtxt->extract(63, 63, st7_ast);
+
+                /* Extract the exponent from the STX registers */
+                auto exponent_st0 = this->astCtxt->extract(79, 64, st0_ast);
+                auto exponent_st1 = this->astCtxt->extract(79, 64, st1_ast);
+                auto exponent_st2 = this->astCtxt->extract(79, 64, st2_ast);
+                auto exponent_st3 = this->astCtxt->extract(79, 64, st3_ast);
+                auto exponent_st4 = this->astCtxt->extract(79, 64, st4_ast);
+                auto exponent_st5 = this->astCtxt->extract(79, 64, st5_ast);
+                auto exponent_st6 = this->astCtxt->extract(79, 64, st6_ast);
+                auto exponent_st7 = this->astCtxt->extract(79, 64, st7_ast);
+
+                /* Exponent All Zeros */
+                auto ea0_st0 = this->astCtxt->equal(exponent_st0, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st1 = this->astCtxt->equal(exponent_st1, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st2 = this->astCtxt->equal(exponent_st2, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st3 = this->astCtxt->equal(exponent_st3, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st4 = this->astCtxt->equal(exponent_st4, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st5 = this->astCtxt->equal(exponent_st5, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st6 = this->astCtxt->equal(exponent_st6, this->astCtxt->bv(0x0000, 16));
+                auto ea0_st7 = this->astCtxt->equal(exponent_st7, this->astCtxt->bv(0x0000, 16));
+
+                /* Exponent All Ones */
+                auto ea1_st0 = this->astCtxt->equal(exponent_st0, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st1 = this->astCtxt->equal(exponent_st1, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st2 = this->astCtxt->equal(exponent_st2, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st3 = this->astCtxt->equal(exponent_st3, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st4 = this->astCtxt->equal(exponent_st4, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st5 = this->astCtxt->equal(exponent_st5, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st6 = this->astCtxt->equal(exponent_st6, this->astCtxt->bv(0xFFFF, 16));
+                auto ea1_st7 = this->astCtxt->equal(exponent_st7, this->astCtxt->bv(0xFFFF, 16));
+
+                /* Exponent Neither All Zeroes Or Ones */
+                auto ena01_st0 = this->astCtxt->equal(this->astCtxt->lor(ea0_st0, ea1_st0), this->astCtxt->bvfalse());
+                auto ena01_st1 = this->astCtxt->equal(this->astCtxt->lor(ea0_st1, ea1_st1), this->astCtxt->bvfalse());
+                auto ena01_st2 = this->astCtxt->equal(this->astCtxt->lor(ea0_st2, ea1_st2), this->astCtxt->bvfalse());
+                auto ena01_st3 = this->astCtxt->equal(this->astCtxt->lor(ea0_st3, ea1_st3), this->astCtxt->bvfalse());
+                auto ena01_st4 = this->astCtxt->equal(this->astCtxt->lor(ea0_st4, ea1_st4), this->astCtxt->bvfalse());
+                auto ena01_st5 = this->astCtxt->equal(this->astCtxt->lor(ea0_st5, ea1_st5), this->astCtxt->bvfalse());
+                auto ena01_st6 = this->astCtxt->equal(this->astCtxt->lor(ea0_st6, ea1_st6), this->astCtxt->bvfalse());
+                auto ena01_st7 = this->astCtxt->equal(this->astCtxt->lor(ea0_st7, ea1_st7), this->astCtxt->bvfalse());
+
+                /* Integer Bit 0 */
+                auto ib0_st0 = this->astCtxt->equal(integer_st0, this->astCtxt->bv(0, 1));
+                auto ib0_st1 = this->astCtxt->equal(integer_st1, this->astCtxt->bv(0, 1));
+                auto ib0_st2 = this->astCtxt->equal(integer_st2, this->astCtxt->bv(0, 1));
+                auto ib0_st3 = this->astCtxt->equal(integer_st3, this->astCtxt->bv(0, 1));
+                auto ib0_st4 = this->astCtxt->equal(integer_st4, this->astCtxt->bv(0, 1));
+                auto ib0_st5 = this->astCtxt->equal(integer_st5, this->astCtxt->bv(0, 1));
+                auto ib0_st6 = this->astCtxt->equal(integer_st6, this->astCtxt->bv(0, 1));
+                auto ib0_st7 = this->astCtxt->equal(integer_st7, this->astCtxt->bv(0, 1));
+
+                /* Fraction All Zeroes */
+                auto fa0_st0 = this->astCtxt->equal(fraction_st0, this->astCtxt->bv(0, 63));
+                auto fa0_st1 = this->astCtxt->equal(fraction_st1, this->astCtxt->bv(0, 63));
+                auto fa0_st2 = this->astCtxt->equal(fraction_st2, this->astCtxt->bv(0, 63));
+                auto fa0_st3 = this->astCtxt->equal(fraction_st3, this->astCtxt->bv(0, 63));
+                auto fa0_st4 = this->astCtxt->equal(fraction_st4, this->astCtxt->bv(0, 63));
+                auto fa0_st5 = this->astCtxt->equal(fraction_st5, this->astCtxt->bv(0, 63));
+                auto fa0_st6 = this->astCtxt->equal(fraction_st6, this->astCtxt->bv(0, 63));
+                auto fa0_st7 = this->astCtxt->equal(fraction_st7, this->astCtxt->bv(0, 63));
+
+                /* Determine the x87 FPU Tag Word (Diagram at page 379 of the AMD Architecture Programmer's Manual, Volume 2: System Programming) */
+                auto db_1_0 = this->astCtxt->ite(this->astCtxt->equal(eb_1_0, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st0,
+                        this->astCtxt->ite(ib0_st0,
+                            this->astCtxt->ite(fa0_st0,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st0,
+                            this->astCtxt->ite(ib0_st0,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_3_2 = this->astCtxt->ite(this->astCtxt->equal(eb_3_2, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st1,
+                        this->astCtxt->ite(ib0_st1,
+                            this->astCtxt->ite(fa0_st1,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st1,
+                            this->astCtxt->ite(ib0_st1,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_5_4 = this->astCtxt->ite(this->astCtxt->equal(eb_5_4, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st2,
+                        this->astCtxt->ite(ib0_st2,
+                            this->astCtxt->ite(fa0_st2,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st2,
+                            this->astCtxt->ite(ib0_st2,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_7_6 = this->astCtxt->ite(this->astCtxt->equal(eb_7_6, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st3,
+                        this->astCtxt->ite(ib0_st3,
+                            this->astCtxt->ite(fa0_st3,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st3,
+                            this->astCtxt->ite(ib0_st3,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_9_8 = this->astCtxt->ite(this->astCtxt->equal(eb_9_8, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st4,
+                        this->astCtxt->ite(ib0_st4,
+                            this->astCtxt->ite(fa0_st4,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st4,
+                            this->astCtxt->ite(ib0_st4,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_11_10 = this->astCtxt->ite(this->astCtxt->equal(eb_11_10, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st5,
+                        this->astCtxt->ite(ib0_st5,
+                            this->astCtxt->ite(fa0_st5,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st5,
+                            this->astCtxt->ite(ib0_st5,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_13_12 = this->astCtxt->ite(this->astCtxt->equal(eb_13_12, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st6,
+                        this->astCtxt->ite(ib0_st6,
+                            this->astCtxt->ite(fa0_st6,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st6,
+                            this->astCtxt->ite(ib0_st6,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                auto db_15_14 = this->astCtxt->ite(this->astCtxt->equal(eb_15_14, this->astCtxt->bv(0, 1)),
+                    this->astCtxt->bv(3, 2),          // Encoded x87 FPU Tag Bit = 0
+                    this->astCtxt->ite(ea0_st7,
+                        this->astCtxt->ite(ib0_st7,
+                            this->astCtxt->ite(fa0_st7,
+                                this->astCtxt->bv(1, 2),    // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction All 0'
+                                this->astCtxt->bv(2, 2)),   // 'Exponent All 0' + 'Integer Bit 0' + 'Fraction Not All 0'
+                            this->astCtxt->bv(2, 2)),     // 'Exponent All 0' + 'Integer Bit 1'
+                        this->astCtxt->ite(ena01_st7,
+                            this->astCtxt->ite(ib0_st7,
+                                this->astCtxt->bv(2, 2),    // 'Exponent Not All 0/1' + 'Integer Bit 0'
+                                this->astCtxt->bv(0, 2)),   // 'Exponent Not All 0/1' + 'Integer Bit 1'
+                            this->astCtxt->bv(2, 2))));   // 'Exponent All 1'
+
+                /* Restore the x87 FPU Tag Word */
+                auto uftw_ast = this->astCtxt->concat(db_15_14,
+                    this->astCtxt->concat(db_13_12,
+                        this->astCtxt->concat(db_11_10,
+                            this->astCtxt->concat(db_9_8,
+                                this->astCtxt->concat(db_7_6,
+                                    this->astCtxt->concat(db_5_4,
+                                        this->astCtxt->concat(db_3_2, db_1_0)))))));
+
+                /* Craft the symbolic expressions */
+                auto fcw_expr = this->symbolicEngine->createSymbolicExpression(inst, fcw_ast, fcw, "FXRSTOR64 FCW operation");
+                auto fsw_expr = this->symbolicEngine->createSymbolicExpression(inst, fsw_ast, fsw, "FXRSTOR64 FSW operation");
+                auto ftw_expr = this->symbolicEngine->createSymbolicExpression(inst, uftw_ast, ftw, "FXRSTOR64 Updated FTW operation");
+                auto fop_expr = this->symbolicEngine->createSymbolicExpression(inst, fop_ast, fop, "FXRSTOR64 FOP operation");
+                auto fip_expr = this->symbolicEngine->createSymbolicExpression(inst, fip_ast, fip, "FXRSTOR64 FIP operation");
+                auto fcs_expr = this->symbolicEngine->createSymbolicExpression(inst, fcs_ast, fcs, "FXRSTOR64 FCS operation");
+                auto fdp_expr = this->symbolicEngine->createSymbolicExpression(inst, fdp_ast, fdp, "FXRSTOR64 FDP operation");
+                auto fds_expr = this->symbolicEngine->createSymbolicExpression(inst, fds_ast, fds, "FXRSTOR64 FDS operation");
+                auto mxcsr_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_ast, mxcsr, "FXRSTOR64 MXCSR operation");
+                auto mxcsr_mask_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_mask_ast, mxcsr_mask, "FXRSTOR64 MXCSR_MASK operation");
+                auto st0_expr = this->symbolicEngine->createSymbolicExpression(inst, st0_ast, st0, "FXRSTOR64 ST0 operation");
+                auto st1_expr = this->symbolicEngine->createSymbolicExpression(inst, st1_ast, st1, "FXRSTOR64 ST1 operation");
+                auto st2_expr = this->symbolicEngine->createSymbolicExpression(inst, st2_ast, st2, "FXRSTOR64 ST2 operation");
+                auto st3_expr = this->symbolicEngine->createSymbolicExpression(inst, st3_ast, st3, "FXRSTOR64 ST3 operation");
+                auto st4_expr = this->symbolicEngine->createSymbolicExpression(inst, st4_ast, st4, "FXRSTOR64 ST4 operation");
+                auto st5_expr = this->symbolicEngine->createSymbolicExpression(inst, st5_ast, st5, "FXRSTOR64 ST5 operation");
+                auto st6_expr = this->symbolicEngine->createSymbolicExpression(inst, st6_ast, st6, "FXRSTOR64 ST6 operation");
+                auto st7_expr = this->symbolicEngine->createSymbolicExpression(inst, st7_ast, st7, "FXRSTOR64 ST7 operation");
+                auto xmm0_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm0_ast, xmm0, "FXRSTOR64 XMM0 operation");
+                auto xmm1_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm1_ast, xmm1, "FXRSTOR64 XMM1 operation");
+                auto xmm2_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm2_ast, xmm2, "FXRSTOR64 XMM2 operation");
+                auto xmm3_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm3_ast, xmm3, "FXRSTOR64 XMM3 operation");
+                auto xmm4_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm4_ast, xmm4, "FXRSTOR64 XMM4 operation");
+                auto xmm5_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm5_ast, xmm5, "FXRSTOR64 XMM5 operation");
+                auto xmm6_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm6_ast, xmm6, "FXRSTOR64 XMM6 operation");
+                auto xmm7_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm7_ast, xmm7, "FXRSTOR64 XMM7 operation");
+                auto xmm8_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm8_ast, xmm8, "FXRSTOR64 XMM8 operation");
+                auto xmm9_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm9_ast, xmm9, "FXRSTOR64 XMM9 operation");
+                auto xmm10_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm10_ast, xmm10, "FXRSTOR64 XMM10 operation");
+                auto xmm11_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm11_ast, xmm11, "FXRSTOR64 XMM11 operation");
+                auto xmm12_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm12_ast, xmm12, "FXRSTOR64 XMM12 operation");
+                auto xmm13_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm13_ast, xmm13, "FXRSTOR64 XMM13 operation");
+                auto xmm14_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm14_ast, xmm14, "FXRSTOR64 XMM14 operation");
+                auto xmm15_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm15_ast, xmm15, "FXRSTOR64 XMM15 operation");
+
+                /* Spread the taint */
+                fcw_expr->isTainted = this->taintEngine->taintAssignment(fcw, fcw_addr);
+                fsw_expr->isTainted = this->taintEngine->taintAssignment(fsw, fsw_addr);
+                ftw_expr->isTainted = this->taintEngine->taintAssignment(ftw, ftw_addr);
+                fop_expr->isTainted = this->taintEngine->taintAssignment(fop, fop_addr);
+                fip_expr->isTainted = this->taintEngine->taintAssignment(fip, fip_addr);
+                fcs_expr->isTainted = this->taintEngine->taintAssignment(fcs, fcs_addr);
+                fdp_expr->isTainted = this->taintEngine->taintAssignment(fdp, fdp_addr);
+                fds_expr->isTainted = this->taintEngine->taintAssignment(fds, fds_addr);
+                mxcsr_expr->isTainted = this->taintEngine->taintAssignment(mxcsr, mxcsr_addr);
+                mxcsr_mask_expr->isTainted = this->taintEngine->taintAssignment(mxcsr_mask, mxcsr_mask_addr);
+                st0_expr->isTainted = this->taintEngine->taintAssignment(st0, st0_addr);
+                st1_expr->isTainted = this->taintEngine->taintAssignment(st1, st1_addr);
+                st2_expr->isTainted = this->taintEngine->taintAssignment(st2, st2_addr);
+                st3_expr->isTainted = this->taintEngine->taintAssignment(st3, st3_addr);
+                st4_expr->isTainted = this->taintEngine->taintAssignment(st4, st4_addr);
+                st5_expr->isTainted = this->taintEngine->taintAssignment(st5, st5_addr);
+                st6_expr->isTainted = this->taintEngine->taintAssignment(st6, st6_addr);
+                st7_expr->isTainted = this->taintEngine->taintAssignment(st7, st7_addr);
+                xmm0_expr->isTainted = this->taintEngine->taintAssignment(xmm0, xmm0_addr);
+                xmm1_expr->isTainted = this->taintEngine->taintAssignment(xmm1, xmm1_addr);
+                xmm2_expr->isTainted = this->taintEngine->taintAssignment(xmm2, xmm2_addr);
+                xmm3_expr->isTainted = this->taintEngine->taintAssignment(xmm3, xmm3_addr);
+                xmm4_expr->isTainted = this->taintEngine->taintAssignment(xmm4, xmm4_addr);
+                xmm5_expr->isTainted = this->taintEngine->taintAssignment(xmm5, xmm5_addr);
+                xmm6_expr->isTainted = this->taintEngine->taintAssignment(xmm6, xmm6_addr);
+                xmm7_expr->isTainted = this->taintEngine->taintAssignment(xmm7, xmm7_addr);
+                xmm8_expr->isTainted = this->taintEngine->taintAssignment(xmm8, xmm8_addr);
+                xmm9_expr->isTainted = this->taintEngine->taintAssignment(xmm9, xmm9_addr);
+                xmm10_expr->isTainted = this->taintEngine->taintAssignment(xmm10, xmm10_addr);
+                xmm11_expr->isTainted = this->taintEngine->taintAssignment(xmm11, xmm11_addr);
+                xmm12_expr->isTainted = this->taintEngine->taintAssignment(xmm12, xmm12_addr);
+                xmm13_expr->isTainted = this->taintEngine->taintAssignment(xmm13, xmm13_addr);
+                xmm14_expr->isTainted = this->taintEngine->taintAssignment(xmm14, xmm14_addr);
+                xmm15_expr->isTainted = this->taintEngine->taintAssignment(xmm15, xmm15_addr);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::fxsave_s(triton::arch::Instruction& inst) {
+                /* Fetch the current architecture */
+                auto arch = this->architecture->getArchitecture();
+
+                /* Determine if we are executing in 64 bit mode */
+                auto is64bits = arch == triton::arch::architecture_e::ARCH_X86_64;
+
+                /* Fetch the memory operand */
+                auto& dst = inst.operands[0];
+                auto& mem = dst.getMemory();
+                auto m512byte = mem.getAddress();
+
+                /* Check if the address is on a 16-byte boundary */
+                if (m512byte & 0xF) {
+                    this->exception = triton::arch::FAULT_GP;
+                    return;
+                }
+
+                /* Fetch the FPU, STX, SSE, EFER and CS implicit operands */
+                auto fcw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCW));
+                auto fsw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FSW));
+                auto ftw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FTW));
+                auto fop = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FOP));
+                auto fip = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FIP));
+                auto fcs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCS));
+                auto fdp = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDP));
+                auto fds = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDS));
+                auto mxcsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR));
+                auto mxcsr_mask = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR_MASK));
+                auto st0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST0));
+                auto st1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST1));
+                auto st2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST2));
+                auto st3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST3));
+                auto st4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST4));
+                auto st5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST5));
+                auto st6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST6));
+                auto st7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST7));
+                auto xmm0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM0));
+                auto xmm1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM1));
+                auto xmm2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM2));
+                auto xmm3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM3));
+                auto xmm4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM4));
+                auto xmm5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM5));
+                auto xmm6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM6));
+                auto xmm7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM7));
+                auto ffxsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EFER_FFXSR));
+                auto cs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_CS));
+
+                /* Create the symbolic operands */
+                auto fcw_ast = this->symbolicEngine->getOperandAst(inst, fcw);
+                auto fsw_ast = this->symbolicEngine->getOperandAst(inst, fsw);
+                auto ftw_ast = this->symbolicEngine->getOperandAst(inst, ftw);
+                auto fop_ast = this->symbolicEngine->getOperandAst(inst, fop);
+                auto fip_ast = this->astCtxt->extract(triton::bitsize::dword - 1, 0, this->symbolicEngine->getOperandAst(inst, fip));
+                auto fcs_ast = this->symbolicEngine->getOperandAst(inst, fcs);
+                auto fdp_ast = this->astCtxt->extract(triton::bitsize::dword - 1, 0, this->symbolicEngine->getOperandAst(inst, fdp));
+                auto fds_ast = this->symbolicEngine->getOperandAst(inst, fds);
+                auto mxcsr_ast = this->symbolicEngine->getOperandAst(inst, mxcsr);
+                auto mxcsr_mask_ast = this->symbolicEngine->getOperandAst(inst, mxcsr_mask);
+                auto st0_ast = this->symbolicEngine->getOperandAst(inst, st0);
+                auto st1_ast = this->symbolicEngine->getOperandAst(inst, st1);
+                auto st2_ast = this->symbolicEngine->getOperandAst(inst, st2);
+                auto st3_ast = this->symbolicEngine->getOperandAst(inst, st3);
+                auto st4_ast = this->symbolicEngine->getOperandAst(inst, st4);
+                auto st5_ast = this->symbolicEngine->getOperandAst(inst, st5);
+                auto st6_ast = this->symbolicEngine->getOperandAst(inst, st6);
+                auto st7_ast = this->symbolicEngine->getOperandAst(inst, st7);
+                auto xmm0_ast = this->symbolicEngine->getOperandAst(inst, xmm0);
+                auto xmm1_ast = this->symbolicEngine->getOperandAst(inst, xmm1);
+                auto xmm2_ast = this->symbolicEngine->getOperandAst(inst, xmm2);
+                auto xmm3_ast = this->symbolicEngine->getOperandAst(inst, xmm3);
+                auto xmm4_ast = this->symbolicEngine->getOperandAst(inst, xmm4);
+                auto xmm5_ast = this->symbolicEngine->getOperandAst(inst, xmm5);
+                auto xmm6_ast = this->symbolicEngine->getOperandAst(inst, xmm6);
+                auto xmm7_ast = this->symbolicEngine->getOperandAst(inst, xmm7);
+                auto ffxsr_ast = this->symbolicEngine->getOperandAst(inst, ffxsr);
+                auto cs_ast = this->symbolicEngine->getOperandAst(inst, cs);
+
+                /*
+                  Calculate the abridged x87 FPU Tag Word (from 2 bytes to 1 byte encoding)
+                  - Two-bit values of 00, 01, and 10 are encoded as a 1
+                  - A two-bit value of 11 is encoded as a 0
+                */
+                auto eb_1_0 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(1, 0, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_3_2 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(3, 2, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_5_4 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(5, 4, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_7_6 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(7, 6, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_9_8 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(9, 8, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_11_10 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(11, 10, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_13_12 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(13, 12, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_15_14 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(15, 14, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto aftw_ast = this->astCtxt->concat(eb_15_14,
+                    this->astCtxt->concat(eb_13_12,
+                        this->astCtxt->concat(eb_11_10,
+                            this->astCtxt->concat(eb_9_8,
+                                this->astCtxt->concat(eb_7_6,
+                                    this->astCtxt->concat(eb_5_4,
+                                        this->astCtxt->concat(eb_3_2, eb_1_0)))))));
+
+                /* Fetch the implicit memory slots for the 'Non-64-bit Mode Layout' */
+                auto fcw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 0, fcw.getSize()));
+                auto fsw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 2, fsw.getSize()));
+                auto ftw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 4, ftw.getSize() / 2));
+                auto fop_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 6, fop.getSize()));
+                auto fip_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 8, fip.getSize() / 2));
+                auto fcs_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 12, fcs.getSize()));
+                auto fdp_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 16, fdp.getSize() / 2));
+                auto fds_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 20, fds.getSize()));
+                auto mxcsr_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 24, mxcsr.getSize()));
+                auto mxcsr_mask_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 28, mxcsr_mask.getSize()));
+                auto st0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 32, st0.getSize()));
+                auto st1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 48, st1.getSize()));
+                auto st2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 64, st2.getSize()));
+                auto st3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 80, st3.getSize()));
+                auto st4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 96, st4.getSize()));
+                auto st5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 112, st5.getSize()));
+                auto st6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 128, st6.getSize()));
+                auto st7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 144, st7.getSize()));
+                auto xmm0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 160, xmm0.getSize()));
+                auto xmm1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 176, xmm1.getSize()));
+                auto xmm2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 192, xmm2.getSize()));
+                auto xmm3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 208, xmm3.getSize()));
+                auto xmm4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 224, xmm4.getSize()));
+                auto xmm5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 240, xmm5.getSize()));
+                auto xmm6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 256, xmm6.getSize()));
+                auto xmm7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 272, xmm7.getSize()));
+
+                /* Fetch the original values of the XMM0-XMM7 memory spaces */
+                auto xmm0_orig = this->symbolicEngine->getOperandAst(xmm0_addr);
+                auto xmm1_orig = this->symbolicEngine->getOperandAst(xmm1_addr);
+                auto xmm2_orig = this->symbolicEngine->getOperandAst(xmm2_addr);
+                auto xmm3_orig = this->symbolicEngine->getOperandAst(xmm3_addr);
+                auto xmm4_orig = this->symbolicEngine->getOperandAst(xmm4_addr);
+                auto xmm5_orig = this->symbolicEngine->getOperandAst(xmm5_addr);
+                auto xmm6_orig = this->symbolicEngine->getOperandAst(xmm6_addr);
+                auto xmm7_orig = this->symbolicEngine->getOperandAst(xmm7_addr);
+
+                /* Check if we are running in CPL = 0 (ring 0) and if the FFXSR bit is set in EFER */
+                auto cpl = this->astCtxt->equal(this->astCtxt->extract(1, 0, cs_ast), this->astCtxt->bv(0, 2));
+                auto ffx = this->astCtxt->equal(ffxsr_ast, this->astCtxt->bv(1, 1));
+                auto b64 = this->astCtxt->equal(this->astCtxt->bv(is64bits, 1), this->astCtxt->bv(1, 1));
+                auto is_fast = this->astCtxt->land(this->astCtxt->land(cpl, ffx), b64);
+
+                /* Apply the fast save logic if needed */
+                xmm0_ast = this->astCtxt->ite(is_fast, xmm0_orig, xmm0_ast);
+                xmm1_ast = this->astCtxt->ite(is_fast, xmm1_orig, xmm1_ast);
+                xmm2_ast = this->astCtxt->ite(is_fast, xmm2_orig, xmm2_ast);
+                xmm3_ast = this->astCtxt->ite(is_fast, xmm3_orig, xmm3_ast);
+                xmm4_ast = this->astCtxt->ite(is_fast, xmm4_orig, xmm4_ast);
+                xmm5_ast = this->astCtxt->ite(is_fast, xmm5_orig, xmm5_ast);
+                xmm6_ast = this->astCtxt->ite(is_fast, xmm6_orig, xmm6_ast);
+                xmm7_ast = this->astCtxt->ite(is_fast, xmm7_orig, xmm7_ast);
+
+                /* Craft the symbolic expressions */
+                auto fcw_expr = this->symbolicEngine->createSymbolicExpression(inst, fcw_ast, fcw_addr, "FXSAVE FCW operation");
+                auto fsw_expr = this->symbolicEngine->createSymbolicExpression(inst, fsw_ast, fsw_addr, "FXSAVE FSW operation");
+                auto ftw_expr = this->symbolicEngine->createSymbolicExpression(inst, aftw_ast, ftw_addr, "FXSAVE Abridged FTW operation");
+                auto fop_expr = this->symbolicEngine->createSymbolicExpression(inst, fop_ast, fop_addr, "FXSAVE FOP operation");
+                auto fip_expr = this->symbolicEngine->createSymbolicExpression(inst, fip_ast, fip_addr, "FXSAVE FIP operation");
+                auto fcs_expr = this->symbolicEngine->createSymbolicExpression(inst, fcs_ast, fcs_addr, "FXSAVE FCS operation");
+                auto fdp_expr = this->symbolicEngine->createSymbolicExpression(inst, fdp_ast, fdp_addr, "FXSAVE FDP operation");
+                auto fds_expr = this->symbolicEngine->createSymbolicExpression(inst, fds_ast, fds_addr, "FXSAVE FDS operation");
+                auto mxcsr_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_ast, mxcsr_addr, "FXSAVE MXCSR operation");
+                auto mxcsr_mask_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_mask_ast, mxcsr_mask_addr, "FXSAVE MXCSR_MASK operation");
+                auto st0_expr = this->symbolicEngine->createSymbolicExpression(inst, st0_ast, st0_addr, "FXSAVE ST0 operation");
+                auto st1_expr = this->symbolicEngine->createSymbolicExpression(inst, st1_ast, st1_addr, "FXSAVE ST1 operation");
+                auto st2_expr = this->symbolicEngine->createSymbolicExpression(inst, st2_ast, st2_addr, "FXSAVE ST2 operation");
+                auto st3_expr = this->symbolicEngine->createSymbolicExpression(inst, st3_ast, st3_addr, "FXSAVE ST3 operation");
+                auto st4_expr = this->symbolicEngine->createSymbolicExpression(inst, st4_ast, st4_addr, "FXSAVE ST4 operation");
+                auto st5_expr = this->symbolicEngine->createSymbolicExpression(inst, st5_ast, st5_addr, "FXSAVE ST5 operation");
+                auto st6_expr = this->symbolicEngine->createSymbolicExpression(inst, st6_ast, st6_addr, "FXSAVE ST6 operation");
+                auto st7_expr = this->symbolicEngine->createSymbolicExpression(inst, st7_ast, st7_addr, "FXSAVE ST7 operation");
+                auto xmm0_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm0_ast, xmm0_addr, "FXSAVE XMM0 operation");
+                auto xmm1_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm1_ast, xmm1_addr, "FXSAVE XMM1 operation");
+                auto xmm2_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm2_ast, xmm2_addr, "FXSAVE XMM2 operation");
+                auto xmm3_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm3_ast, xmm3_addr, "FXSAVE XMM3 operation");
+                auto xmm4_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm4_ast, xmm4_addr, "FXSAVE XMM4 operation");
+                auto xmm5_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm5_ast, xmm5_addr, "FXSAVE XMM5 operation");
+                auto xmm6_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm6_ast, xmm6_addr, "FXSAVE XMM6 operation");
+                auto xmm7_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm7_ast, xmm7_addr, "FXSAVE XMM7 operation");
+
+                /* Spread the taint */
+                fcw_expr->isTainted = this->taintEngine->taintAssignment(fcw_addr, fcw);
+                fsw_expr->isTainted = this->taintEngine->taintAssignment(fsw_addr, fsw);
+                ftw_expr->isTainted = this->taintEngine->taintAssignment(ftw_addr, ftw);
+                fop_expr->isTainted = this->taintEngine->taintAssignment(fop_addr, fop);
+                fip_expr->isTainted = this->taintEngine->taintAssignment(fip_addr, fip);
+                fcs_expr->isTainted = this->taintEngine->taintAssignment(fcs_addr, fcs);
+                fdp_expr->isTainted = this->taintEngine->taintAssignment(fdp_addr, fdp);
+                fds_expr->isTainted = this->taintEngine->taintAssignment(fds_addr, fds);
+                mxcsr_expr->isTainted = this->taintEngine->taintAssignment(mxcsr_addr, mxcsr);
+                mxcsr_mask_expr->isTainted = this->taintEngine->taintAssignment(mxcsr_mask_addr, mxcsr_mask);
+                st0_expr->isTainted = this->taintEngine->taintAssignment(st0_addr, st0);
+                st1_expr->isTainted = this->taintEngine->taintAssignment(st1_addr, st1);
+                st2_expr->isTainted = this->taintEngine->taintAssignment(st2_addr, st2);
+                st3_expr->isTainted = this->taintEngine->taintAssignment(st3_addr, st3);
+                st4_expr->isTainted = this->taintEngine->taintAssignment(st4_addr, st4);
+                st5_expr->isTainted = this->taintEngine->taintAssignment(st5_addr, st5);
+                st6_expr->isTainted = this->taintEngine->taintAssignment(st6_addr, st6);
+                st7_expr->isTainted = this->taintEngine->taintAssignment(st7_addr, st7);
+                xmm0_expr->isTainted = this->taintEngine->taintAssignment(xmm0_addr, xmm0);
+                xmm1_expr->isTainted = this->taintEngine->taintAssignment(xmm1_addr, xmm1);
+                xmm2_expr->isTainted = this->taintEngine->taintAssignment(xmm2_addr, xmm2);
+                xmm3_expr->isTainted = this->taintEngine->taintAssignment(xmm3_addr, xmm3);
+                xmm4_expr->isTainted = this->taintEngine->taintAssignment(xmm4_addr, xmm4);
+                xmm5_expr->isTainted = this->taintEngine->taintAssignment(xmm5_addr, xmm5);
+                xmm6_expr->isTainted = this->taintEngine->taintAssignment(xmm6_addr, xmm6);
+                xmm7_expr->isTainted = this->taintEngine->taintAssignment(xmm7_addr, xmm7);
+
+                /* Additional semantics, symbolic expressions and tainting for the '64-bit Mode Layout (with REX.W = 0)' */
+                if (is64bits) {
+                    auto xmm8 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM8));
+                    auto xmm9 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM9));
+                    auto xmm10 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM10));
+                    auto xmm11 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM11));
+                    auto xmm12 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM12));
+                    auto xmm13 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM13));
+                    auto xmm14 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM14));
+                    auto xmm15 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM15));
+
+                    auto xmm8_ast = this->symbolicEngine->getOperandAst(inst, xmm8);
+                    auto xmm9_ast = this->symbolicEngine->getOperandAst(inst, xmm9);
+                    auto xmm10_ast = this->symbolicEngine->getOperandAst(inst, xmm10);
+                    auto xmm11_ast = this->symbolicEngine->getOperandAst(inst, xmm11);
+                    auto xmm12_ast = this->symbolicEngine->getOperandAst(inst, xmm12);
+                    auto xmm13_ast = this->symbolicEngine->getOperandAst(inst, xmm13);
+                    auto xmm14_ast = this->symbolicEngine->getOperandAst(inst, xmm14);
+                    auto xmm15_ast = this->symbolicEngine->getOperandAst(inst, xmm15);
+
+                    auto xmm8_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 288, xmm8.getSize()));
+                    auto xmm9_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 304, xmm9.getSize()));
+                    auto xmm10_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 320, xmm10.getSize()));
+                    auto xmm11_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 336, xmm11.getSize()));
+                    auto xmm12_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 352, xmm12.getSize()));
+                    auto xmm13_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 368, xmm13.getSize()));
+                    auto xmm14_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 384, xmm14.getSize()));
+                    auto xmm15_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 400, xmm15.getSize()));
+
+                    /* Fetch the original values of the XMM8-XMM15 memory spaces */
+                    auto xmm8_orig = this->symbolicEngine->getOperandAst(xmm8_addr);
+                    auto xmm9_orig = this->symbolicEngine->getOperandAst(xmm9_addr);
+                    auto xmm10_orig = this->symbolicEngine->getOperandAst(xmm10_addr);
+                    auto xmm11_orig = this->symbolicEngine->getOperandAst(xmm11_addr);
+                    auto xmm12_orig = this->symbolicEngine->getOperandAst(xmm12_addr);
+                    auto xmm13_orig = this->symbolicEngine->getOperandAst(xmm13_addr);
+                    auto xmm14_orig = this->symbolicEngine->getOperandAst(xmm14_addr);
+                    auto xmm15_orig = this->symbolicEngine->getOperandAst(xmm15_addr);
+
+                    /* Check if we are running in CPL = 0 (ring 0) and if the FFXSR bit is set in EFER */
+                    auto cpl = this->astCtxt->equal(this->astCtxt->extract(1, 0, cs_ast), this->astCtxt->bv(0, 2));
+                    auto ffx = this->astCtxt->equal(ffxsr_ast, this->astCtxt->bv(1, 1));
+                    auto is_fast = this->astCtxt->land(cpl, ffx);
+
+                    /* Apply the fast save logic if needed */
+                    xmm8_ast = this->astCtxt->ite(is_fast, xmm8_orig, xmm8_ast);
+                    xmm9_ast = this->astCtxt->ite(is_fast, xmm9_orig, xmm9_ast);
+                    xmm10_ast = this->astCtxt->ite(is_fast, xmm10_orig, xmm10_ast);
+                    xmm11_ast = this->astCtxt->ite(is_fast, xmm11_orig, xmm11_ast);
+                    xmm12_ast = this->astCtxt->ite(is_fast, xmm12_orig, xmm12_ast);
+                    xmm13_ast = this->astCtxt->ite(is_fast, xmm13_orig, xmm13_ast);
+                    xmm14_ast = this->astCtxt->ite(is_fast, xmm14_orig, xmm14_ast);
+                    xmm15_ast = this->astCtxt->ite(is_fast, xmm15_orig, xmm15_ast);
+
+                    auto xmm8_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm8_ast, xmm8_addr, "FXSAVE XMM8 operation");
+                    auto xmm9_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm9_ast, xmm9_addr, "FXSAVE XMM9 operation");
+                    auto xmm10_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm10_ast, xmm10_addr, "FXSAVE XMM10 operation");
+                    auto xmm11_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm11_ast, xmm11_addr, "FXSAVE XMM11 operation");
+                    auto xmm12_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm12_ast, xmm12_addr, "FXSAVE XMM12 operation");
+                    auto xmm13_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm13_ast, xmm13_addr, "FXSAVE XMM13 operation");
+                    auto xmm14_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm14_ast, xmm14_addr, "FXSAVE XMM14 operation");
+                    auto xmm15_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm15_ast, xmm15_addr, "FXSAVE XMM15 operation");
+
+                    xmm8_expr->isTainted = this->taintEngine->taintAssignment(xmm8_addr, xmm8);
+                    xmm9_expr->isTainted = this->taintEngine->taintAssignment(xmm9_addr, xmm9);
+                    xmm10_expr->isTainted = this->taintEngine->taintAssignment(xmm10_addr, xmm10);
+                    xmm11_expr->isTainted = this->taintEngine->taintAssignment(xmm11_addr, xmm11);
+                    xmm12_expr->isTainted = this->taintEngine->taintAssignment(xmm12_addr, xmm12);
+                    xmm13_expr->isTainted = this->taintEngine->taintAssignment(xmm13_addr, xmm13);
+                    xmm14_expr->isTainted = this->taintEngine->taintAssignment(xmm14_addr, xmm14);
+                    xmm15_expr->isTainted = this->taintEngine->taintAssignment(xmm15_addr, xmm15);
+                }
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::fxsave64_s(triton::arch::Instruction& inst) {
+                /* Fetch the memory operand */
+                auto& dst = inst.operands[0];
+                auto& mem = dst.getMemory();
+                auto m512byte = mem.getAddress();
+
+                /* Check if the address is on a 16-byte boundary */
+                if (m512byte & 0xF) {
+                    this->exception = triton::arch::FAULT_GP;
+                    return;
+                }
+
+                /* Fetch the FPU, STX, SSE, EFER and CS implicit operands */
+                auto fcw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCW));
+                auto fsw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FSW));
+                auto ftw = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FTW));
+                auto fop = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FOP));
+                auto fip = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FIP));
+                auto fcs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FCS));
+                auto fdp = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDP));
+                auto fds = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_FDS));
+                auto mxcsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR));
+                auto mxcsr_mask = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_MXCSR_MASK));
+                auto st0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST0));
+                auto st1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST1));
+                auto st2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST2));
+                auto st3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST3));
+                auto st4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST4));
+                auto st5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST5));
+                auto st6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST6));
+                auto st7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ST7));
+                auto xmm0 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM0));
+                auto xmm1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM1));
+                auto xmm2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM2));
+                auto xmm3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM3));
+                auto xmm4 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM4));
+                auto xmm5 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM5));
+                auto xmm6 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM6));
+                auto xmm7 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM7));
+                auto xmm8 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM8));
+                auto xmm9 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM9));
+                auto xmm10 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM10));
+                auto xmm11 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM11));
+                auto xmm12 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM12));
+                auto xmm13 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM13));
+                auto xmm14 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM14));
+                auto xmm15 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_XMM15));
+                auto ffxsr = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EFER_FFXSR));
+                auto cs = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_CS));
+
+                /* Create the symbolic operands */
+                auto fcw_ast = this->symbolicEngine->getOperandAst(inst, fcw);
+                auto fsw_ast = this->symbolicEngine->getOperandAst(inst, fsw);
+                auto ftw_ast = this->symbolicEngine->getOperandAst(inst, ftw);
+                auto fop_ast = this->symbolicEngine->getOperandAst(inst, fop);
+                auto fip_ast = this->symbolicEngine->getOperandAst(inst, fip);
+                auto fcs_ast = this->symbolicEngine->getOperandAst(inst, fcs);
+                auto fdp_ast = this->symbolicEngine->getOperandAst(inst, fdp);
+                auto fds_ast = this->symbolicEngine->getOperandAst(inst, fds);
+                auto mxcsr_ast = this->symbolicEngine->getOperandAst(inst, mxcsr);
+                auto mxcsr_mask_ast = this->symbolicEngine->getOperandAst(inst, mxcsr_mask);
+                auto st0_ast = this->symbolicEngine->getOperandAst(inst, st0);
+                auto st1_ast = this->symbolicEngine->getOperandAst(inst, st1);
+                auto st2_ast = this->symbolicEngine->getOperandAst(inst, st2);
+                auto st3_ast = this->symbolicEngine->getOperandAst(inst, st3);
+                auto st4_ast = this->symbolicEngine->getOperandAst(inst, st4);
+                auto st5_ast = this->symbolicEngine->getOperandAst(inst, st5);
+                auto st6_ast = this->symbolicEngine->getOperandAst(inst, st6);
+                auto st7_ast = this->symbolicEngine->getOperandAst(inst, st7);
+                auto xmm0_ast = this->symbolicEngine->getOperandAst(inst, xmm0);
+                auto xmm1_ast = this->symbolicEngine->getOperandAst(inst, xmm1);
+                auto xmm2_ast = this->symbolicEngine->getOperandAst(inst, xmm2);
+                auto xmm3_ast = this->symbolicEngine->getOperandAst(inst, xmm3);
+                auto xmm4_ast = this->symbolicEngine->getOperandAst(inst, xmm4);
+                auto xmm5_ast = this->symbolicEngine->getOperandAst(inst, xmm5);
+                auto xmm6_ast = this->symbolicEngine->getOperandAst(inst, xmm6);
+                auto xmm7_ast = this->symbolicEngine->getOperandAst(inst, xmm7);
+                auto xmm8_ast = this->symbolicEngine->getOperandAst(inst, xmm8);
+                auto xmm9_ast = this->symbolicEngine->getOperandAst(inst, xmm9);
+                auto xmm10_ast = this->symbolicEngine->getOperandAst(inst, xmm10);
+                auto xmm11_ast = this->symbolicEngine->getOperandAst(inst, xmm11);
+                auto xmm12_ast = this->symbolicEngine->getOperandAst(inst, xmm12);
+                auto xmm13_ast = this->symbolicEngine->getOperandAst(inst, xmm13);
+                auto xmm14_ast = this->symbolicEngine->getOperandAst(inst, xmm14);
+                auto xmm15_ast = this->symbolicEngine->getOperandAst(inst, xmm15);
+                auto ffxsr_ast = this->symbolicEngine->getOperandAst(inst, ffxsr);
+                auto cs_ast = this->symbolicEngine->getOperandAst(inst, cs);
+
+                /*
+                  Calculate the abridged x87 FPU Tag Word (from 2 bytes to 1 byte encoding)
+                  - Two-bit values of 00, 01, and 10 are encoded as a 1
+                  - A two-bit value of 11 is encoded as a 0
+                */
+                auto eb_1_0 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(1, 0, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_3_2 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(3, 2, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_5_4 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(5, 4, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_7_6 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(7, 6, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_9_8 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(9, 8, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_11_10 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(11, 10, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_13_12 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(13, 12, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto eb_15_14 = this->astCtxt->ite(
+                    this->astCtxt->equal(this->astCtxt->extract(15, 14, ftw_ast), this->astCtxt->bv(3, 2)),
+                    this->astCtxt->bv(0, 1), this->astCtxt->bv(1, 1));
+
+                auto aftw_ast = this->astCtxt->concat(eb_15_14,
+                    this->astCtxt->concat(eb_13_12,
+                        this->astCtxt->concat(eb_11_10,
+                            this->astCtxt->concat(eb_9_8,
+                                this->astCtxt->concat(eb_7_6,
+                                    this->astCtxt->concat(eb_5_4,
+                                        this->astCtxt->concat(eb_3_2, eb_1_0)))))));
+
+                /* Fetch the implicit memory slots for the '64-bit Mode Layout (with REX.W = 1)' */
+                auto fcw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 0, fcw.getSize()));
+                auto fsw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 2, fsw.getSize()));
+                auto ftw_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 4, ftw.getSize() / 2));
+                auto fop_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 6, fop.getSize()));
+                auto fip_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 8, fip.getSize()));
+                auto fcs_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 12, fcs.getSize()));
+                auto fdp_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 16, fdp.getSize()));
+                auto fds_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 20, fds.getSize()));
+                auto mxcsr_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 24, mxcsr.getSize()));
+                auto mxcsr_mask_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 28, mxcsr_mask.getSize()));
+                auto st0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 32, st0.getSize()));
+                auto st1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 48, st1.getSize()));
+                auto st2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 64, st2.getSize()));
+                auto st3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 80, st3.getSize()));
+                auto st4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 96, st4.getSize()));
+                auto st5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 112, st5.getSize()));
+                auto st6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 128, st6.getSize()));
+                auto st7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 144, st7.getSize()));
+                auto xmm0_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 160, xmm0.getSize()));
+                auto xmm1_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 176, xmm1.getSize()));
+                auto xmm2_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 192, xmm2.getSize()));
+                auto xmm3_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 208, xmm3.getSize()));
+                auto xmm4_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 224, xmm4.getSize()));
+                auto xmm5_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 240, xmm5.getSize()));
+                auto xmm6_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 256, xmm6.getSize()));
+                auto xmm7_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 272, xmm7.getSize()));
+                auto xmm8_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 288, xmm8.getSize()));
+                auto xmm9_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 304, xmm9.getSize()));
+                auto xmm10_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 320, xmm10.getSize()));
+                auto xmm11_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 336, xmm11.getSize()));
+                auto xmm12_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 352, xmm12.getSize()));
+                auto xmm13_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 368, xmm13.getSize()));
+                auto xmm14_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 384, xmm14.getSize()));
+                auto xmm15_addr = triton::arch::OperandWrapper(triton::arch::MemoryAccess(m512byte + 400, xmm15.getSize()));
+
+                /* Fetch the original values of the XMM0-XMM7 memory spaces */
+                auto xmm0_orig = this->symbolicEngine->getOperandAst(xmm0_addr);
+                auto xmm1_orig = this->symbolicEngine->getOperandAst(xmm1_addr);
+                auto xmm2_orig = this->symbolicEngine->getOperandAst(xmm2_addr);
+                auto xmm3_orig = this->symbolicEngine->getOperandAst(xmm3_addr);
+                auto xmm4_orig = this->symbolicEngine->getOperandAst(xmm4_addr);
+                auto xmm5_orig = this->symbolicEngine->getOperandAst(xmm5_addr);
+                auto xmm6_orig = this->symbolicEngine->getOperandAst(xmm6_addr);
+                auto xmm7_orig = this->symbolicEngine->getOperandAst(xmm7_addr);
+                auto xmm8_orig = this->symbolicEngine->getOperandAst(xmm8_addr);
+                auto xmm9_orig = this->symbolicEngine->getOperandAst(xmm9_addr);
+                auto xmm10_orig = this->symbolicEngine->getOperandAst(xmm10_addr);
+                auto xmm11_orig = this->symbolicEngine->getOperandAst(xmm11_addr);
+                auto xmm12_orig = this->symbolicEngine->getOperandAst(xmm12_addr);
+                auto xmm13_orig = this->symbolicEngine->getOperandAst(xmm13_addr);
+                auto xmm14_orig = this->symbolicEngine->getOperandAst(xmm14_addr);
+                auto xmm15_orig = this->symbolicEngine->getOperandAst(xmm15_addr);
+
+                /* Check if we are running in CPL = 0 (ring 0) and if the FFXSR bit is set in EFER */
+                auto cpl = this->astCtxt->equal(this->astCtxt->extract(1, 0, cs_ast), this->astCtxt->bv(0, 2));
+                auto ffx = this->astCtxt->equal(ffxsr_ast, this->astCtxt->bv(1, 1));
+                auto is_fast = this->astCtxt->land(cpl, ffx);
+
+                /* Apply the fast save logic if needed */
+                xmm0_ast = this->astCtxt->ite(is_fast, xmm0_orig, xmm0_ast);
+                xmm1_ast = this->astCtxt->ite(is_fast, xmm1_orig, xmm1_ast);
+                xmm2_ast = this->astCtxt->ite(is_fast, xmm2_orig, xmm2_ast);
+                xmm3_ast = this->astCtxt->ite(is_fast, xmm3_orig, xmm3_ast);
+                xmm4_ast = this->astCtxt->ite(is_fast, xmm4_orig, xmm4_ast);
+                xmm5_ast = this->astCtxt->ite(is_fast, xmm5_orig, xmm5_ast);
+                xmm6_ast = this->astCtxt->ite(is_fast, xmm6_orig, xmm6_ast);
+                xmm7_ast = this->astCtxt->ite(is_fast, xmm7_orig, xmm7_ast);
+                xmm8_ast = this->astCtxt->ite(is_fast, xmm8_orig, xmm8_ast);
+                xmm9_ast = this->astCtxt->ite(is_fast, xmm9_orig, xmm9_ast);
+                xmm10_ast = this->astCtxt->ite(is_fast, xmm10_orig, xmm10_ast);
+                xmm11_ast = this->astCtxt->ite(is_fast, xmm11_orig, xmm11_ast);
+                xmm12_ast = this->astCtxt->ite(is_fast, xmm12_orig, xmm12_ast);
+                xmm13_ast = this->astCtxt->ite(is_fast, xmm13_orig, xmm13_ast);
+                xmm14_ast = this->astCtxt->ite(is_fast, xmm14_orig, xmm14_ast);
+                xmm15_ast = this->astCtxt->ite(is_fast, xmm15_orig, xmm15_ast);
+
+                /* Craft the symbolic expressions */
+                auto fcw_expr = this->symbolicEngine->createSymbolicExpression(inst, fcw_ast, fcw_addr, "FXSAVE64 FCW operation");
+                auto fsw_expr = this->symbolicEngine->createSymbolicExpression(inst, fsw_ast, fsw_addr, "FXSAVE64 FSW operation");
+                auto ftw_expr = this->symbolicEngine->createSymbolicExpression(inst, aftw_ast, ftw_addr, "FXSAVE64 Abridged FTW operation");
+                auto fop_expr = this->symbolicEngine->createSymbolicExpression(inst, fop_ast, fop_addr, "FXSAVE64 FOP operation");
+                auto fip_expr = this->symbolicEngine->createSymbolicExpression(inst, fip_ast, fip_addr, "FXSAVE64 FIP operation");
+                auto fcs_expr = this->symbolicEngine->createSymbolicExpression(inst, fcs_ast, fcs_addr, "FXSAVE64 FCS operation");
+                auto fdp_expr = this->symbolicEngine->createSymbolicExpression(inst, fdp_ast, fdp_addr, "FXSAVE64 FDP operation");
+                auto fds_expr = this->symbolicEngine->createSymbolicExpression(inst, fds_ast, fds_addr, "FXSAVE64 FDS operation");
+                auto mxcsr_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_ast, mxcsr_addr, "FXSAVE64 MXCSR operation");
+                auto mxcsr_mask_expr = this->symbolicEngine->createSymbolicExpression(inst, mxcsr_mask_ast, mxcsr_mask_addr, "FXSAVE64 MXCSR_MASK operation");
+                auto st0_expr = this->symbolicEngine->createSymbolicExpression(inst, st0_ast, st0_addr, "FXSAVE64 ST0 operation");
+                auto st1_expr = this->symbolicEngine->createSymbolicExpression(inst, st1_ast, st1_addr, "FXSAVE64 ST1 operation");
+                auto st2_expr = this->symbolicEngine->createSymbolicExpression(inst, st2_ast, st2_addr, "FXSAVE64 ST2 operation");
+                auto st3_expr = this->symbolicEngine->createSymbolicExpression(inst, st3_ast, st3_addr, "FXSAVE64 ST3 operation");
+                auto st4_expr = this->symbolicEngine->createSymbolicExpression(inst, st4_ast, st4_addr, "FXSAVE64 ST4 operation");
+                auto st5_expr = this->symbolicEngine->createSymbolicExpression(inst, st5_ast, st5_addr, "FXSAVE64 ST5 operation");
+                auto st6_expr = this->symbolicEngine->createSymbolicExpression(inst, st6_ast, st6_addr, "FXSAVE64 ST6 operation");
+                auto st7_expr = this->symbolicEngine->createSymbolicExpression(inst, st7_ast, st7_addr, "FXSAVE64 ST7 operation");
+                auto xmm0_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm0_ast, xmm0_addr, "FXSAVE64 XMM0 operation");
+                auto xmm1_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm1_ast, xmm1_addr, "FXSAVE64 XMM1 operation");
+                auto xmm2_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm2_ast, xmm2_addr, "FXSAVE64 XMM2 operation");
+                auto xmm3_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm3_ast, xmm3_addr, "FXSAVE64 XMM3 operation");
+                auto xmm4_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm4_ast, xmm4_addr, "FXSAVE64 XMM4 operation");
+                auto xmm5_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm5_ast, xmm5_addr, "FXSAVE64 XMM5 operation");
+                auto xmm6_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm6_ast, xmm6_addr, "FXSAVE64 XMM6 operation");
+                auto xmm7_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm7_ast, xmm7_addr, "FXSAVE64 XMM7 operation");
+                auto xmm8_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm8_ast, xmm8_addr, "FXSAVE64 XMM8 operation");
+                auto xmm9_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm9_ast, xmm9_addr, "FXSAVE64 XMM9 operation");
+                auto xmm10_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm10_ast, xmm10_addr, "FXSAVE64 XMM10 operation");
+                auto xmm11_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm11_ast, xmm11_addr, "FXSAVE64 XMM11 operation");
+                auto xmm12_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm12_ast, xmm12_addr, "FXSAVE64 XMM12 operation");
+                auto xmm13_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm13_ast, xmm13_addr, "FXSAVE64 XMM13 operation");
+                auto xmm14_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm14_ast, xmm14_addr, "FXSAVE64 XMM14 operation");
+                auto xmm15_expr = this->symbolicEngine->createSymbolicExpression(inst, xmm15_ast, xmm15_addr, "FXSAVE64 XMM15 operation");
+
+                /* Spread the taint */
+                fcw_expr->isTainted = this->taintEngine->taintAssignment(fcw_addr, fcw);
+                fsw_expr->isTainted = this->taintEngine->taintAssignment(fsw_addr, fsw);
+                ftw_expr->isTainted = this->taintEngine->taintAssignment(ftw_addr, ftw);
+                fop_expr->isTainted = this->taintEngine->taintAssignment(fop_addr, fop);
+                fip_expr->isTainted = this->taintEngine->taintAssignment(fip_addr, fip);
+                fcs_expr->isTainted = this->taintEngine->taintAssignment(fcs_addr, fcs);
+                fdp_expr->isTainted = this->taintEngine->taintAssignment(fdp_addr, fdp);
+                fds_expr->isTainted = this->taintEngine->taintAssignment(fds_addr, fds);
+                mxcsr_expr->isTainted = this->taintEngine->taintAssignment(mxcsr_addr, mxcsr);
+                mxcsr_mask_expr->isTainted = this->taintEngine->taintAssignment(mxcsr_mask_addr, mxcsr_mask);
+                st0_expr->isTainted = this->taintEngine->taintAssignment(st0_addr, st0);
+                st1_expr->isTainted = this->taintEngine->taintAssignment(st1_addr, st1);
+                st2_expr->isTainted = this->taintEngine->taintAssignment(st2_addr, st2);
+                st3_expr->isTainted = this->taintEngine->taintAssignment(st3_addr, st3);
+                st4_expr->isTainted = this->taintEngine->taintAssignment(st4_addr, st4);
+                st5_expr->isTainted = this->taintEngine->taintAssignment(st5_addr, st5);
+                st6_expr->isTainted = this->taintEngine->taintAssignment(st6_addr, st6);
+                st7_expr->isTainted = this->taintEngine->taintAssignment(st7_addr, st7);
+                xmm0_expr->isTainted = this->taintEngine->taintAssignment(xmm0_addr, xmm0);
+                xmm1_expr->isTainted = this->taintEngine->taintAssignment(xmm1_addr, xmm1);
+                xmm2_expr->isTainted = this->taintEngine->taintAssignment(xmm2_addr, xmm2);
+                xmm3_expr->isTainted = this->taintEngine->taintAssignment(xmm3_addr, xmm3);
+                xmm4_expr->isTainted = this->taintEngine->taintAssignment(xmm4_addr, xmm4);
+                xmm5_expr->isTainted = this->taintEngine->taintAssignment(xmm5_addr, xmm5);
+                xmm6_expr->isTainted = this->taintEngine->taintAssignment(xmm6_addr, xmm6);
+                xmm7_expr->isTainted = this->taintEngine->taintAssignment(xmm7_addr, xmm7);
+                xmm8_expr->isTainted = this->taintEngine->taintAssignment(xmm8_addr, xmm8);
+                xmm9_expr->isTainted = this->taintEngine->taintAssignment(xmm9_addr, xmm9);
+                xmm10_expr->isTainted = this->taintEngine->taintAssignment(xmm10_addr, xmm10);
+                xmm11_expr->isTainted = this->taintEngine->taintAssignment(xmm11_addr, xmm11);
+                xmm12_expr->isTainted = this->taintEngine->taintAssignment(xmm12_addr, xmm12);
+                xmm13_expr->isTainted = this->taintEngine->taintAssignment(xmm13_addr, xmm13);
+                xmm14_expr->isTainted = this->taintEngine->taintAssignment(xmm14_addr, xmm14);
+                xmm15_expr->isTainted = this->taintEngine->taintAssignment(xmm15_addr, xmm15);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
             void x86Semantics::idiv_s(triton::arch::Instruction& inst) {
                 auto& src = inst.operands[0];
 
@@ -5311,7 +7175,8 @@ namespace triton {
                     auto ax = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_AX));
                     auto dividend = this->astCtxt->concat(this->symbolicEngine->getOperandAst(inst, dx), this->symbolicEngine->getOperandAst(inst, ax));
                     /* res = DX:AX / Source */
-                    auto result = this->astCtxt->extract((triton::bitsize::word - 1), 0, this->astCtxt->bvsdiv(dividend, this->astCtxt->sx(triton::bitsize::word, divisor)));
+                    auto temp = this->astCtxt->bvsdiv(dividend, this->astCtxt->sx(triton::bitsize::word, divisor));
+                    auto result = this->astCtxt->extract((triton::bitsize::word - 1), 0, temp);
                     /* mod = DX:AX % Source */
                     auto mod = this->astCtxt->extract((triton::bitsize::word - 1), 0, this->astCtxt->bvsmod(dividend, this->astCtxt->sx(triton::bitsize::word, divisor)));
                     /* Create the symbolic expression for AX */
@@ -5331,7 +7196,8 @@ namespace triton {
                     auto eax = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EAX));
                     auto dividend = this->astCtxt->concat(this->symbolicEngine->getOperandAst(inst, edx), this->symbolicEngine->getOperandAst(inst, eax));
                     /* res = EDX:EAX / Source */
-                    auto result = this->astCtxt->extract((triton::bitsize::dword - 1), 0, this->astCtxt->bvsdiv(dividend, this->astCtxt->sx(triton::bitsize::dword, divisor)));
+                    auto temp = this->astCtxt->bvsdiv(dividend, this->astCtxt->sx(triton::bitsize::dword, divisor));
+                    auto result = this->astCtxt->extract((triton::bitsize::dword - 1), 0, temp);
                     /* mod = EDX:EAX % Source */
                     auto mod = this->astCtxt->extract((triton::bitsize::dword - 1), 0, this->astCtxt->bvsmod(dividend, this->astCtxt->sx(triton::bitsize::dword, divisor)));
                     /* Create the symbolic expression for EAX */
@@ -5351,7 +7217,8 @@ namespace triton {
                     auto rax = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_RAX));
                     auto dividend = this->astCtxt->concat(this->symbolicEngine->getOperandAst(inst, rdx), this->symbolicEngine->getOperandAst(inst, rax));
                     /* res = RDX:RAX / Source */
-                    auto result = this->astCtxt->extract((triton::bitsize::qword - 1), 0, this->astCtxt->bvsdiv(dividend, this->astCtxt->sx(triton::bitsize::qword, divisor)));
+                    auto temp = this->astCtxt->bvsdiv(dividend, this->astCtxt->sx(triton::bitsize::qword, divisor));
+                    auto result = this->astCtxt->extract((triton::bitsize::qword - 1), 0, temp);
                     /* mod = RDX:RAX % Source */
                     auto mod = this->astCtxt->extract((triton::bitsize::qword - 1), 0, this->astCtxt->bvsmod(dividend, this->astCtxt->sx(triton::bitsize::qword, divisor)));
                     /* Create the symbolic expression for RAX */
@@ -5374,6 +7241,12 @@ namespace triton {
                 this->undefined_s(inst, this->architecture->getRegister(ID_REG_X86_PF));
                 this->undefined_s(inst, this->architecture->getRegister(ID_REG_X86_SF));
                 this->undefined_s(inst, this->architecture->getRegister(ID_REG_X86_ZF));
+
+                /* Return an exception if the divisor is zero */
+                if (divisor->evaluate() == 0) {
+                    this->exception = triton::arch::FAULT_DE;
+                    return;
+                }
 
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
@@ -6297,7 +8170,7 @@ namespace triton {
             void x86Semantics::leave_s(triton::arch::Instruction& inst) {
                 auto stack = this->architecture->getStackPointer();
                 auto base = this->architecture->getParentRegister(ID_REG_X86_BP);
-                auto baseValue = this->architecture->getConcreteRegisterValue(base).convert_to<triton::uint64>();
+                auto baseValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(base));
                 auto bp1 = triton::arch::OperandWrapper(triton::arch::MemoryAccess(baseValue, base.getSize()));
                 auto bp2 = triton::arch::OperandWrapper(this->architecture->getParentRegister(ID_REG_X86_BP));
                 auto sp = triton::arch::OperandWrapper(stack);
@@ -6717,6 +8590,12 @@ namespace triton {
             }
 
 
+            void x86Semantics::int3_s(triton::arch::Instruction& inst) {
+                /* Return a breakpoint fault */
+                this->exception = triton::arch::FAULT_BP;
+            }
+
+
             void x86Semantics::mfence_s(triton::arch::Instruction& inst) {
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
@@ -6894,6 +8773,11 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "MOVD operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintAssignment(dst, src);
@@ -7376,37 +9260,46 @@ namespace triton {
                 auto& dst = inst.operands[0];
                 auto& src = inst.operands[1];
 
-                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
                 auto op2 = this->symbolicEngine->getOperandAst(inst, src);
 
                 /* Create the semantics */
                 triton::ast::SharedAbstractNode node = nullptr;
 
                 /* when operating on MMX technology registers and memory locations */
-                if (dst.getBitSize() == triton::bitsize::qword && src.getBitSize() == triton::bitsize::qword)
+                if (dst.getBitSize() == triton::bitsize::qword && src.getBitSize() == triton::bitsize::qword) {
                     node = op2;
+                }
 
                 /* when source and destination operands are XMM registers */
-                else if (dst.getBitSize() == triton::bitsize::dqword && src.getBitSize() == triton::bitsize::dqword)
+                else if (dst.getBitSize() == triton::bitsize::dqword && src.getBitSize() == triton::bitsize::dqword) {
                     node = this->astCtxt->concat(
-                        this->astCtxt->extract(triton::bitsize::dqword - 1, triton::bitsize::qword, op1),
+                        this->astCtxt->extract(triton::bitsize::dqword - 1, triton::bitsize::qword, this->symbolicEngine->getOperandAst(inst, dst)),
                         this->astCtxt->extract(triton::bitsize::qword - 1, 0, op2)
                     );
+                }
 
                 /* when source operand is XMM register and destination operand is memory location */
-                else if (dst.getBitSize() < src.getBitSize())
+                else if (dst.getBitSize() < src.getBitSize()) {
                     node = this->astCtxt->extract(triton::bitsize::qword - 1, 0, op2);
+                }
 
                 /* when source operand is memory location and destination operand is XMM register */
-                else if (dst.getBitSize() > src.getBitSize())
+                else if (dst.getBitSize() > src.getBitSize()) {
                     node = this->astCtxt->zx(triton::bitsize::qword, op2);
+                }
 
                 /* Invalid operation */
-                else
+                else {
                     throw triton::exceptions::Semantics("x86Semantics::movq_s(): Invalid operation.");
+                }
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "MOVQ operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword && src.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Spread taint */
                 if (dst.getBitSize() == triton::bitsize::dqword && src.getBitSize() == triton::bitsize::dqword)
@@ -7430,6 +9323,8 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "MOVQ2DQ operation");
+
+                /* TODO @fvrmatteo: the x87 FPU top-of-stack pointer is set to 0 and the x87 FPU tag word is set to all 0s [valid] */
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintAssignment(dst, src);
@@ -8146,6 +10041,91 @@ namespace triton {
             }
 
 
+            void x86Semantics::packssdw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                std::vector<triton::ast::SharedAbstractNode> ops{ op2, op1 };
+
+                for (triton::uint32 idx = 0; idx < ops.size(); ++idx) {
+                    for (triton::uint32 i = 0; i < dst.getSize() / triton::size::dword; ++i) {
+                        uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::dword);
+                        uint32 low = (dst.getBitSize() - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                        auto signed_dword = this->astCtxt->extract(high, low, ops[idx]);
+                        pck.push_back(this->astCtxt->ite(
+                            this->astCtxt->bvsge(signed_dword, this->astCtxt->bv(0x7fff, triton::bitsize::dword)),
+                            this->astCtxt->bv(0x7fff, triton::bitsize::word),
+                            this->astCtxt->ite(
+                                this->astCtxt->bvsle(signed_dword, this->astCtxt->bv(0xffff8000, triton::bitsize::dword)),
+                                this->astCtxt->bv(0x8000, triton::bitsize::word),
+                                this->astCtxt->extract(triton::bitsize::word - 1, 0, signed_dword)))
+                        );
+                    }
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PACKSSDW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::packsswb_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize());
+
+                std::vector<triton::ast::SharedAbstractNode> ops{ op2, op1 };
+                for (triton::uint32 i = 0; i < ops.size(); i++) {
+                    for (triton::uint32 index = 0; index < dst.getSize() / triton::size::word; index++) {
+                        uint32 high = (dst.getBitSize() - 1) - (index * triton::bitsize::word);
+                        uint32 low = (dst.getBitSize() - triton::bitsize::word) - (index * triton::bitsize::word);
+                        auto signed_word = this->astCtxt->extract(high, low, ops[i]);
+                        pck.push_back(this->astCtxt->ite(
+                            this->astCtxt->bvsge(signed_word, this->astCtxt->bv(0x007f, triton::bitsize::word)),
+                            this->astCtxt->bv(0x7f, triton::bitsize::byte),
+                            this->astCtxt->ite(
+                                this->astCtxt->bvsle(signed_word, this->astCtxt->bv(0xff80, triton::bitsize::word)),
+                                this->astCtxt->bv(0x80, triton::bitsize::byte),
+                                this->astCtxt->extract(triton::bitsize::byte - 1, 0, signed_word)))
+                        );
+                    }
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PACKSSWB operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
             void x86Semantics::paddb_s(triton::arch::Instruction& inst) {
                 auto& dst = inst.operands[0];
                 auto& src = inst.operands[1];
@@ -8193,6 +10173,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PADDB operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -8236,6 +10221,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PADDD operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -8276,6 +10266,11 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PADDQ operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -8323,6 +10318,11 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PADDW operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -8381,6 +10381,9 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PAND operation");
 
+                /* Update the x87 FPU Tag Word */
+                this->updateFTW(inst, expr);
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -8402,6 +10405,9 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PANDN operation");
+
+                /* Update the x87 FPU Tag Word */
+                this->updateFTW(inst, expr);
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -8902,7 +10908,7 @@ namespace triton {
 
                 // SEL  = COUNT[3:0];
                 // MASK = (0FFH << (SEL * 8));
-                triton::uint64 sel = op3->evaluate().convert_to<triton::uint64>() & 0x0f;
+                triton::uint64 sel = static_cast<triton::uint64>(op3->evaluate()) & 0x0f;
                 triton::uint128 mask = 0xff;
                 mask = mask << (sel * 8);
 
@@ -8947,7 +10953,7 @@ namespace triton {
 
                 // SEL  = COUNT[1:0];
                 // MASK = (0FFFFFFFFH << (SEL * 32));
-                triton::uint64 sel = op3->evaluate().convert_to<triton::uint64>() & 0x03;
+                triton::uint64 sel = static_cast<triton::uint64>(op3->evaluate()) & 0x03;
                 triton::uint128 mask = 0xffffffff;
                 mask = mask << (sel * 32);
 
@@ -8992,7 +10998,7 @@ namespace triton {
 
                 // SEL  = COUNT[0:0];
                 // MASK = (0FFFFFFFFFFFFFFFFH << (SEL * 64));
-                triton::uint64 sel = op3->evaluate().convert_to<triton::uint64>() & 0x1;
+                triton::uint64 sel = static_cast<triton::uint64>(op3->evaluate()) & 0x1;
                 triton::uint128 mask = 0xffffffffffffffff;
                 mask = mask << (sel * 64);
 
@@ -9049,7 +11055,7 @@ namespace triton {
                  * }
                  */
                 if (dst.getBitSize() == triton::bitsize::qword) {
-                    sel = op3->evaluate().convert_to<triton::uint64>() & 0x3;
+                    sel = static_cast<triton::uint64>(op3->evaluate()) & 0x3;
                     switch (sel) {
                     case 1: mask = mask << 16; break;
                     case 2: mask = mask << 32; break;
@@ -9073,7 +11079,7 @@ namespace triton {
                  * }
                  */
                 else {
-                    sel = op3->evaluate().convert_to<triton::uint64>() & 0x7;
+                    sel = static_cast<triton::uint64>(op3->evaluate()) & 0x7;
                     switch (sel) {
                     case 1: mask = mask << 16;  break;
                     case 2: mask = mask << 32;  break;
@@ -9108,6 +11114,47 @@ namespace triton {
 
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src1);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::pmaddwd_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::dword);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; i += 2) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    auto node1 = this->astCtxt->bvmul(
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1)),
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2))
+                    );
+                    high -= triton::bitsize::word;
+                    low -= triton::bitsize::word;
+                    auto node2 = this->astCtxt->bvmul(
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1)),
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2))
+                    );
+                    pck.push_back(this->astCtxt->bvadd(node1, node2));
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PMADDWD operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
@@ -9914,10 +11961,188 @@ namespace triton {
             }
 
 
+            void x86Semantics::pmulhw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    auto n1 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1));
+                    auto n2 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2));
+                    auto node = this->astCtxt->extract(triton::bitsize::dword - 1, triton::bitsize::word, this->astCtxt->bvmul(n1, n2));
+                    pck.push_back(node);
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PMULHW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::pmulld_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::dword);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::dword; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::dword);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                    auto n1 = this->astCtxt->sx(triton::bitsize::dword, this->astCtxt->extract(high, low, op1));
+                    auto n2 = this->astCtxt->sx(triton::bitsize::dword, this->astCtxt->extract(high, low, op2));
+                    auto node = this->astCtxt->extract(triton::bitsize::dword - 1, 0, this->astCtxt->bvmul(n1, n2));
+                    pck.push_back(node);
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PMULLD operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::pmullw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    auto n1 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1));
+                    auto n2 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2));
+                    auto node = this->astCtxt->extract(triton::bitsize::word - 1, 0, this->astCtxt->bvmul(n1, n2));
+                    pck.push_back(node);
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PMULLW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::pmuludq_s(triton::arch::Instruction& inst) {
+                triton::ast::SharedAbstractNode node = nullptr;
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                switch (dst.getBitSize()) {
+                case triton::bitsize::qword: {
+                    auto n1 = this->astCtxt->zx(triton::bitsize::dword, this->astCtxt->extract(triton::bitsize::dword - 1, 0, op1));
+                    auto n2 = this->astCtxt->zx(triton::bitsize::dword, this->astCtxt->extract(triton::bitsize::dword - 1, 0, op2));
+                    node = this->astCtxt->bvmul(n1, n2);
+                    break;
+                }
+
+                case triton::bitsize::dqword: {
+                    std::vector<triton::ast::SharedAbstractNode> pck;
+                    pck.reserve(2);
+
+                    auto n1 = this->astCtxt->zx(triton::bitsize::dword, this->astCtxt->extract(triton::bitsize::dword - 1, 0, op1));
+                    auto n2 = this->astCtxt->zx(triton::bitsize::dword, this->astCtxt->extract(triton::bitsize::dword - 1, 0, op2));
+
+                    auto n3 = this->astCtxt->zx(triton::bitsize::dword, this->astCtxt->extract(triton::bitsize::qword + triton::bitsize::dword - 1, triton::bitsize::qword, op1));
+                    auto n4 = this->astCtxt->zx(triton::bitsize::dword, this->astCtxt->extract(triton::bitsize::qword + triton::bitsize::dword - 1, triton::bitsize::qword, op2));
+
+                    pck.push_back(this->astCtxt->bvmul(n3, n4));
+                    pck.push_back(this->astCtxt->bvmul(n1, n2));
+
+                    node = this->astCtxt->concat(pck);
+                    break;
+                }
+
+                default:
+                    throw triton::exceptions::Semantics("x86Semantics::pmuludq_s(): Invalid operand size.");
+                }
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PMULUDQ operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+                return;
+            }
+
+
+            void x86Semantics::popcnt_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                auto node = this->astCtxt->bv(0, dst.getBitSize());
+                for (triton::uint32 i = 0; i < src.getBitSize(); ++i) {
+                    node = this->astCtxt->bvadd(
+                        node,
+                        this->astCtxt->zx(dst.getBitSize() - 1, this->astCtxt->extract(i, i, op2))
+                    );
+                }
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "POPCNT operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
             void x86Semantics::pop_s(triton::arch::Instruction& inst) {
                 bool  stackRelative = false;
                 auto  stack = this->architecture->getStackPointer();
-                auto  stackValue = this->architecture->getConcreteRegisterValue(stack).convert_to<triton::uint64>();
+                auto  stackValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(stack));
                 auto& dst = inst.operands[0];
                 auto  src = triton::arch::OperandWrapper(triton::arch::MemoryAccess(stackValue, dst.getSize()));
 
@@ -9974,7 +12199,7 @@ namespace triton {
 
             void x86Semantics::popal_s(triton::arch::Instruction& inst) {
                 auto stack = this->architecture->getStackPointer();
-                auto stackValue = this->architecture->getConcreteRegisterValue(stack).convert_to<triton::uint64>();
+                auto stackValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(stack));
                 auto dst1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EDI));
                 auto dst2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_ESI));
                 auto dst3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EBP));
@@ -10028,7 +12253,7 @@ namespace triton {
 
             void x86Semantics::popf_s(triton::arch::Instruction& inst) {
                 auto  stack = this->architecture->getStackPointer();
-                auto  stackValue = this->architecture->getConcreteRegisterValue(stack).convert_to<triton::uint64>();
+                auto  stackValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(stack));
                 auto  dst1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_CF));
                 auto  dst2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_PF));
                 auto  dst3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_AF));
@@ -10091,7 +12316,7 @@ namespace triton {
 
             void x86Semantics::popfd_s(triton::arch::Instruction& inst) {
                 auto  stack = this->architecture->getStackPointer();
-                auto  stackValue = this->architecture->getConcreteRegisterValue(stack).convert_to<triton::uint64>();
+                auto  stackValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(stack));
                 auto  dst1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_CF));
                 auto  dst2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_PF));
                 auto  dst3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_AF));
@@ -10169,7 +12394,7 @@ namespace triton {
 
             void x86Semantics::popfq_s(triton::arch::Instruction& inst) {
                 auto  stack = this->architecture->getStackPointer();
-                auto  stackValue = this->architecture->getConcreteRegisterValue(stack).convert_to<triton::uint64>();
+                auto  stackValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(stack));
                 auto  dst1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_CF));
                 auto  dst2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_PF));
                 auto  dst3 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_AF));
@@ -10259,6 +12484,9 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "POR operation");
 
+                /* Update the x87 FPU Tag Word */
+                this->updateFTW(inst, expr);
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -10272,6 +12500,49 @@ namespace triton {
 
                 /* Only specify that the instruction performs an implicit memory read */
                 this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::pshufb_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                std::vector<triton::ast::SharedAbstractNode> pack;
+                pack.reserve(dst.getSize());
+
+                /* Create the semantics */
+                for (int i = dst.getBitSize(); i > 0;) {
+                    i -= 8;
+                    int control = i + 7;
+                    int index_low = i;
+                    int index_high = i + (dst.getSize() == 8 ? 2 : 3);
+                    pack.push_back(
+                        this->astCtxt->bvmul(
+                            this->astCtxt->zx(triton::bitsize::byte - 1, this->astCtxt->bvnot(
+                                this->astCtxt->extract(control, control, op2))),
+                            this->astCtxt->extract(triton::bitsize::byte - 1, 0,
+                                this->astCtxt->bvlshr(
+                                    op1,
+                                    this->astCtxt->bvmul(
+                                        this->astCtxt->zx(triton::bitsize::dqword - (index_high - index_low) - 1,
+                                            this->astCtxt->extract(index_high, index_low, op2)),
+                                        this->astCtxt->bv(8, triton::bitsize::dqword))))));
+                }
+
+                auto node = this->astCtxt->concat(pack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSHUFD operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src);
 
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
@@ -10601,6 +12872,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSLLD operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -10676,6 +12952,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSLLQ operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -10721,6 +13002,143 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSLLW operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::psrad_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::dword);
+
+                auto shift = this->astCtxt->ite(
+                    this->astCtxt->bvuge(op2, this->astCtxt->bv(triton::bitsize::dword, src.getBitSize())),
+                    this->astCtxt->bv(triton::bitsize::dword, src.getBitSize()),
+                    op2
+                );
+
+                if (shift->getBitvectorSize() < triton::bitsize::dword) {
+                    shift = this->astCtxt->zx(triton::bitsize::dword - shift->getBitvectorSize(), shift);
+                }
+                else {
+                    shift = this->astCtxt->extract(triton::bitsize::dword - 1, 0, shift);
+                }
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::dword; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::dword);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                    pck.push_back(this->astCtxt->bvashr(this->astCtxt->extract(high, low, op1), shift));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSRAD operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::psraw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                auto shift = this->astCtxt->ite(
+                    this->astCtxt->bvuge(op2, this->astCtxt->bv(triton::bitsize::word, src.getBitSize())),
+                    this->astCtxt->bv(triton::bitsize::word, src.getBitSize()),
+                    op2
+                );
+
+                if (shift->getBitvectorSize() < triton::bitsize::word) {
+                    shift = this->astCtxt->zx(triton::bitsize::word - shift->getBitvectorSize(), shift);
+                }
+                else {
+                    shift = this->astCtxt->extract(triton::bitsize::word - 1, 0, shift);
+                }
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    pck.push_back(this->astCtxt->bvashr(this->astCtxt->extract(high, low, op1), shift));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSRAW operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::psrld_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->astCtxt->zx(dst.getBitSize() - src.getBitSize(), this->symbolicEngine->getOperandAst(inst, src));
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> packed;
+                packed.reserve(4);
+
+                switch (dst.getBitSize()) {
+                    /* XMM */
+                case triton::bitsize::dqword:
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(127, 96, op1), this->astCtxt->extract(31, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(95, 64, op1), this->astCtxt->extract(31, 0, op2)));
+
+                    /* MMX */
+                case triton::bitsize::qword:
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(63, 32, op1), this->astCtxt->extract(31, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(31, 0, op1), this->astCtxt->extract(31, 0, op2)));
+                    break;
+
+                default:
+                    throw triton::exceptions::Semantics("x86Semantics::psrld_s(): Invalid operand size.");
+                }
+
+                auto node = this->astCtxt->concat(packed);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSRLD operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -10752,6 +13170,104 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSRLDQ operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::psrlq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->astCtxt->zx(dst.getBitSize() - src.getBitSize(), this->symbolicEngine->getOperandAst(inst, src));
+
+                /* Create the semantics */
+                triton::ast::SharedAbstractNode node;
+
+                std::vector<triton::ast::SharedAbstractNode> packed;
+                packed.reserve(2);
+
+                switch (dst.getBitSize()) {
+                    /* XMM */
+                case triton::bitsize::dqword:
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(127, 64, op1), this->astCtxt->extract(63, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(63, 0, op1), this->astCtxt->extract(63, 0, op2)));
+                    node = this->astCtxt->concat(packed);
+                    break;
+
+                    /* MMX */
+                case triton::bitsize::qword:
+                    /* MMX register is only one QWORD so it's a simple shr */
+                    node = this->astCtxt->bvlshr(op1, op2);
+                    break;
+
+                default:
+                    throw triton::exceptions::Semantics("x86Semantics::psrlq_s(): Invalid operand size.");
+                }
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSRLQ operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::psrlw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
+                auto op2 = this->astCtxt->zx(dst.getBitSize() - src.getBitSize(), this->symbolicEngine->getOperandAst(inst, src));
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> packed;
+                packed.reserve(8);
+
+                switch (dst.getBitSize()) {
+                    /* XMM */
+                case triton::bitsize::dqword:
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(127, 112, op1), this->astCtxt->extract(15, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(111, 96, op1), this->astCtxt->extract(15, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(95, 80, op1), this->astCtxt->extract(15, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(79, 64, op1), this->astCtxt->extract(15, 0, op2)));
+
+                    /* MMX */
+                case triton::bitsize::qword:
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(63, 48, op1), this->astCtxt->extract(15, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(47, 32, op1), this->astCtxt->extract(15, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(31, 16, op1), this->astCtxt->extract(15, 0, op2)));
+                    packed.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(15, 0, op1), this->astCtxt->extract(15, 0, op2)));
+                    break;
+
+                default:
+                    throw triton::exceptions::Semantics("x86Semantics::psrlw_s(): Invalid operand size.");
+                }
+
+                auto node = this->astCtxt->concat(packed);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSRLW operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -10808,6 +13324,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSUBB operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -10851,6 +13372,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSUBD operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -10891,6 +13417,11 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSUBQ operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -10938,6 +13469,11 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PSUBW operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -11035,6 +13571,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PUNPCKHBW operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -11079,6 +13620,11 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PUNPCKHDQ operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -11168,6 +13714,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PUNPCKHWD operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -11231,6 +13782,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PUNPCKLBW operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -11275,6 +13831,11 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PUNPCKLDQ operation");
+
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
 
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
@@ -11364,6 +13925,11 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PUNPCKLWD operation");
 
+                /* Update the x87 FPU Tag Word */
+                if (dst.getBitSize() == triton::bitsize::qword) {
+                    this->updateFTW(inst, expr);
+                }
+
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintUnion(dst, src);
 
@@ -11404,7 +13970,7 @@ namespace triton {
 
             void x86Semantics::pushal_s(triton::arch::Instruction& inst) {
                 auto stack = this->architecture->getStackPointer();
-                auto stackValue = this->architecture->getConcreteRegisterValue(stack).convert_to<triton::uint64>();
+                auto stackValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(stack));
                 auto dst1 = triton::arch::OperandWrapper(triton::arch::MemoryAccess(stackValue - (stack.getSize() * 1), stack.getSize()));
                 auto dst2 = triton::arch::OperandWrapper(triton::arch::MemoryAccess(stackValue - (stack.getSize() * 2), stack.getSize()));
                 auto dst3 = triton::arch::OperandWrapper(triton::arch::MemoryAccess(stackValue - (stack.getSize() * 3), stack.getSize()));
@@ -11668,6 +14234,9 @@ namespace triton {
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "PXOR operation");
 
+                /* Update the x87 FPU Tag Word */
+                this->updateFTW(inst, expr);
+
                 /* Spread taint */
                 if (dst.getType() == OP_REG && src.getRegister() == dst.getRegister())
                     this->taintEngine->setTaint(src, false);
@@ -11837,20 +14406,22 @@ namespace triton {
 
 
             void x86Semantics::rdtsc_s(triton::arch::Instruction& inst) {
+                auto src = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_TSC));
                 auto dst1 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EDX));
                 auto dst2 = triton::arch::OperandWrapper(this->architecture->getRegister(ID_REG_X86_EAX));
 
                 /* Create symbolic operands */
-                auto op1 = this->astCtxt->bv(0, dst1.getBitSize());
-                auto op2 = this->astCtxt->bv(this->symbolicEngine->getSymbolicExpressions().size(), dst2.getBitSize());
+                auto op = this->symbolicEngine->getOperandAst(inst, src);
+                auto high = this->astCtxt->extract((triton::bitsize::qword - 1), triton::bitsize::dword, op);
+                auto low = this->astCtxt->extract((triton::bitsize::dword - 1), 0, op);
 
                 /* Create symbolic expression */
-                auto expr1 = this->symbolicEngine->createSymbolicExpression(inst, op1, dst1, "RDTSC EDX operation");
-                auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, op2, dst2, "RDTSC EAX operation");
+                auto expr1 = this->symbolicEngine->createSymbolicExpression(inst, high, dst1, "RDTSC EDX operation");
+                auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, low, dst2, "RDTSC EAX operation");
 
                 /* Spread taint */
-                expr1->isTainted = this->taintEngine->setTaint(dst1, triton::engines::taint::UNTAINTED);
-                expr2->isTainted = this->taintEngine->setTaint(dst2, triton::engines::taint::UNTAINTED);
+                expr1->isTainted = this->taintEngine->taintUnion(dst1, src);
+                expr2->isTainted = this->taintEngine->taintUnion(dst2, src);
 
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
@@ -11859,7 +14430,7 @@ namespace triton {
 
             void x86Semantics::ret_s(triton::arch::Instruction& inst) {
                 auto stack = this->architecture->getStackPointer();
-                auto stackValue = this->architecture->getConcreteRegisterValue(stack).convert_to<triton::uint64>();
+                auto stackValue = static_cast<triton::uint64>(this->architecture->getConcreteRegisterValue(stack));
                 auto pc = triton::arch::OperandWrapper(this->architecture->getProgramCounter());
                 auto sp = triton::arch::OperandWrapper(triton::arch::MemoryAccess(stackValue, stack.getSize()));
 
@@ -13892,6 +16463,35 @@ namespace triton {
             }
 
 
+            void x86Semantics::vextracti128_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                triton::ast::SharedAbstractNode node;
+                if (op2->evaluate() & 0b00000001) {
+                    node = this->astCtxt->extract(255, 128, op1);
+                }
+                else {
+                    node = this->astCtxt->extract(127, 0, op1);
+                }
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VEXTRACTI128 operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
             void x86Semantics::vmovd_s(triton::arch::Instruction& inst) {
                 auto& dst = inst.operands[0];
                 auto& src = inst.operands[1];
@@ -13940,6 +16540,24 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VMOVDQU operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vmovntdq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src = inst.operands[1];
+
+                /* Create the semantics */
+                auto node = this->symbolicEngine->getOperandAst(inst, src);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VMOVNTDQ operation");
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintAssignment(dst, src);
@@ -14070,6 +16688,234 @@ namespace triton {
             }
 
 
+            void x86Semantics::vpackuswb_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize());
+
+                std::vector<triton::ast::SharedAbstractNode> ops{ op2, op1 };
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    for (triton::uint32 idx = 0; idx < ops.size(); ++idx) {
+                        for (triton::uint32 i = triton::size::qword * k; i < triton::size::qword * (k + 1); ++i) {
+                            uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                            uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                            auto signed_word = this->astCtxt->extract(high, low, ops[idx]);
+                            pck.push_back(this->astCtxt->ite(
+                                this->astCtxt->bvsge(signed_word, this->astCtxt->bv(0xff, triton::bitsize::word)),
+                                this->astCtxt->bv(0xff, triton::bitsize::byte),
+                                this->astCtxt->ite(
+                                    this->astCtxt->bvsle(signed_word, this->astCtxt->bv(0x00, triton::bitsize::word)),
+                                    this->astCtxt->bv(0x00, triton::bitsize::byte),
+                                    this->astCtxt->extract(triton::bitsize::byte - 1, 0, signed_word)))
+                            );
+                        }
+                    }
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPACKUSWB operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpackssdw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                std::vector<triton::ast::SharedAbstractNode> ops{ op2, op1 };
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    for (triton::uint32 idx = 0; idx < ops.size(); ++idx) {
+                        for (triton::uint32 i = triton::size::dword * k; i < triton::size::dword * (k + 1); ++i) {
+                            uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::dword);
+                            uint32 low = (dst.getBitSize() - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                            auto signed_dword = this->astCtxt->extract(high, low, ops[idx]);
+                            pck.push_back(this->astCtxt->ite(
+                                this->astCtxt->bvsge(signed_dword, this->astCtxt->bv(0x7fff, triton::bitsize::dword)),
+                                this->astCtxt->bv(0x7fff, triton::bitsize::word),
+                                this->astCtxt->ite(
+                                    this->astCtxt->bvsle(signed_dword, this->astCtxt->bv(0xffff8000, triton::bitsize::dword)),
+                                    this->astCtxt->bv(0x8000, triton::bitsize::word),
+                                    this->astCtxt->extract(triton::bitsize::word - 1, 0, signed_dword)))
+                            );
+                        }
+                    }
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPACKSSDW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpacksswb_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize());
+
+                std::vector<triton::ast::SharedAbstractNode> ops{ op2, op1 };
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    for (triton::uint32 idx = 0; idx < ops.size(); ++idx) {
+                        for (triton::uint32 i = triton::size::qword * k; i < triton::size::qword * (k + 1); ++i) {
+                            uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                            uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                            auto signed_word = this->astCtxt->extract(high, low, ops[idx]);
+                            pck.push_back(this->astCtxt->ite(
+                                this->astCtxt->bvsge(signed_word, this->astCtxt->bv(0x007f, triton::bitsize::word)),
+                                this->astCtxt->bv(0x7f, triton::bitsize::byte),
+                                this->astCtxt->ite(
+                                    this->astCtxt->bvsle(signed_word, this->astCtxt->bv(0xff80, triton::bitsize::word)),
+                                    this->astCtxt->bv(0x80, triton::bitsize::byte),
+                                    this->astCtxt->extract(triton::bitsize::byte - 1, 0, signed_word)))
+                            );
+                        }
+                    }
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPACKSSWB operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpaddb_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::byte);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::byte; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::byte);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::byte) - (i * triton::bitsize::byte);
+                    pck.push_back(this->astCtxt->bvadd(this->astCtxt->extract(high, low, op1), this->astCtxt->extract(high, low, op2)));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPADDB operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpaddd_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::dword);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::dword; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::dword);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                    pck.push_back(this->astCtxt->bvadd(this->astCtxt->extract(high, low, op1), this->astCtxt->extract(high, low, op2)));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPADDD operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpaddw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    pck.push_back(this->astCtxt->bvadd(this->astCtxt->extract(high, low, op1), this->astCtxt->extract(high, low, op2)));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPADDW operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
             void x86Semantics::vpand_s(triton::arch::Instruction& inst) {
                 auto& dst = inst.operands[0];
                 auto& src1 = inst.operands[1];
@@ -14110,6 +16956,107 @@ namespace triton {
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vperm2i128_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+                auto& src3 = inst.operands[3];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+                auto op3 = this->symbolicEngine->getOperandAst(inst, src3);
+
+                /* Create the semantics */
+                std::deque<triton::arch::OperandWrapper> taint;
+                auto permute = [&](triton::uint8 control) {
+                    switch (control) {
+                    case 0:
+                        taint.push_back(src1);
+                        return this->astCtxt->extract(127, 0, op1);
+                    case 1:
+                        taint.push_back(src1);
+                        return this->astCtxt->extract(255, 128, op1);
+                    case 2:
+                        taint.push_back(src2);
+                        return this->astCtxt->extract(127, 0, op2);
+                    case 3:
+                    default:
+                        taint.push_back(src2);
+                        return this->astCtxt->extract(255, 128, op2);
+                    }
+                };
+
+                auto ctrl = static_cast<triton::uint8>(op3->evaluate());
+                auto high = permute((ctrl >> 4) & 0b00000011);
+                auto low = permute(ctrl & 0b00000011);
+
+                if (ctrl & 0b00001000) {
+                    low = this->astCtxt->bv(0, 128);
+                    taint.pop_back();
+                }
+
+                if (ctrl & 0b10000000) {
+                    high = this->astCtxt->bv(0, 128);
+                    taint.pop_front();
+                }
+
+                auto node = this->astCtxt->concat(high, low);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPERM2I128 operation");
+
+                /* Spread taint */
+                if (taint.empty()) {
+                    this->taintEngine->setTaint(dst, false);
+                }
+                else if (taint.size() == 1) {
+                    expr->isTainted = this->taintEngine->taintAssignment(dst, taint[0]);
+                }
+                else {
+                    expr->isTainted = this->taintEngine->taintAssignment(dst, taint[0]) | this->taintEngine->taintUnion(dst, taint[0]);
+                }
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpermq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::byte);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::qword; ++i) {
+                    auto high = triton::bitsize::byte - 1 - 2 * i;
+                    auto shift = this->astCtxt->bvmul(
+                        this->astCtxt->bv(triton::bitsize::qword, src1.getBitSize()),
+                        this->astCtxt->zx(src1.getBitSize() - 2,
+                            this->astCtxt->extract(high, high - 1, op2)));
+                    pck.push_back(this->astCtxt->extract(triton::bitsize::qword - 1, 0, this->astCtxt->bvlshr(op1, shift)));
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPERMQ operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintUnion(dst, src1);
 
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
@@ -14430,7 +17377,7 @@ namespace triton {
                 std::vector<triton::ast::SharedAbstractNode> pck;
                 pck.reserve(dst.getSize());
 
-                ? (triton::uint32 index = 0; index < dst.getSize(); index++) {
+                for (triton::uint32 index = 0; index < dst.getSize(); index++) {
                     uint32 high = (dst.getBitSize() - 1) - (index * triton::bitsize::byte);
                     uint32 low = (dst.getBitSize() - triton::bitsize::byte) - (index * triton::bitsize::byte);
                     pck.push_back(this->astCtxt->ite(
@@ -14522,6 +17469,48 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPCMPGTW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpmaddwd_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::dword);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; i += 2) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    auto node1 = this->astCtxt->bvmul(
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1)),
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2))
+                    );
+                    high -= triton::bitsize::word;
+                    low -= triton::bitsize::word;
+                    auto node2 = this->astCtxt->bvmul(
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1)),
+                        this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2))
+                    );
+                    pck.push_back(this->astCtxt->bvadd(node1, node2));
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPMADDWD operation");
 
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
@@ -14629,6 +17618,74 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPMINUB operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpmulhw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    auto n1 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1));
+                    auto n2 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2));
+                    auto node = this->astCtxt->extract(triton::bitsize::dword - 1, triton::bitsize::word, this->astCtxt->bvmul(n1, n2));
+                    pck.push_back(node);
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPMULHW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpmullw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    auto n1 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op1));
+                    auto n2 = this->astCtxt->sx(triton::bitsize::word, this->astCtxt->extract(high, low, op2));
+                    auto node = this->astCtxt->extract(triton::bitsize::word - 1, 0, this->astCtxt->bvmul(n1, n2));
+                    pck.push_back(node);
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPMULLW operation");
 
                 /* Apply the taint */
                 expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
@@ -14789,6 +17846,46 @@ namespace triton {
             }
 
 
+            void x86Semantics::vpsignw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                for (triton::uint32 index = 0; index < dst.getSize() / triton::size::word; index++) {
+                    uint32 high = (dst.getBitSize() - 1) - (index * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (index * triton::bitsize::word);
+                    auto val = this->astCtxt->extract(high, low, op2);
+                    pck.push_back(this->astCtxt->ite(
+                        this->astCtxt->bvsgt(val, this->astCtxt->bv(0, triton::bitsize::word)),
+                        this->astCtxt->extract(high, low, op1),
+                        this->astCtxt->ite(
+                            this->astCtxt->bvslt(val, this->astCtxt->bv(0, triton::bitsize::word)),
+                            this->astCtxt->bvneg(this->astCtxt->extract(high, low, op1)),
+                            this->astCtxt->bv(0, triton::bitsize::word)))
+                    );
+                }
+
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPSIGNW operation");
+
+                /* Spread taint */
+                this->taintEngine->setTaint(dst, false);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
             void x86Semantics::vpslldq_s(triton::arch::Instruction& inst) {
                 auto& dst = inst.operands[0];
                 auto& src1 = inst.operands[1];
@@ -14824,6 +17921,227 @@ namespace triton {
 
                 /* Create symbolic expression */
                 auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPSLLDQ operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpsllw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                auto shift = this->astCtxt->ite(
+                    this->astCtxt->bvuge(op2, this->astCtxt->bv(triton::bitsize::word, src2.getBitSize())),
+                    this->astCtxt->bv(triton::bitsize::word, src2.getBitSize()),
+                    op2
+                );
+
+                if (shift->getBitvectorSize() < triton::bitsize::word) {
+                    shift = this->astCtxt->zx(triton::bitsize::word - shift->getBitvectorSize(), shift);
+                }
+                else {
+                    shift = this->astCtxt->extract(triton::bitsize::word - 1, 0, shift);
+                }
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    pck.push_back(this->astCtxt->bvshl(this->astCtxt->extract(high, low, op1), shift));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPSLLW operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpsrad_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::dword);
+
+                auto shift = this->astCtxt->ite(
+                    this->astCtxt->bvuge(op2, this->astCtxt->bv(triton::bitsize::dword, src2.getBitSize())),
+                    this->astCtxt->bv(triton::bitsize::dword, src2.getBitSize()),
+                    op2
+                );
+
+                if (shift->getBitvectorSize() < triton::bitsize::dword) {
+                    shift = this->astCtxt->zx(triton::bitsize::dword - shift->getBitvectorSize(), shift);
+                }
+                else {
+                    shift = this->astCtxt->extract(triton::bitsize::dword - 1, 0, shift);
+                }
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::dword; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::dword);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                    pck.push_back(this->astCtxt->bvashr(this->astCtxt->extract(high, low, op1), shift));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPSRAD operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpsraw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                auto shift = this->astCtxt->ite(
+                    this->astCtxt->bvuge(op2, this->astCtxt->bv(triton::bitsize::word, src2.getBitSize())),
+                    this->astCtxt->bv(triton::bitsize::word, src2.getBitSize()),
+                    op2
+                );
+
+                if (shift->getBitvectorSize() < triton::bitsize::word) {
+                    shift = this->astCtxt->zx(triton::bitsize::word - shift->getBitvectorSize(), shift);
+                }
+                else {
+                    shift = this->astCtxt->extract(triton::bitsize::word - 1, 0, shift);
+                }
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    pck.push_back(this->astCtxt->bvashr(this->astCtxt->extract(high, low, op1), shift));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPSRAW operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpsrldq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::dqword);
+
+                auto shift = this->astCtxt->ite(
+                    this->astCtxt->bvuge(op2, this->astCtxt->bv(triton::bitsize::word, src2.getBitSize())),
+                    this->astCtxt->bv(triton::bitsize::word, src2.getBitSize()),
+                    op2
+                );
+
+                if (shift->getBitvectorSize() < triton::bitsize::dqword) {
+                    shift = this->astCtxt->zx(triton::bitsize::dqword - shift->getBitvectorSize(), shift);
+                }
+                else {
+                    shift = this->astCtxt->extract(triton::bitsize::dqword - 1, 0, shift);
+                }
+                shift = this->astCtxt->bvmul(shift, this->astCtxt->bv(triton::bitsize::byte, triton::bitsize::dqword));
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::dqword; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::dqword);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::dqword) - (i * triton::bitsize::dqword);
+                    pck.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(high, low, op1), shift));
+                }
+                auto node = pck.size() > 1 ? this->astCtxt->concat(pck) : pck[0];
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPSRLDQ operation");
+
+                /* Spread taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpsrlw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> pck;
+                pck.reserve(dst.getSize() / triton::size::word);
+
+                auto shift = this->astCtxt->ite(
+                    this->astCtxt->bvuge(op2, this->astCtxt->bv(triton::bitsize::word, src2.getBitSize())),
+                    this->astCtxt->bv(triton::bitsize::word, src2.getBitSize()),
+                    op2
+                );
+
+                if (shift->getBitvectorSize() < triton::bitsize::word) {
+                    shift = this->astCtxt->zx(triton::bitsize::word - shift->getBitvectorSize(), shift);
+                }
+                else {
+                    shift = this->astCtxt->extract(triton::bitsize::word - 1, 0, shift);
+                }
+
+                for (triton::uint32 i = 0; i < dst.getSize() / triton::size::word; ++i) {
+                    uint32 high = (dst.getBitSize() - 1) - (i * triton::bitsize::word);
+                    uint32 low = (dst.getBitSize() - triton::bitsize::word) - (i * triton::bitsize::word);
+                    pck.push_back(this->astCtxt->bvlshr(this->astCtxt->extract(high, low, op1), shift));
+                }
+                auto node = this->astCtxt->concat(pck);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPSRLW operation");
 
                 /* Spread taint */
                 expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
@@ -15006,6 +18324,302 @@ namespace triton {
             }
 
 
+            void x86Semantics::vpunpckhbw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize());
+
+                uint32 start_index = dst.getBitSize();
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::word; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::byte);
+                        uint32 low = (start_index - triton::bitsize::byte) - (i * triton::bitsize::byte);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKHBW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpunpckhdq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize() / triton::size::dword);
+
+                uint32 start_index = dst.getBitSize();
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::qword; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::dword);
+                        uint32 low = (start_index - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKHDQ operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpunpckhqdq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize() / triton::size::qword);
+
+                uint32 start_index = dst.getBitSize();
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::dqword; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::qword);
+                        uint32 low = (start_index - triton::bitsize::qword) - (i * triton::bitsize::qword);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKHQDQ operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpunpckhwd_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize() / triton::size::word);
+
+                uint32 start_index = dst.getBitSize();
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::dword; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::word);
+                        uint32 low = (start_index - triton::bitsize::word) - (i * triton::bitsize::word);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKHWD operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpunpcklbw_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize());
+
+                uint32 start_index = dst.getBitSize() - triton::bitsize::qword;
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::word; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::byte);
+                        uint32 low = (start_index - triton::bitsize::byte) - (i * triton::bitsize::byte);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKLBW operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpunpckldq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize() / triton::size::dword);
+
+                uint32 start_index = dst.getBitSize() - triton::bitsize::qword;
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::qword; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::dword);
+                        uint32 low = (start_index - triton::bitsize::dword) - (i * triton::bitsize::dword);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKLDQ operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpunpcklqdq_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize() / triton::size::qword);
+
+                uint32 start_index = dst.getBitSize() - triton::bitsize::qword;
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::dqword; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::qword);
+                        uint32 low = (start_index - triton::bitsize::qword) - (i * triton::bitsize::qword);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKLQDQ operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
+            void x86Semantics::vpunpcklwd_s(triton::arch::Instruction& inst) {
+                auto& dst = inst.operands[0];
+                auto& src1 = inst.operands[1];
+                auto& src2 = inst.operands[2];
+
+                /* Create symbolic operands */
+                auto op1 = this->symbolicEngine->getOperandAst(inst, src1);
+                auto op2 = this->symbolicEngine->getOperandAst(inst, src2);
+
+                /* Create the semantics */
+                std::vector<triton::ast::SharedAbstractNode> unpack;
+                unpack.reserve(dst.getSize() / triton::size::word);
+
+                uint32 start_index = dst.getBitSize() - triton::bitsize::qword;
+                for (triton::uint32 k = 0; k < dst.getSize() / triton::size::dqword; ++k) {
+                    start_index -= k * triton::bitsize::dqword;
+                    for (triton::uint32 i = 0; i < triton::size::dqword / triton::size::dword; ++i) {
+                        uint32 high = (start_index - 1) - (i * triton::bitsize::word);
+                        uint32 low = (start_index - triton::bitsize::word) - (i * triton::bitsize::word);
+                        unpack.push_back(this->astCtxt->extract(high, low, op2));
+                        unpack.push_back(this->astCtxt->extract(high, low, op1));
+                    }
+                }
+
+                auto node = this->astCtxt->concat(unpack);
+
+                /* Create symbolic expression */
+                auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "VPUNPCKLWD operation");
+
+                /* Apply the taint */
+                expr->isTainted = this->taintEngine->taintAssignment(dst, src1) | this->taintEngine->taintUnion(dst, src2);
+
+                /* Update the symbolic control flow */
+                this->controlFlow_s(inst);
+            }
+
+
             void x86Semantics::vpxor_s(triton::arch::Instruction& inst) {
                 auto& dst = inst.operands[0];
                 auto& src1 = inst.operands[1];
@@ -15068,44 +18682,29 @@ namespace triton {
                 auto& dst = inst.operands[0];
                 auto& src = inst.operands[1];
                 bool  dstT = this->taintEngine->isTainted(dst);
-                bool  srcT = this->taintEngine->isTainted(src);
 
                 /* Create symbolic operands */
                 auto op1 = this->symbolicEngine->getOperandAst(inst, dst);
                 auto op2 = this->symbolicEngine->getOperandAst(inst, src);
 
                 /* Create the semantics */
-                auto node1 = op2;
-                auto node2 = op1;
+                auto node = this->astCtxt->bvadd(op1, op2);
 
                 /* Create symbolic expression */
-                auto expr1 = this->symbolicEngine->createSymbolicExpression(inst, node1, dst, "XCHG operation");
-                auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, node2, src, "XCHG operation");
+                auto expr1 = this->symbolicEngine->createSymbolicExpression(inst, op1, src, "XADD operation");
+                auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, node, dst, "XADD operation");
 
                 /* Spread taint */
-                expr1->isTainted = this->taintEngine->setTaint(dst, srcT);
-                expr2->isTainted = this->taintEngine->setTaint(src, dstT);
-
-                /* Create symbolic operands */
-                op1 = this->symbolicEngine->getOperandAst(inst, dst);
-                op2 = this->symbolicEngine->getOperandAst(inst, src);
-
-                /* Create the semantics */
-                auto node3 = this->astCtxt->bvadd(op1, op2);
-
-                /* Create symbolic expression */
-                auto expr3 = this->symbolicEngine->createSymbolicExpression(inst, node3, dst, "ADD operation");
-
-                /* Spread taint */
-                expr3->isTainted = this->taintEngine->taintUnion(dst, src);
+                expr2->isTainted = this->taintEngine->taintUnion(dst, src);
+                expr1->isTainted = this->taintEngine->setTaint(src, dstT);
 
                 /* Update symbolic flags */
-                this->af_s(inst, expr3, dst, op1, op2);
-                this->cfAdd_s(inst, expr3, dst, op1, op2);
-                this->ofAdd_s(inst, expr3, dst, op1, op2);
-                this->pf_s(inst, expr3, dst);
-                this->sf_s(inst, expr3, dst);
-                this->zf_s(inst, expr3, dst);
+                this->af_s(inst, expr2, dst, op1, op2);
+                this->cfAdd_s(inst, expr2, dst, op1, op2);
+                this->ofAdd_s(inst, expr2, dst, op1, op2);
+                this->pf_s(inst, expr2, dst);
+                this->sf_s(inst, expr2, dst);
+                this->zf_s(inst, expr2, dst);
 
                 /* Update the symbolic control flow */
                 this->controlFlow_s(inst);
