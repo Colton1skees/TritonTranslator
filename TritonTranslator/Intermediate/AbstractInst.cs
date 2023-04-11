@@ -90,7 +90,14 @@ namespace TritonTranslator.Intermediate
 
         public AbstractInst()
         {
-            Operands = new List<IOperand>();
+            int capacity = 0;
+            if (this is AbstractInstBinary)
+                capacity = 1;
+            else if (this is AbstractInstTernary)
+                capacity = 3;
+            else if (this is AbstractInstUnary)
+                capacity = 2;
+            Operands = new List<IOperand>(capacity);
         }
 
         public virtual uint ComputeBitvecSize()

@@ -59,7 +59,7 @@ namespace TritonTranslator.Arch.X86
             // value of RSP at the start of the instruction execution).
             // To accomodate this, we need to allocate temporary
             // registers to preserve SSA form.
-            EnterSsaForm(semantics.ExpressionDatabase.SymbolicExpressions);
+            //EnterSsaForm(semantics.ExpressionDatabase.SymbolicExpressions);
             
             return semantics.ExpressionDatabase.SymbolicExpressions;
         }

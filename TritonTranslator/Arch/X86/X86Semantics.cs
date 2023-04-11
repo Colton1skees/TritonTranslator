@@ -587,7 +587,7 @@ namespace TritonTranslator.Arch.X86
                                 AbstractNode op2,
                                 bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var low = vol ? 0 : dst.Low;
             var high = vol ? bvSize - 1 : dst.High;
@@ -1067,7 +1067,7 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var cf = new OperandWrapper(this.architecture.GetRegister(register_e.ID_REG_X86_CF));
 
@@ -1243,7 +1243,7 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var low = vol ? 0 : dst.Low;
             var high = vol ? bvSize - 1 : dst.High;
@@ -1494,7 +1494,7 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var of = new OperandWrapper(this.architecture.GetRegister(register_e.ID_REG_X86_OF));
 
@@ -1706,6 +1706,7 @@ namespace TritonTranslator.Arch.X86
                                 OperandWrapper dst,
                                 bool vol = false)
         {
+            return;
             var low = vol ? 0 : dst.Low;
             var high = vol ? BitSizes.Byte - 1 : low == 0 ? BitSizes.Byte - 1 : BitSizes.Word - 1;
 
@@ -1741,6 +1742,7 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
+            return;
             var bvSize = dst.BitSize;
             var low = vol ? 0 : dst.Low;
             var high = vol ? BitSizes.Byte - 1 : low == 0 ? BitSizes.Byte - 1 : BitSizes.Word - 1;
@@ -1803,7 +1805,7 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var high = vol ? bvSize - 1 : dst.High;
             var sf = new OperandWrapper(this.architecture.GetRegister(register_e.ID_REG_X86_SF));
@@ -1903,7 +1905,7 @@ namespace TritonTranslator.Arch.X86
                                 OperandWrapper dst,
                                 bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var low = vol ? 0 : dst.Low;
             var high = vol ? bvSize - 1 : dst.High;
@@ -1956,7 +1958,7 @@ namespace TritonTranslator.Arch.X86
                                    AbstractNode op2,
                                    bool vol = false)
         {
-
+            return;
             var bvSize = dst.BitSize;
             var low = vol ? 0 : dst.Low;
             var high = vol ? bvSize - 1 : dst.High;
