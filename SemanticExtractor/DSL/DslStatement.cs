@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SemanticExtractor.DSL
 {
-    public class DslNode
+    public class DslStatement : DslNode
     {
     }
 }

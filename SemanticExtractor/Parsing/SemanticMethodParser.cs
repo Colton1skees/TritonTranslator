@@ -11,13 +11,17 @@ namespace SemanticExtractor.Parsing
     {
         public static void ParseMethod(string method)
         {
+            // Parse the triton semantic method definition.
             var charStream = new AntlrInputStream(method);
             var lexer = new TritonSemanticsLexer(charStream);
             var tokenStream = new CommonTokenStream(lexer);
             var parser = new TritonSemanticsParser(tokenStream);
             parser.BuildParseTree = true;
-            
+
+            // DFS down the AST while building
+            var root = parser.root();
             var dslTranslationVisitor = new DslTranslationVisitor();
+            dslTranslationVisitor.VisitRoot(root);
         }
     }
 }

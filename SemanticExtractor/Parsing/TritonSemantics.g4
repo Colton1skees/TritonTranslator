@@ -14,7 +14,7 @@ statement : comment # CommentExpression
     | ('break;') #BreakExpression
     | 'throw triton::exceptions::Semantics' LPARAM STRING RPARAM ';' #ThrowSemanticExceptionExpression
     | control_flow_body #ControlFlowExpression
-    | any_evaluatable #Evaluatable;
+    | func_call #Evaluatable;
 
 // Match all types of comments
 comment: LINE_COMMENT | COMMENT;

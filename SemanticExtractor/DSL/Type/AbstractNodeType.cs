@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SemanticExtractor.DSL
+namespace SemanticExtractor.DSL.Type
 {
-    public class DslNode
+    public class AbstractNodeType : DslType
     {
     }
 }
