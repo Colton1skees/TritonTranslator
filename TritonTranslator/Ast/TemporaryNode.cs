@@ -13,7 +13,12 @@ namespace TritonTranslator.Ast
 
         public uint Uid { get; }
 
-        public TemporaryNode(uint id, uint bitSize) : base(String.Format("t{0}:{1}", id, bitSize.ToString()))
+        public TemporaryNode(uint id, uint bitSize) : this(id, bitSize, id.ToString())
+        {
+
+        }
+
+        public TemporaryNode(uint id, uint bitSize, string name) : base(name)
         {
             if (id == 160)
                 Debugger.Break();
@@ -22,9 +27,10 @@ namespace TritonTranslator.Ast
             Initialize();
         }
 
+
         public override string GetOperator()
         {
-            return String.Format("t{0}:{1}", Uid, BitSize.ToString());
+            return Name;
         }
     }
 }

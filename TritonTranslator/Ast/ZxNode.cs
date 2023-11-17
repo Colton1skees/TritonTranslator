@@ -18,7 +18,7 @@ namespace TritonTranslator.Ast
 
         public AbstractNode Source
         {
-            get => (IntegerNode)Children[1];
+            get => Children[1];
             set => Children[1] = value;
         }
 
