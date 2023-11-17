@@ -336,10 +336,16 @@ namespace TritonTranslator.Ast
                 return false;
             if (ReferenceEquals(this, obj))
                 return true;
-            if (obj is not AbstractNode)
+            if (obj is not AbstractNode abstractNode)
                 return false;
 
-            return GetHashCode() == obj.GetHashCode();
+            if (GetHashCode() != abstractNode.GetHashCode())
+                return false;
+            if (this.ToString() != abstractNode.ToString())
+                return false;
+
+            return true;
+
         }
 
         public override int GetHashCode()

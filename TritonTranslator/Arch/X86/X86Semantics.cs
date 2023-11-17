@@ -10834,7 +10834,9 @@ namespace TritonTranslator.Arch.X86
 
             /* Create symbolic operands */
             var op1 = this.astCtxt.bv(0, dst1.BitSize);
-            var op2 = this.astCtxt.bv((ulong)this.ExpressionDatabase.GetSymbolicExpressions().Count(), dst2.BitSize);
+            //var op2 = this.astCtxt.bv((ulong)this.ExpressionDatabase.GetSymbolicExpressions().Count(), dst2.BitSize);
+            // TODO: Emulate RDTSC.
+            var op2 = this.astCtxt.bv(0, dst2.BitSize);
 
             /* Create symbolic expression */
             var expr1 = this.ExpressionDatabase.StoreSymbolicAssignment(inst, op1, dst1, "RDTSC EDX operation");

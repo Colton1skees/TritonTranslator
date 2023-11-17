@@ -19,6 +19,8 @@ namespace TritonTranslator.Intermediate.Operands
 
         public TemporaryOperand(uint uid, uint bitSize)
         {
+            if (uid == 0)
+                Debugger.Break();
             Uid = uid;
             Bitsize = bitSize;
         }
