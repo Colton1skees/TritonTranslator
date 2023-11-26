@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.CARRY;
 
-        public CarryNode(AbstractNode expr1) : base(expr1)
+        public CarryNode(AstContext ctx, AbstractNode expr1) : base(ctx, expr1)
         {
 
         }

@@ -11,7 +11,7 @@ namespace TritonTranslator.Ast
         public override AstType Type => AstType.BVLSHR;
 
 
-        public BvlshrNode(AbstractNode expr1, AbstractNode expr2) : base(expr1, expr2)
+        public BvlshrNode(AstContext ctx, AbstractNode expr1, AbstractNode expr2) : base(ctx, expr1, expr2)
         {
 
         }

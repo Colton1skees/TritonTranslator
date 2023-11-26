@@ -25,9 +25,9 @@ namespace TritonTranslator.Ast
             set => Children[1] = value;
         }
 
-        public AbstractUnaryNode(AbstractNode expr1, AbstractNode expr2)
+        public AbstractUnaryNode(AstContext ctx, AbstractNode expr1, AbstractNode expr2) : base(ctx)
         {
-            if(expr1 == null)
+            if (expr1 is null)
             {
                 throw new ArgumentNullException(nameof(expr1));
             }
@@ -39,15 +39,15 @@ namespace TritonTranslator.Ast
         protected override void ValidateChildren()
         {
             if (Children.Count != 2)
-                throw new InvalidOperationException(String.Format("Unary node {0} does not have exactly two children.", Type));
-            if (Children.Any(x => x == null))
-                throw new InvalidOperationException(String.Format("Unary node {0} cannot have any null children.", Type));
+                throw new InvalidOperationException(string.Format("Unary node {0} does not have exactly two children.", Type));
+            if (Children.Any(x => x is null))
+                throw new InvalidOperationException(string.Format("Unary node {0} cannot have any null children.", Type));
         }
 
         protected override void ValidateChildSizes()
         {
             if (Children[0].BitvectorSize != Children[1].BitvectorSize)
-                throw new InvalidOperationException(String.Format("Unary node {0} children has unequal sizes.", Type));
+                throw new InvalidOperationException(string.Format("Unary node {0} children has unequal sizes.", Type));
         }
 
         public override uint ComputeBitvecSize()

@@ -13,15 +13,13 @@ namespace TritonTranslator.Ast
 
         public uint Uid { get; }
 
-        public TemporaryNode(uint id, uint bitSize) : this(id, bitSize, id.ToString())
+        public TemporaryNode(AstContext ctx, uint id, uint bitSize) : this(ctx, id, bitSize, id.ToString())
         {
 
         }
 
-        public TemporaryNode(uint id, uint bitSize, string name) : base(name)
+        public TemporaryNode(AstContext ctx, uint id, uint bitSize, string name) : base(ctx, name)
         {
-            if (id == 160)
-                Debugger.Break();
             Uid = id;
             BitvectorSize = bitSize;
             Initialize();

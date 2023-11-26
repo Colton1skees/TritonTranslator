@@ -16,7 +16,7 @@ namespace TritonTranslator.Ast
             set => Children[0] = value;
         }
 
-        public AbstractBinaryNode(AbstractNode expr1) 
+        public AbstractBinaryNode(AstContext ctx, AbstractNode expr1) : base(ctx)
         {
             Children.Add(expr1);
             Initialize();
@@ -26,7 +26,7 @@ namespace TritonTranslator.Ast
         {
             if (Children.Count != 1)
                 throw new InvalidOperationException("Binary nodes must take one child.");
-            if (Children[0] == null)
+            if (Children[0] is null)
                 throw new InvalidOperationException("Binary nodes child at index 0 cannot be null.");
         }
 

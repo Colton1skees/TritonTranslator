@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.UNDEF;
 
-        public UndefNode(uint size)
+        public UndefNode(AstContext ctx, uint size) : base(ctx)
         {
             BitvectorSize = size;
             Initialize();

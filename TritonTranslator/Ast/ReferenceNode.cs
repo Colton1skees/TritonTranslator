@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.REFERENCE;
 
-        public ReferenceNode(AbstractNode expr1) : base(expr1)
+        public ReferenceNode(AstContext ctx, AbstractNode expr1) : base(ctx, expr1)
         {
 
         }

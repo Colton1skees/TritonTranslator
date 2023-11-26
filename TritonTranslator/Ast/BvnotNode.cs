@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.BVNOT;
 
-        public BvnotNode(AbstractNode expr1) : base(expr1)
+        public BvnotNode(AstContext ctx, AbstractNode expr1) : base(ctx, expr1)
         {
         }
     }

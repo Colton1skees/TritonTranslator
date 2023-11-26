@@ -22,19 +22,19 @@ namespace TritonTranslator.Ast
             set => Children[1] = value;
         }
 
-        public ZxNode(uint sizeExt, AbstractNode expr2) : base(new IntegerNode(sizeExt, expr2.BitvectorSize), expr2)
+        public ZxNode(AstContext ctx, uint sizeExt, AbstractNode expr2) : base(ctx, new IntegerNode(ctx, sizeExt, expr2.BitvectorSize), expr2)
         {
 
         }
 
-        public ZxNode(AbstractNode sizeExt, AbstractNode expr2) : base(sizeExt, expr2)
+        public ZxNode(AstContext ctx, AbstractNode sizeExt, AbstractNode expr2) : base(ctx, sizeExt, expr2)
         {
 
         }
 
         protected override void ValidateChildSizes()
         {
-           
+
         }
 
         public override uint ComputeBitvecSize()

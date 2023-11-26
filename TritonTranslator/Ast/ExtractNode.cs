@@ -28,14 +28,13 @@ namespace TritonTranslator.Ast
             set => Children[2] = value;
         }
 
-        public ExtractNode(uint high, uint low, AbstractNode expr) :
-            base(new IntegerNode(high, expr.BitvectorSize), new IntegerNode(low, expr.BitvectorSize), expr)
+        public ExtractNode(AstContext ctx, uint high, uint low, AbstractNode expr) :
+            base(ctx, new IntegerNode(ctx, high, expr.BitvectorSize), new IntegerNode(ctx, low, expr.BitvectorSize), expr)
         {
 
         }
 
-        public ExtractNode(IntegerNode high, IntegerNode low, AbstractNode expr) :
-            base(high, low, expr)
+        public ExtractNode(AstContext ctx, IntegerNode high, IntegerNode low, AbstractNode expr) : base(ctx, high, low, expr)
         {
 
         }

@@ -28,7 +28,7 @@ namespace TritonTranslator.Ast
             set => Children[2] = value;
         }
 
-        public AbstractTernaryNode(AbstractNode expr1, AbstractNode expr2, AbstractNode expr3)
+        public AbstractTernaryNode(AstContext ctx, AbstractNode expr1, AbstractNode expr2, AbstractNode expr3) : base(ctx)
         {
             Children.Add(expr1);
             Children.Add(expr2);
@@ -39,9 +39,9 @@ namespace TritonTranslator.Ast
         protected override void ValidateChildren()
         {
             if (Children.Count != 3)
-                throw new InvalidOperationException(String.Format("Ternary node {0} does not have exactly three children.", Type));
-            if (Children.Any(x => x == null))
-                throw new InvalidOperationException(String.Format("Ternary node {0} cannot have any null children.", Type));
+                throw new InvalidOperationException(string.Format("Ternary node {0} does not have exactly three children.", Type));
+            if (Children.Any(x => x is null))
+                throw new InvalidOperationException(string.Format("Ternary node {0} cannot have any null children.", Type));
         }
 
         public override uint ComputeBitvecSize()

@@ -13,10 +13,10 @@ namespace TritonTranslator.Ast
 
         public MemoryAccess MemoryAccess { get; }
 
-        public MemoryNode(AbstractNode addressNode, uint size) : base(addressNode)
+        public MemoryNode(AstContext ctx, AbstractNode addressNode, uint size) : base(ctx, addressNode)
         {
             BitvectorSize = size;
-            
+
             /*
             if (addressNode.BitvectorSize != size)
                 throw new InvalidOperationException("Address node & provided size do not match.");
@@ -25,11 +25,11 @@ namespace TritonTranslator.Ast
             Initialize();
         }
 
-        
+
         public override uint ComputeBitvecSize()
         {
             return BitvectorSize;
         }
-        
+
     }
 }

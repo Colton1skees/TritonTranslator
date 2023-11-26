@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.CONCAT;
 
-        public ConcatNode(AbstractNode expr1, AbstractNode expr2) 
+        public ConcatNode(AstContext ctx, AbstractNode expr1, AbstractNode expr2) : base(ctx)
         {
             Children = new List<AbstractNode>();
             Children.Add(expr1);
@@ -18,7 +18,7 @@ namespace TritonTranslator.Ast
             Initialize();
         }
 
-        public ConcatNode(IEnumerable<AbstractNode> expressions)
+        public ConcatNode(AstContext ctx, IEnumerable<AbstractNode> expressions) : base(ctx)
         {
             Children = new List<AbstractNode>();
             Children.AddRange(expressions);

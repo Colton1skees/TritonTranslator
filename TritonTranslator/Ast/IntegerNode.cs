@@ -12,7 +12,7 @@ namespace TritonTranslator.Ast
 
         public ulong Value { get; }
 
-        public IntegerNode(ulong value, uint size)
+        public IntegerNode(AstContext ctx, ulong value, uint size) : base(ctx)
         {
             Value = value;
             BitvectorSize = size;

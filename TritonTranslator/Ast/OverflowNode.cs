@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.OVERFLOW;
 
-        public OverflowNode(AbstractNode expr1) : base(expr1)
+        public OverflowNode(AstContext ctx, AbstractNode expr1) : base(ctx,expr1)
         {
 
         }

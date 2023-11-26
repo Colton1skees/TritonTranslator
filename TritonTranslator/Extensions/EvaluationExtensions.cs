@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TritonTranslator.Ast;
+using TritonTranslator.Ast;
 using TritonTranslator.Expression;
 
 namespace TritonTranslator.Extensions

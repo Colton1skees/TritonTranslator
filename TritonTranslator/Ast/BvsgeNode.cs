@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.BVSGE;
 
-        public BvsgeNode(AbstractNode expr1, AbstractNode expr2) : base(expr1, expr2)
+        public BvsgeNode(AstContext ctx, AbstractNode expr1, AbstractNode expr2) : base(ctx, expr1, expr2)
         {
 
         }

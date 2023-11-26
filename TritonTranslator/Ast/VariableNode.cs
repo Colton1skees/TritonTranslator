@@ -12,7 +12,7 @@ namespace TritonTranslator.Ast
 
         public string Name { get; }
 
-        public VariableNode(string name) : base()
+        public VariableNode(AstContext ctx, string name) : base(ctx)
         {
             Name = name;
         }

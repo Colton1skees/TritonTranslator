@@ -10,7 +10,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.ITE;
 
-        public IteNode(AbstractNode ifExpr, AbstractNode thenExpr, AbstractNode elseExpr) : base(ifExpr, thenExpr, elseExpr)
+        public IteNode(AstContext ctx, AbstractNode ifExpr, AbstractNode thenExpr, AbstractNode elseExpr) : base(ctx, ifExpr, thenExpr, elseExpr)
         {
 
         }

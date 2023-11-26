@@ -10,11 +10,13 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.BV;
 
-        public BvNode(ulong value, uint bitSize) : this(new IntegerNode(value, bitSize), new IntegerNode(bitSize, bitSize))
+        public ulong Value => (Children[0] as IntegerNode).Value;
+
+        public BvNode(AstContext ctx, ulong value, uint bitSize) : this(ctx, new IntegerNode(ctx, value, bitSize), new IntegerNode(ctx, bitSize, bitSize))
         {
         }
 
-        public BvNode(IntegerNode value, IntegerNode size) : base(value, size)
+        public BvNode(AstContext ctx, IntegerNode value, IntegerNode size) : base(ctx, value, size)
         {
 
         }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using TritonTranslator.Arch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TritonTranslator.Arch;
 
 namespace TritonTranslator.Ast
 {
@@ -11,7 +11,7 @@ namespace TritonTranslator.Ast
     {
         public override AstType Type => AstType.REGISTER;
 
-        public RegisterNode(Register register) : base(register.Id.ToString())
+        public RegisterNode(AstContext ctx, Register register) : base(ctx, register.Id.ToString())
         {
             Register = register;
             BitvectorSize = register.BitSize;

@@ -14,7 +14,7 @@ namespace TritonTranslator.Ast
 
         public VariableNode Variable { get; }
 
-        public SsaVariableNode(VariableNode variable, int version) : base(String.Format("{0}.{1}", variable, version))
+        public SsaVariableNode(AstContext ctx, VariableNode variable, int version) : base(ctx, string.Format("{0}.{1}", variable, version))
         {
             this.version = version;
             Variable = variable;
@@ -24,7 +24,7 @@ namespace TritonTranslator.Ast
 
         public override string GetOperator()
         {
-            return Variable.ToString() + String.Format(".{0}", version);
+            return Variable.ToString() + string.Format(".{0}", version);
         }
     }
 }

@@ -18,23 +18,23 @@ namespace TritonTranslator.Ast
 
         public AbstractNode Source
         {
-            get => (IntegerNode)Children[1];
+            get => Children[1];
             set => Children[1] = value;
         }
 
-        public SxNode(uint sizeExt, AbstractNode expr) : base(new IntegerNode(sizeExt, expr.BitvectorSize), expr)
+        public SxNode(AstContext ctx, uint sizeExt, AbstractNode expr) : base(ctx, new IntegerNode(ctx, sizeExt, expr.BitvectorSize), expr)
         {
 
         }
 
-        public SxNode(AbstractNode sizeExt, AbstractNode expr) : base(sizeExt, expr)
+        public SxNode(AstContext ctx, AbstractNode sizeExt, AbstractNode expr) : base(ctx, sizeExt, expr)
         {
 
         }
 
         protected override void ValidateChildSizes()
         {
-            
+
         }
 
         public override uint ComputeBitvecSize()

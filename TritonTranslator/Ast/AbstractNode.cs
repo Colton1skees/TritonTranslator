@@ -1,22 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using TritonTranslator.Expression;
 
 namespace TritonTranslator.Ast
 {
+    public enum AstClassification
+    {
+        // Bitwise expression(e.g. a & b)
+        Bitwise,
+        // Linear expression(e.g. a + b, x * 3434) but never (a * b, x & 3453443)
+        Linear,
+        // Anything with that has a polynomial   degree greater than one OR contains arithmetic/nonlinear/constant expressions inside
+        // of bitwise expressions.
+        Nonlinear,
+        // Mixed arithmetic and bitwise expressions. These are technically linear.
+        // But, they have an important distinction from linear expressions because 
+        // mixed expressions cannot be used inside of bitwise expressions.
+        // If a mixed expression is used inside of a bitwise operand, the root becomes nonlinear.
+        Mixed,
+    }
+
     public enum AstType : byte
     {
         /// <summary>
         /// Invalid node.
         /// </summary>
-        INVALID = 0,  
+        INVALID = 0,
         /// <summary>
         /// BVADDx y)
         /// </summary>
-        BVADD = 5,    
+        BVADD = 5,
         /// <summary>
         /// (bvand x y)
         /// </summary>
@@ -208,7 +226,7 @@ namespace TritonTranslator.Ast
         /// <summary>
         /// ((_ zero_extend x) y)
         /// </summary>
-        ZX = 241,   
+        ZX = 241,
         /// <summary>
         /// Undefined value
         /// </summary>
@@ -241,6 +259,12 @@ namespace TritonTranslator.Ast
 
     public abstract class AbstractNode
     {
+        private int hash;
+
+        public int astSize;
+
+        public AstContext Context { get; }
+
         /// <summary>
         /// Micro optimization to reduce list expansions.
         /// </summary>
@@ -257,8 +281,17 @@ namespace TritonTranslator.Ast
         /// </summary>
         public List<AbstractNode> Children { get; protected set; }
 
-        public AbstractNode()
+        public HashSet<TemporaryNode> Variables = new();
+
+
+        public AstClassification AstClassification { get; protected set; }
+
+        public AbstractNode(AstContext context)
         {
+            this.Context = context;
+            if (context == null)
+                throw new InvalidOperationException($"Asts much be assigned to a context.");
+
             Children = new List<AbstractNode>(DefaultChildrenCount);
         }
 
@@ -282,6 +315,29 @@ namespace TritonTranslator.Ast
 
             if (Children == null)
                 Children = new List<AbstractNode>(0);
+
+            astSize = Children.Count;
+            foreach (var child in Children)
+            {
+                if(astSize >= 15000)
+                {
+                    astSize = 9999999;
+                    continue;
+                }
+                astSize += child.astSize;;
+            }
+
+            foreach(var child in Children)
+            {
+                if (child is TemporaryNode tempNode)
+                    Variables.Add(tempNode);
+                else
+                    Variables.UnionWith(child.Variables);
+            }
+
+
+            hash = ComputeHash();
+            AstClassification = Classify();
         }
 
         protected virtual void ValidateChildren()
@@ -294,15 +350,162 @@ namespace TritonTranslator.Ast
 
         }
 
+        private AstClassification Classify()
+        {
+            // If any children are nonlinear, the entire tree is nonlinear.
+            if (Children.Any(x => x.AstClassification == AstClassification.Nonlinear))
+                return AstClassification.Nonlinear;
+
+            switch(this)
+            {
+                case BvNode:
+                case IntegerNode:
+                    return AstClassification.Linear;
+                case TemporaryNode:
+                    return AstClassification.Linear;
+                case BvshlNode:
+                    // Shifting left by a constant can be treated as multiplication by a constant.
+                    // Anything else is equivalent to exponentation, making it nonlinear.
+                    var shlBy = Children[1];
+                    return IsConstNode(shlBy) ? AstClassification.Linear : AstClassification.Nonlinear;
+                case BvmulNode:
+                    // If neither operand is a constant, then the expression must be nonlinear.
+                    var constMul = OneOf(Children[0], Children[1], (x) => IsConstNode(x) ? x : null);
+                    if (constMul == null)
+                    {
+                        return AstClassification.Nonlinear;
+                    }
+
+                    var other = Children.Single(x => x != constMul);
+                    var otherKind = other.AstClassification;
+                    // const * bitwise = mixed expression
+                    if (otherKind == AstClassification.Bitwise)
+                        return AstClassification.Mixed;
+                    // const * linear = linear
+                    else if (otherKind == AstClassification.Linear)
+                        return AstClassification.Linear;
+                    // const * nonlinear = nonlinear
+                    else if (otherKind == AstClassification.Nonlinear)
+                        return AstClassification.Nonlinear;
+                    // const * mixed(bitwise and arithmetic) = mixed.
+                    else
+                        return AstClassification.Mixed;
+                case BvaddNode:
+                case BvsubNode:
+                    if (Children.Any(x => x.AstClassification == AstClassification.Nonlinear))
+                        return AstClassification.Nonlinear;
+                    else if (Children.Any(x => x.AstClassification == AstClassification.Mixed || x.AstClassification == AstClassification.Bitwise))
+                        return AstClassification.Mixed;
+                    else if (Children.Any(x => x.AstClassification == AstClassification.Linear))
+                        return Children.Any(x => x.AstClassification == AstClassification.Bitwise) ? AstClassification.Mixed : AstClassification.Linear;
+                    else
+                        return AstClassification.Bitwise;
+                case BvandNode:
+                case BvorNode:
+                case BvxorNode:
+                case BvnotNode:
+                    bool containsConstantOrArithmetic = Children.Any(x => IsConstNode(x) || x.AstClassification == AstClassification.Linear && x is not TemporaryNode);
+                    bool containsMixedOrNonLinear = Children.Any(x => x.AstClassification == AstClassification.Mixed || x.AstClassification == AstClassification.Nonlinear);
+
+                    // If a bitwise expression contains nontrivial constants or arithmetic operations, it is nonlinear.
+                    // Alternatively if the bitwise expression has any mixed or nonlinear operations, then it is also nonlinear.
+                    // Note that arithmetic or mixed operators are allowed inside of bitwise negation. Nonlinear trees have already been filtered out at this point.
+                    if (this is not BvnotNode && (containsConstantOrArithmetic || containsMixedOrNonLinear))
+                        return AstClassification.Nonlinear;
+                    else if (Children.Any(x => (x.AstClassification == AstClassification.Linear || x.AstClassification == AstClassification.Mixed) && x is not TemporaryNode))
+                        return AstClassification.Mixed;
+                    else
+                        return AstClassification.Bitwise;
+                default:
+                    return AstClassification.Nonlinear;
+            }
+        }
+
+        private bool IsConstNode(AbstractNode node)
+        {
+            return (node is BvNode || node is IntegerNode);
+        }
+
+        private static AbstractNode OneOf(AbstractNode a, AbstractNode b, Func<AbstractNode, AbstractNode> predicate)
+        {
+            var resultA = predicate(a);
+            if (resultA != null)
+                return resultA;
+
+            var resultB = predicate(b);
+            if (resultB != null)
+                return resultB;
+
+            return null;
+        }
+
         public virtual string GetOperator()
         {
-            return string.Format("{0}(", GetType().Name.Replace("Node", ""));
+            return string.Format("{0}", GetType().Name.Replace("Node", ""));
         }
 
         public override string ToString()
         {
-            int tabCount = 0;
-            return ToString(ref tabCount);
+            var sb = new StringBuilder();
+            var mapping = new Dictionary<AbstractNode, string>(); 
+            ToString(ref sb, ref mapping);
+            return sb.ToString();
+            // return str;
+        }
+
+        internal void ToString(ref StringBuilder sb, ref Dictionary<AbstractNode, string> varMapping)
+        {
+            // If we've already assigned this expression to a variable, do nothing.
+            if (varMapping.ContainsKey(this))
+            {
+                // Do nothing
+                return;
+            }
+
+            foreach (var child in this.Children)
+            {
+                child.ToString(ref sb, ref varMapping);
+            }
+
+            //sb.AppendLine($"t{varMapping.Count} = {sb.Ge}");
+            var tempName = $"v{varMapping.Count}";
+            sb.Append($"{tempName} = {GetOperator()}");
+
+            if (this is not VariableNode && this is not IntegerNode)
+                sb.Append("(");
+
+            for (int i = 0; i < Children.Count; i++)
+            {
+                var op = Children[i];
+                sb.Append(varMapping[op]);
+                if (i != Children.Count - 1)
+                    sb.Append(",");
+            }
+
+            if (this is not VariableNode && this is not IntegerNode)
+                sb.Append(")");
+
+            sb.Append("\n");
+            varMapping[this] = tempName;
+
+            //sb.AppendLine($"t{varMapping.Count} = {}");
+
+
+            /*
+            sb.Append(GetOperator());
+            if (this is not VariableNode && this is not IntegerNode)
+                sb.Append("(");
+            for (int i = 0; i < Children.Count; i++)
+            {
+                var op = Children[i];
+                op.ToString(ref sb);
+                if (i != Children.Count - 1)
+                    sb.Append(",");
+            }
+
+            if (this is not VariableNode && this is not IntegerNode)
+                sb.Append(")");
+            */
         }
 
         public string ToString(ref int tabCount)
@@ -334,23 +537,93 @@ namespace TritonTranslator.Ast
         {
             if (obj == null)
                 return false;
-            if (ReferenceEquals(this, obj))
-                return true;
             if (obj is not AbstractNode abstractNode)
                 return false;
 
-            if (GetHashCode() != abstractNode.GetHashCode())
+            return EqualityCheck(abstractNode);
+        }
+
+        
+        private bool EqualityCheck(AbstractNode other)
+        {
+            // Return true if they're reference equal
+            if (ReferenceEquals(this, other))
+                return true;
+            // Hashes must match
+            var thisHash = GetHashCode();
+            var otherHash = other.GetHashCode();
+            if (thisHash != otherHash)
                 return false;
-            if (this.ToString() != abstractNode.ToString())
+            // Ast sizes(the summation of the number of nodes across the entire ast) must match
+            if (astSize != other.astSize) 
                 return false;
+            if (Type != other.Type)
+                return false;
+            if (BitSize != other.BitSize)
+                return false;
+
+            // If the number of children in both nodes do not match,
+            // they cannot be equal.
+            if(Children.Count != other.Children.Count) 
+                return false;
+
+            if (this is IntegerNode thisInt && other is IntegerNode otherInt)
+                return thisInt.Value == otherInt.Value;
+            else if (this is TemporaryNode thisTemp && other is TemporaryNode otherTemp)
+                return (thisTemp.Uid == otherTemp.Uid) && (thisTemp.Name == otherTemp.Name);
+            else if (this is VariableNode)
+                throw new InvalidOperationException($"Not supported.");
+
+            // Recursively compare all children.
+            for(int i = 0; i < Children.Count; i++)
+            {
+                bool isEqual = Children[i].EqualityCheck(other.Children[i]);
+                if (!isEqual)
+                    return false;
+            }
 
             return true;
-
         }
-
+        
+        
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return hash;
         }
+        
+
+        private int ComputeHash()
+        {
+            int hash = 23;
+            hash = hash * 23 + Type.GetHashCode();
+            hash = hash * 23 + BitSize.GetHashCode();
+            foreach(var child in Children)
+                hash = hash * 23 + child.GetHashCode();
+
+            if(this is IntegerNode intNode)
+                hash = hash * 23 + intNode.Value.GetHashCode();
+            if(this is TemporaryNode temporaryNode)
+                hash = hash * 23 + temporaryNode.Name.GetHashCode();
+
+            return hash;
+        }
+
+        // Arithmetic operators
+        public static AbstractNode operator +(AbstractNode a, AbstractNode b) => a.Context.bvadd(a, b);
+        public static AbstractNode operator -(AbstractNode a, AbstractNode b) => a.Context.bvsub(a, b);
+        public static AbstractNode operator *(AbstractNode a, AbstractNode b) => a.Context.bvmul(a, b);
+        public static AbstractNode operator <<(AbstractNode a, AbstractNode b) => a.Context.bvshl(a, b);
+        public static AbstractNode operator >>(AbstractNode a, AbstractNode b) => a.Context.bvashr(a, b);
+
+        // Bitwise operators
+        public static AbstractNode operator &(AbstractNode a, AbstractNode b) => a.Context.bvand(a, b);
+        public static AbstractNode operator |(AbstractNode a, AbstractNode b) => a.Context.bvor(a, b);
+        public static AbstractNode operator ^(AbstractNode a, AbstractNode b) => a.Context.bvxor(a, b);
+        public static AbstractNode operator ~(AbstractNode a) => a.Context.bvnot(a);
+
+        // Comparisons operators. Note that I don't define greater than or other kinds of comparisons.
+        // They have signed and unsigned variants.
+        //public static AbstractNode operator ==(AbstractNode a, AbstractNode b) => a.Context.equal(a, b);
+        //public static AbstractNode operator !=(AbstractNode a, AbstractNode b) => a.Context.bvnot(a.Context.equal(a, b));
     }
 }
