@@ -376,6 +376,11 @@ namespace TritonTranslator.Ast
                         return AstClassification.Nonlinear;
                     }
 
+                    var c1 = Children[0];
+                    var c2 = Children[1];
+                    if ((c1 is IntegerNode || c1 is BvNode) && (c2 is IntegerNode || c2 is BvnotNode))
+                            return AstClassification.Linear;
+
                     var other = Children.Single(x => x != constMul);
                     var otherKind = other.AstClassification;
                     // const * bitwise = mixed expression
