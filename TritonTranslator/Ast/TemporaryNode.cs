@@ -20,8 +20,6 @@ namespace TritonTranslator.Ast
 
         public TemporaryNode(uint id, uint bitSize, string name) : base(name)
         {
-            if (id == 160)
-                Debugger.Break();
             Uid = id;
             BitvectorSize = bitSize;
             Initialize();

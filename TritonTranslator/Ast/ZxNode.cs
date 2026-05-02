@@ -40,7 +40,7 @@ namespace TritonTranslator.Ast
         public override uint ComputeBitvecSize()
         {
             var childSize = Children[1].BitvectorSize;
-            var sizeExt = (Children[0] as IntegerNode).Value;
+            var sizeExt = (Children[0].Children[0] as IntegerNode).Value;
             return (uint)sizeExt + childSize;
         }
     }
